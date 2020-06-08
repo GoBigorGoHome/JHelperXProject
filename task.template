@@ -1,0 +1,9 @@
+#include <utils.hpp>
+using namespace std;
+class %ClassName% {
+public:
+  static void solve(istream&, ostream&) {}
+};
+/*
+ * Make sure that your laptop is plugged in or the build may be slow.
+ */

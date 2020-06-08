@@ -1,0 +1,9 @@
+%Code%
+
+int main() {
+  %ClassName% solver;
+  auto& in = std::cin;
+  auto& out = std::cout;
+  %SolverCall%
+  return 0;
+}
