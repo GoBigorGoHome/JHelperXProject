@@ -6,6 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(testrunner testrunner/main.cpp testrunner/tester.cpp)
+# use libstdc++ debug mode
+target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
 # use lld to speed up linking
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld -Wno-shift-op-parentheses")
 # fix linking error when using std::future with Clang

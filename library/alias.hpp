@@ -92,4 +92,5 @@ class vv {
 #define UB(cont, x) int(std::upper_bound(ALL(cont), x) - std::begin(cont))
 #define x first
 #define y second
+#define rp(...) return println(__VA_ARGS__)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_

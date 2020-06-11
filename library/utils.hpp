@@ -10,6 +10,14 @@
 #include <set>
 #include <io.hpp>
 #include <alias.hpp>
+void rg(int m, vv<int> &g) {
+  for (int i = 0, a, b; i < m; ++i) {
+    std::cin >> a >> b;
+    --a, --b;
+    g[a].push_back(b);
+    g[b].push_back(a);
+  }
+}
 inline void yes() {
   std::cout << "Yes\n";
 }
@@ -18,6 +26,11 @@ inline void no() {
 }
 inline void yn(bool p) {
   std::cout << (p ? "Yes\n" : "No\n");
+}
+template<typename T> T &inc(T &cont) {
+  for (auto &e : cont)
+    ++e;
+  return cont;
 }
 template<typename A, typename B> bool chkmin(A &a, const B &b) {
   return b < a ? a = b, true : false;
