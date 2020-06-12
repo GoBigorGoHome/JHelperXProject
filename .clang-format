@@ -1,6 +1,6 @@
 # Generated from CLion C/C++ Code Style settings
 BasedOnStyle: LLVM
-ForEachMacros: ['FOR', 'For', 'rng', 'up', 'down', 'rep']
+ForEachMacros: ['FOR', 'For', 'rng', 'up', 'down', 'rep', 'fr']
 AccessModifierOffset: -1
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false

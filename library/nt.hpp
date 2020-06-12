@@ -3,10 +3,13 @@ std::vector<long long> divisors(long long n) {
   std::vector<long long> res;
   long long i = 1;
   for (; i * i < n; ++i) {
-    if (n % i == 0) { res.push_back(i); }
+    if (n % i == 0) {
+      res.push_back(i);
+    }
   }
   int j = (int) res.size() - 1;
-  if (i * i == n) res.push_back(i);
+  if (i * i == n)
+    res.push_back(i);
   while (j >= 0) {
     res.push_back(n / res[j]);
     --j;
@@ -22,9 +25,13 @@ std::vector<std::pair<long long, int>> factorize(long long n) {
       n /= i;
       ++cnt;
     }
-    if (cnt) { res.emplace_back(i, cnt); }
+    if (cnt) {
+      res.emplace_back(i, cnt);
+    }
   }
-  if (n > 1) { res.emplace_back(n, 1); }
+  if (n > 1) {
+    res.emplace_back(n, 1);
+  }
   return res;
 }
 
@@ -36,7 +43,8 @@ std::vector<int> get_prime(int n) {
       p.push_back(i);
     }
     for (auto x : p) {
-      if (x <= minp[i] && x * i <= n) minp[x * i] = x;
+      if (x <= minp[i] && (long long) x * i <= n)
+        minp[x * i] = x;
       else
         break;
     }
@@ -52,8 +60,9 @@ std::vector<int> get_mpf(int n) {
       p.push_back(i);
     }
     for (int x : p) {
-      if (x <= minp[i] && x * i <= n) minp[x * i] = x;
-      else
+      if (x <= minp[i] && (long long) x * i <= n) {
+        minp[x * i] = x;
+      } else
         break;
     }
   }
