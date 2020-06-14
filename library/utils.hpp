@@ -32,6 +32,11 @@ template<typename T> T &inc(T &cont) {
     ++e;
   return cont;
 }
+template<typename T> T &dec(T &cont) {
+  for (auto &e : cont)
+    --e;
+  return cont;
+}
 template<typename A, typename B> bool chkmin(A &a, const B &b) {
   return b < a ? a = b, true : false;
 }

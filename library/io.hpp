@@ -26,10 +26,11 @@ std::istream &operator>>(std::istream &stream, std::vector<T> &vec) {
 }
 
 template<typename... Ts>
-std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t) {
+std::istream &operator>>(std::istream &in, const std::tuple<Ts...> &t) {
   std::apply([&in](auto &... args) { ((in >> args), ...); }, t);
   return in;
 }
+
 void scan() {
 }
 

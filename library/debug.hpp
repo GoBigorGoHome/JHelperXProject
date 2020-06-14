@@ -28,25 +28,9 @@ template<class T> using is_iterable = is_iterable_impl::is_iterable<T>;
 
 template<class T> constexpr bool is_iterable_v = is_iterable<T>::value;
 
-namespace aux {
-template<std::size_t...> struct seq {};
-
-template<std::size_t N, std::size_t... Is>
-struct gen_seq : gen_seq<N - 1, N - 1, Is...> {};
-
-template<std::size_t... Is> struct gen_seq<0, Is...> : seq<Is...> {};
-
-template<class Ch, class Tr, class Tuple, std::size_t... Is>
-void print_tuple(std::basic_ostream<Ch, Tr> &os, Tuple const &t, seq<Is...>) {
-  using swallow = int[];
-  (void) swallow{
-      0,
-      (void(std::operator<<(os, Is == 0 ? "" : ", ") << std::get<Is>(t)),
-       0)...};
-}
-}// namespace aux
-
 namespace debug {
+template<typename... Args>
+std::ostream &operator<<(std::ostream &os, std::tuple<Args...> const &t);
 std::ostream &operator<<(std::ostream &os, bool b) {
   return os << (b ? "true" : "false");
 }
@@ -78,11 +62,18 @@ std::ostream &operator<<(std::ostream &os, const A &v) {
   return os << '}';
 }
 
-template<typename... Args>
-std::ostream &operator<<(std::ostream &os, std::tuple<Args...> const &t) {
-  os << '(';
-  aux::print_tuple(os, t, aux::gen_seq<sizeof...(Args)>());
-  return os << ')';
+template<typename... Ts>
+std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
+  bool first = true;
+  out << '(';
+  std::apply(
+      [&out, &first](auto &... args) {
+        ((std::operator<<(out, (first ? first = false, "" : ", ")) << args),
+         ...);
+      },
+      t);
+  out << ')';
+  return out;
 }
 }// namespace debug
 
@@ -101,4 +92,3 @@ void debug_out(const Head &H, const Tail &... T) {
 
 #define debug(...)                                                             \
   debug_stream << "[" << #__VA_ARGS__ << "]:", debug_out(__VA_ARGS__)
-
