@@ -3,11 +3,10 @@
 //
 #ifndef JHELPER_EXAMPLE_PROJECT_TESTRUNNER_TESTER_H_
 #define JHELPER_EXAMPLE_PROJECT_TESTRUNNER_TESTER_H_
-#include <string>
 namespace jhelper {
 struct Test {
-  std::string input;
-  std::string output;
+  const char* input;
+  const char* output;
   bool active;
   bool has_output;
 };

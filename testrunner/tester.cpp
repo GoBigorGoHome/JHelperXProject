@@ -127,7 +127,7 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   auto &test = tests[test_id];
   os << "Test #" << test_id << '\n';
   os << "Input: \n"
-     << (test.input.size() > 1000 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
+     << (strlen(test.input) > 1000 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
                                   : test.input)
      << '\n';
   if (test.has_output)
