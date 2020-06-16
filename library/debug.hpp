@@ -4,9 +4,6 @@
 #include <tuple>
 #include <type_traits>
 #include <sstream>
-#ifdef LOCAL
-
-#endif
 
 namespace is_iterable_impl {
 using std::begin, std::end;
