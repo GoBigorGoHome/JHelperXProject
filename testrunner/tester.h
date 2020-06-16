@@ -5,8 +5,8 @@
 #define JHELPER_EXAMPLE_PROJECT_TESTRUNNER_TESTER_H_
 namespace jhelper {
 struct Test {
-  const char* input;
-  const char* output;
+  const char *input;
+  const char *output;
   bool active;
   bool has_output;
 };
