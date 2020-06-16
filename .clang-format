@@ -48,6 +48,7 @@ ObjCSpaceBeforeProtocolList: false
 PointerAlignment: Right
 ReflowComments: true
 SortIncludes: false
+SortUsingDeclarations: false
 SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: false
