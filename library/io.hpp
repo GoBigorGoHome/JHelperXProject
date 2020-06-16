@@ -10,6 +10,7 @@ struct fast_ios {
     std::cout << std::fixed;
   };
 } fast_ios_;
+namespace io {
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t);
 template<typename T, typename U>
@@ -31,11 +32,9 @@ std::istream &operator>>(std::istream &in, const std::tuple<Ts...> &t) {
   return in;
 }
 
-void scan() {
-}
+void scan() {}
 
-template<class T, class... Args>
-void scan(T &a, Args &... rest) {
+template<class T, class... Args> void scan(T &a, Args &... rest) {
   std::cin >> a;
   scan(rest...);
 }
@@ -68,8 +67,7 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
-template<typename T>
-void print(const T &t) {
+template<typename T> void print(const T &t) {
   std::cout << t << ' ';
 }
 
@@ -79,8 +77,7 @@ void print(const T &t, const Args &... rest) {
   print(rest...);
 }
 
-template<typename T>
-void println(const T &t) {
+template<typename T> void println(const T &t) {
   std::cout << t << '\n';
 }
 
@@ -89,9 +86,13 @@ void println(const T &t, const Args &... rest) {
   print(t);
   println(rest...);
 }
+}// namespace io
+using io::scan;
+using io::print;
+using io::println;
 inline int ri() {
   int x;
-  std:: cin >> x;
+  std::cin >> x;
   return x;
 }
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
