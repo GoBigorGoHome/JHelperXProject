@@ -31,9 +31,10 @@
 #include <crtdbg.h>
 #endif
 #include <windows.h>
+#include <chrono>
 #include <future>
 
-double solver_call();
+void solver_call();
 extern std::vector<jhelper::Test> tests;
 
 std::ostringstream debug_stream;
@@ -64,14 +65,7 @@ bool checkIgnoreTrailingSpaces(const std::string &output,
   auto outputLines = split(out, '\n');
   auto answerLines = split(ans, '\n');
 
-  // remove trailing empty lines
-  //  while (!outputLines.isEmpty() && outputLines.back().trimmed().isEmpty())
-  //    outputLines.pop_back();
-  //  while (!answerLines.isEmpty() && answerLines.back().trimmed().isEmpty())
-  //    answerLines.pop_back();
-
   // if they are considered the same, they must have the same number of lines
-  // after removing trailing empty lines
   if (outputLines.size() != answerLines.size())
     return false;
 
@@ -151,7 +145,7 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   }
   //当调用std::exit()结束程序时，“all C streams are flushed and closed”
   //我的理解是：std::exit()会调用 std::cout,
-  //std::cerr，std::clog的flush()方法，而不管这三个stream
+  // std::cerr，std::clog的flush()方法，而不管这三个stream
   //指向的buffer究竟是不是对应于stdin/stdout/stderr。
   os.flush();
   std::exit(exit_code);
@@ -184,7 +178,13 @@ void test_runner() {
       std::cin.rdbuf(in.rdbuf());
       std::cout.rdbuf(task_out.rdbuf());
 
-      std::packaged_task<double()> task(solver_call);
+      std::packaged_task<double()> task([]() {
+        auto start = std::chrono::steady_clock::now();
+        solver_call();
+        auto end = std::chrono::steady_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end - start;
+        return elapsed_seconds.count();
+      });
       auto res = task.get_future();
       std::thread task_tread(std::move(task));
       task_tread.detach();

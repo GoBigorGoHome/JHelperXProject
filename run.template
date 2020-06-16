@@ -1,18 +1,13 @@
 #include "tester.h"
 #include "debug.hpp"
 #include "%TaskFile%"
-#include <chrono>
 
 std::vector<jhelper::Test> tests{%Tests%};
 #define in std::cin
 #define out std::cout
-double solver_call() {
+void solver_call() {
   %ClassName% solver;
-  auto start = std::chrono::steady_clock::now();
   %SolverCall%
-  auto end = std::chrono::steady_clock::now();
-  std::chrono::duration<double> elapsed_seconds = end-start;
-  return elapsed_seconds.count();
 }
 
 int main() {
