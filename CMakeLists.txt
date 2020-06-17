@@ -9,11 +9,15 @@ add_executable(testrunner testrunner/main.cpp testrunner/tester.cpp)
 # use libstdc++ debug mode
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
 # use lld to speed up linking
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld -Wno-shift-op-parentheses")
-# fix linking error when using std::future with Clang
-# see https://stackoverflow.com/a/31639828/6793559 for detail
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -femulated-tls")
+    target_compile_options(testrunner PRIVATE -Wno-shift-op-parentheses)
+    if (NOT CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
+        # fix linking error when using std::future with Clang
+        # see https://stackoverflow.com/a/31639828/6793559 for detail
+        target_compile_options(testrunner PRIVATE -femulated-tls)
+    endif ()
 endif ()
 
 if (MSVC)
