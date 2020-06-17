@@ -1,5 +1,5 @@
 #include <bitset>
-#include <iostream>
+#include <ostream>
 #include <iterator>
 #include <tuple>
 #include <type_traits>
@@ -69,14 +69,13 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
          ...);
       },
       t);
-  out << ')';
-  return out;
+  return out << ')';
 }
 }// namespace debug
 
 extern std::ostringstream debug_stream;
 void debug_out() {
-  debug_stream << std::endl;
+  debug_stream << '\n';
 }
 
 template<typename Head, typename... Tail>
