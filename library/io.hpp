@@ -2,6 +2,7 @@
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
 #include <iostream>
 #include <vector>
+#include <tuple>
 struct fast_ios {
   fast_ios() {
     std::cin.tie(nullptr);
@@ -32,11 +33,8 @@ std::istream &operator>>(std::istream &in, const std::tuple<Ts...> &t) {
   return in;
 }
 
-void scan() {}
-
-template<class T, class... Args> void scan(T &a, Args &... rest) {
-  std::cin >> a;
-  scan(rest...);
+template<class... Args> void scan(Args &... args) {
+  ((std::cin >> args), ...);
 }
 
 template<typename T>
@@ -67,24 +65,15 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
-template<typename T> void print(const T &t) {
-  std::cout << t << ' ';
+template<typename... Args> void print(Args &&... args) {
+  ((std::cout << args << ' '), ...);
 }
 
-template<typename T, typename... Args>
-void print(const T &t, const Args &... rest) {
-  print(t);
-  print(rest...);
-}
-
-template<typename T> void println(const T &t) {
-  std::cout << t << '\n';
-}
-
-template<typename T, typename... Args>
-void println(const T &t, const Args &... rest) {
-  print(t);
-  println(rest...);
+template<typename First, typename... Args>
+void println(const First &first, const Args &... args) {
+  std::cout << first;
+  ((std::cout << ' ' << args), ...);
+  std::cout << '\n';
 }
 }// namespace io
 using io::scan;
