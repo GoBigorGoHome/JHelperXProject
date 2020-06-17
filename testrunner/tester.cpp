@@ -22,8 +22,8 @@
 #define BRIGHT_WHITE CSI "97m"
 #include "tester.h"
 #include <iostream>
+#include <sstream>
 #include <regex>
-//#include <sstream>
 #ifndef NOMINMAX
 #define NOMINMAX 1
 #endif
