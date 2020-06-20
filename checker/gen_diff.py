@@ -47,13 +47,13 @@ def special_judge():
 
 def gen_input():
     input_file = IO(input_file_path)  # .out是临时文件
-    n = randint(1, 10)
-    input_file.input_writeln(n)
-    max_col = (1 << 20) - 1
-    for i in range(n):
-        a = randint(0, max_col)
-        b = randint(0, max_col)
-        input_file.input_writeln(a, b)
+    t = 1
+    n = randint(1, 100)
+    m = (n - 1) * 2
+    input_file.input_writeln(t, n, m)
+    for i in range(1, n):
+        for j in range(2):
+            input_file.input_writeln(i, randint(i + 1, n))
 
 
 def duipai(**kwargs):
@@ -61,7 +61,7 @@ def duipai(**kwargs):
     spj = kwargs.get('spj', None)
     while True:
         gen_input()
-        if os.system(cmd):
+        if os.system(run_both):
             print("Runtime Error!")
             break
         if spj is not None:
@@ -73,10 +73,11 @@ def duipai(**kwargs):
         print("OK")
 
 
-def stress_test():
+def stress_compare():
+    build_all()
     while True:
         gen_input()
-        ret = os.system(cmd)
+        ret = os.system(run_both)
         if ret != 0:
             print("RUNTIME ERROR", ret)
             break
@@ -84,10 +85,21 @@ def stress_test():
             print("OK")
 
 
-# generate()
-# get_input()
-duipai(spj=special_judge)
-# re_run()
-# run_hack()
+def stress_my():
+    build_my()
+    while True:
+        gen_input()
+        ret = os.system(run_my)
+        if ret != 0:
+            print("RUNTIME ERROR", ret)
+            break
+        else:
+            print("OK")
+
+
+# gen_input()
+# duipai(spj=special_judge)
+# stress_compare()
+# stress_my()
 # run_once()
 # build_and_run_once()
