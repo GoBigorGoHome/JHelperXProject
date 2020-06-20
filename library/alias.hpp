@@ -20,10 +20,8 @@ using pll = std::pair<ll, ll>;
 using vpii = std::vector<pii>;
 template<typename T, typename U = std::less<T>>
 using pq = std::priority_queue<T, std::vector<T>, U>;
-template<typename... Ts>
-using vt = std::vector<std::tuple<Ts...>>;
-template<typename T>
-class vv {
+template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
+template<typename T> class vv {
   std::vector<std::vector<T>> data;
 
  public:
@@ -49,18 +47,10 @@ class vv {
   friend std::ostream &operator<<(std::ostream &out, const vv<T> &val) {
     return out << val.data;
   }
-  friend auto begin(const vv<T> &val) {
-    return val.data.begin();
-  }
-  friend auto end(const vv<T> &val) {
-    return val.data.end();
-  }
-  friend auto rbegin(const vv<T> &val) {
-    return val.data.rbegin();
-  }
-  friend auto rend(const vv<T> &val) {
-    return val.data.rend();
-  }
+  friend auto begin(vv<T> &val) { return val.data.begin(); }
+  friend auto end(vv<T> &val) { return val.data.end(); }
+  friend auto rbegin(vv<T> &val) { return val.data.rbegin(); }
+  friend auto rend(vv<T> &val) { return val.data.rend(); }
 };
 
 #define rng3(i, a, b)                                                          \
@@ -87,11 +77,12 @@ class vv {
 #define eb emplace_back
 #define ep emplace
 #define SZ(x) (int) (x).size()
-#define UNIQ(vec) (vec).erase(std::unique(ALL(vec)), std::end(vec))
+#define UNIQ(vec)                                                              \
+  sort(ALL(vec)), (vec).erase(std::unique(ALL(vec)), std::end(vec))
 #define LB(cont, x) int(std::lower_bound(ALL(cont), x) - std::begin(cont))
 #define UB(cont, x) int(std::upper_bound(ALL(cont), x) - std::begin(cont))
 #define x first
 #define y second
 #define rp(...) return println(__VA_ARGS__)
-#define fr(i, n) for(; i < n; ++i)
+#define fr(i, n) for (; i < n; ++i)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
