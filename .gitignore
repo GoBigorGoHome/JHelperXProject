@@ -84,3 +84,11 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.toptal.com/developers/gitignore/api/clion
+
+# build tree of checker
+/checker/build/
+
+# io files for checker
+/checker/my_out.txt
+/checker/ac_out.txt
+/checker/in.txt
