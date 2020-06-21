@@ -110,7 +110,9 @@ bool enable_virtual_terminal() {
   DWORD dwOutMode = dwOriginalOutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
   return SetConsoleMode(hOut, dwOutMode) != 0;
 }
-
+int line_cnt(const std::string &s) {
+  return std::count_if(s.begin(), s.end(), [](char x) { return x == '\n'; });
+}
 void print_test(std::ostream &os, int test_id, int exit_code,
                 const std::string &task_output = "") {
   std::string debug_info = debug_stream.str();
@@ -127,8 +129,8 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   auto &test = tests[test_id];
   os << "Test #" << test_id << '\n';
   os << "Input: \n"
-     << (strlen(test.input) > 1000 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
-                                  : test.input)
+     << (line_cnt(test.input) > 100 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
+                                    : test.input)
      << '\n';
   if (test.has_output)
     os << "Expected output: \n" << test.output << '\n';
@@ -140,7 +142,7 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   } else {
     os << "Actual output: \n"
        << BLACK
-       << (task_output.size() > 1000 ? "TOO LONG, SKIPPED" : task_output)
+       << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
        << RESET << '\n';
   }
   //当调用std::exit()结束程序时，“all C streams are flushed and closed”
@@ -160,7 +162,7 @@ void test_runner() {
   _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
 #endif
   debug_stream.precision(10);
-  debug_stream << std::fixed;
+  debug_stream << std::fixed << std::boolalpha;
   auto cout_buff = std::cout.rdbuf();
   std::ostream real_cout(cout_buff);
   // to show time in decimal format
