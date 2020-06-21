@@ -28,9 +28,6 @@ template<class T> constexpr bool is_iterable_v = is_iterable<T>::value;
 namespace debug {
 template<typename... Args>
 std::ostream &operator<<(std::ostream &os, std::tuple<Args...> const &t);
-std::ostream &operator<<(std::ostream &os, bool b) {
-  return os << (b ? "true" : "false");
-}
 std::ostream &operator<<(std::ostream &os, const std::string &s) {
   using std::operator<<;
   return os << '"' << s << '"';
