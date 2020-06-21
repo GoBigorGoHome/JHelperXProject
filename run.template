@@ -1,7 +1,11 @@
-#include "tester.h"
 #include "debug.hpp"
 #include "%TaskFile%"
+class %ClassName% {
+ public:
+  static void solve(istream &, ostream &) { ::solve(); }
+};
 
+#include "tester.h"
 std::vector<jhelper::Test> tests{%Tests%};
 #define in std::cin
 #define out std::cout
