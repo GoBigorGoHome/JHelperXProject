@@ -84,5 +84,6 @@ template<typename T> class vv {
 #define x first
 #define y second
 #define rp(...) return println(__VA_ARGS__)
-#define fr(i, n) for (; i < n; ++i)
+#define fr(i, n)                                                               \
+  for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
