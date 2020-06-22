@@ -4,20 +4,11 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_GRID_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_GRID_HPP_
-template<typename T> class grid {
+class grid {
   int n, m;
-  T *table = nullptr;
-
- public:
-  using value_type = typename T::value_type::value_type;
 
  public:
   grid(int row, int col) {
-    assert(row > 0 && col > 0);
-    n = row;
-    m = col;
-  }
-  grid(int row, int col, T &t) : table(&t) {
     assert(row > 0 && col > 0);
     n = row;
     m = col;
@@ -32,15 +23,6 @@ template<typename T> class grid {
     for (int i = 0; i < 4; i++) {
       if (cover(x + dx[i], y + dy[i]))
         res.emplace_back(x + dx[i], y + dy[i]);
-    }
-    return res;
-  }
-  inline std::vector<value_type *> neighbor(int x, int y) const {
-    assert(cover(x, y));
-    std::vector<value_type*> res;
-    for (int i = 0; i < 4; i++) {
-      if (cover(x + dx[i], y + dy[i]))
-        res.push_back(&((*table)[x + dx[i]][y + dy[i]]));
     }
     return res;
   }
