@@ -81,8 +81,6 @@ template<typename T> class vv {
   sort(ALL(vec)), (vec).erase(std::unique(ALL(vec)), std::end(vec))
 #define LB(cont, x) int(std::lower_bound(ALL(cont), x) - std::begin(cont))
 #define UB(cont, x) int(std::upper_bound(ALL(cont), x) - std::begin(cont))
-#define x first
-#define y second
 #define rp(...) return println(__VA_ARGS__)
 #define adv(i, n)                                                              \
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
