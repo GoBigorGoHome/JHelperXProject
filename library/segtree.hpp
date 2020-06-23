@@ -4,17 +4,39 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
+#include <functional>
+#include <vector>
 //线段树是满二叉树。一棵有n个叶子的满二叉树共有2*n-1个节点。
 //按先序遍历的顺序给节点编号。
 
-template <typename Node>
-class SegTree {
+template<typename Value, typename Tag> class SegTree {
+  struct Node {
+    Value val;
+    Tag tag;
+    template<typename... M> void apply(int l, int r, const M &... v) {
+      Tag delta(v...);
+      tag += delta;
+      val.apply(delta, l, r);
+    }
+  };
+  const Tag empty_tag;
   int n;
-  vector<Node> tree;
-  Node unite(const Node &a, const Node &b) const;
-  inline void push(int x, int l, int r);
+  std::vector<Node> tree;
+  inline void push(int x, int l, int r) {
+    int y = (l + r) >> 1;
+    int z = x + ((y - l + 1) << 1);
+    // 左儿子编号是x+1,右儿子编号是z。
+    // push from x into (x + 1) and z
+    if (tree[x].tag) {
+      tree[x + 1].val.apply(tree[x].tag, l, y);
+      tree[x + 1].tag += tree[x].tag;
+      tree[z].val.apply(tree[x].tag, y + 1, r);
+      tree[z].tag += tree[x].tag;
+      tree[x].tag = empty_tag;
+    }
+  }
   inline void pull(int x, int z) {
-    tree[x] = unite(tree[x + 1], tree[z]);
+    tree[x].val = tree[x + 1].val + tree[z].val;
   }
   void build(int x, int l, int r) {
     if (l == r) {
@@ -27,7 +49,7 @@ class SegTree {
     pull(x, z);
   }
   template<typename M>
-  void build(int x, int l, int r, const vector<M> &v) {
+  void build(int x, int l, int r, const std::vector<M> &v) {
     if (l == r) {
       tree[x].apply(l, r, v[l]);
       return;
@@ -50,21 +72,21 @@ class SegTree {
     build(z, y + 1, r, f);
     pull(x, z);
   }
-  Node get(int x, int l, int r, int ll, int rr) {
+  Value get(int x, int l, int r, int ll, int rr) {
     if (ll <= l && r <= rr) {
-      return tree[x];
+      return tree[x].val;
     }
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
     push(x, l, r);
-    Node res{};
+    Value res;
     if (rr <= y) {
       res = get(x + 1, l, y, ll, rr);
     } else {
       if (ll > y) {
         res = get(z, y + 1, r, ll, rr);
       } else {
-        res = unite(get(x + 1, l, y, ll, rr), get(z, y + 1, r, ll, rr));
+        res = get(x + 1, l, y, ll, rr) + get(z, y + 1, r, ll, rr);
       }
     }
     pull(x, z);
@@ -88,7 +110,7 @@ class SegTree {
     pull(x, z);
   }
   int find_first(int x, int l, int r, int ll, int rr,
-                 const function<bool(const Node &)> &f) {
+                 const std::function<bool(const Node &)> &f) {
     if (ll <= l && r <= rr) {
       if (!f(tree[x])) {
         return -1;
@@ -109,7 +131,7 @@ class SegTree {
     return res;
   }
   int find_last(int x, int l, int r, int ll, int rr,
-                const function<bool(const Node &)> &f) {
+                const std::function<bool(const Node &)> &f) {
     if (ll <= l && r <= rr) {
       if (!f(tree[x])) {
         return -1;
@@ -132,7 +154,7 @@ class SegTree {
 
  public:
   int find_first_knowingly(int x, int l, int r,
-                           const function<bool(const Node &)> &f) {
+                           const std::function<bool(const Node &)> &f) {
     if (l == r) {
       return l;
     }
@@ -150,7 +172,7 @@ class SegTree {
   }
 
   int find_last_knowingly(int x, int l, int r,
-                          const function<bool(const Node &)> &f) {
+                          const std::function<bool(const Node &)> &f) {
     if (l == r) {
       return l;
     }
@@ -171,32 +193,27 @@ class SegTree {
     tree.resize(2 * n - 1);
     build(0, 0, n - 1);
   }
-  template<typename M>
-  SegTree(const vector<M> &v) {
+  template<typename M> SegTree(const std::vector<M> &v) {
     n = v.size();
     assert(n > 0);
     tree.resize(2 * n - 1);
     build(0, 0, n - 1, v);
   }
-  template<typename Callable>
-  SegTree(int _n, const Callable &f) : n(_n) {
+  template<typename Callable> SegTree(int _n, const Callable &f) : n(_n) {
     assert(n > 0);
     tree.resize(2 * n - 1);
     build(0, 0, n - 1, f);
   }
-  Node get() {
-    return get(0, 0, n - 1, 0, n - 1);
-  }
-  Node get(int ll, int rr) {
+  Value get() { return tree[0].val; }
+  Value get(int ll, int rr) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return get(0, 0, n - 1, ll, rr);
   }
-  Node get(int p) {
+  Value get(int p) {
     assert(0 <= p && p <= n - 1);
     return get(0, 0, n - 1, p, p);
   }
-  template<typename... M>
-  void modify(int ll, int rr, const M &... v) {
+  template<typename... M> void modify(int ll, int rr, const M &... v) {
     if (ll > rr)
       return;
     assert(0 <= ll && rr <= n - 1);
@@ -204,15 +221,16 @@ class SegTree {
   }
   // find_first and find_last call all FALSE elements
   // to the left (right) of the sought position exactly once
-  int find_first(int ll, int rr, const function<bool(const Node &)> &f) {
+  int find_first(int ll, int rr, const std::function<bool(const Node &)> &f) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return find_first(0, 0, n - 1, ll, rr, f);
   }
-  int find_last(int ll, int rr, const function<bool(const Node &)> &f) {
+  int find_last(int ll, int rr, const std::function<bool(const Node &)> &f) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return find_last(0, 0, n - 1, ll, rr, f);
   }
 };
-struct node;
-using segtree = SegTree<node>;
+struct Value;
+struct Tag;
+using segtree = SegTree<Value, Tag>;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
