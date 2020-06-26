@@ -1,5 +1,6 @@
 from cyaron import *
 from build import *
+from tqdm import tqdm
 
 
 # 洛谷 cyaron 的文档
@@ -48,18 +49,16 @@ def special_judge():
 def gen_input():
     input_file = IO(input_file_path)  # .out是临时文件
     t = 1
-    n = randint(1, 100)
-    m = (n - 1) * 2
-    input_file.input_writeln(t, n, m)
-    for i in range(1, n):
-        for j in range(2):
-            input_file.input_writeln(i, randint(i + 1, n))
+    n = randint(1, 150)
+    k = randint(0, 9)
+    input_file.input_writeln(t)
+    input_file.input_writeln(n, k)
 
 
 def duipai(**kwargs):
     build_all()
     spj = kwargs.get('spj', None)
-    while True:
+    for i in tqdm(range(1000)):
         gen_input()
         if os.system(run_both):
             print("Runtime Error!")
@@ -70,7 +69,6 @@ def duipai(**kwargs):
         elif os.system(diff_to_nul):
             os.system(diff)
             break
-        print("OK")
 
 
 def stress_compare():
@@ -97,9 +95,10 @@ def stress_my():
             print("OK")
 
 
-# gen_input()
+duipai()
 # duipai(spj=special_judge)
 # stress_compare()
 # stress_my()
 # run_once()
 # build_and_run_once()
+# regenerate()
