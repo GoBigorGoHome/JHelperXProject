@@ -13,7 +13,7 @@ my_exe = os.path.join(build_tree, "my.exe")
 ac_exe = os.path.join(build_tree, "ac.exe")
 
 run_my = my_exe + r" < " + input_file_path + r" > " + my_output
-run_ac = ac_exe + r" <" + input_file_path + r" > " + ac_output
+run_ac = ac_exe + r" <" + input_file_path + r" > " + ac_output + " 2> NUL"
 diff = r"fc /A /N " + my_output + " " + ac_output
 diff_to_nul = diff + " > NUL"
 run_both = run_my + ' && ' + run_ac
