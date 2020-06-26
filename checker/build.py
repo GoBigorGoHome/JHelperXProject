@@ -20,7 +20,7 @@ run_both = run_my + ' && ' + run_ac
 
 generator_mingw = "CodeBlocks - MinGW Makefiles"
 generator_ninja = "Ninja"
-generate_build_system = "cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE=Debug -DDUIPAI=1" \
+generate_build_system = "cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE=Release -DDUIPAI=1" \
                         + " -G \"" + generator_ninja + "\"" + " -S " + source_tree \
                         + " -B " + build_tree + " > NUL"
 
