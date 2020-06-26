@@ -14,7 +14,7 @@ template<typename Value, typename Tag> class SegTree {
     Value val;
     Tag tag;
     template<typename... M> void apply(int l, int r, const M &... v) {
-      Tag delta(v...);
+      Tag delta{v...};
       tag += delta;
       val.apply(delta, l, r);
     }
