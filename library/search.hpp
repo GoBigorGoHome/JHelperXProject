@@ -23,28 +23,32 @@ int ternary_search(int L, int R, const Compare &compare) {
   assert(L == R);
   return L;
 }
-template<typename Predicate>
-int bs_find_first(int L, int R, const Predicate &p, bool knowingly = false) {
+template<typename Int, typename Check>
+Int binary_search(Int L, Int R, const Check &check, int type = 0,
+                  bool knowingly = false) {
+  // check returns: -1, too small; 1, too large; 0, OK
+  // type: -1, find first; 0, find any; 1, find last
   assert(L <= R);
-  if (knowingly)
-    --R;
-  while (L <= R) {
-    int mid = L + (R - L) / 2;
-    p(mid) ? R = mid - 1 : L = mid + 1;
+  Int not_found = R + 1;
+  bool found = false;
+  while (L + knowingly <= R) {
+    Int mid = L + (R - L) / 2;
+    int res = check(mid);
+    if (res == -1)
+      L = mid + 1;
+    else if (res == 1)
+      R = mid - 1;
+    else {
+      if (type == 0)
+        return mid;
+      found = true;
+      type == -1 ? R = mid - 1 : L = mid + 1;
+    }
   }
-  return L;
-}
-
-template<typename Predicate>
-int bs_find_last(int L, int R, const Predicate &p, bool knowingly = false) {
-  assert(L <= R);
   if (knowingly)
-    ++L;
-  while (L <= R) {
-    int mid = L + (R - L) / 2;
-    p(mid) ? L = mid + 1 : R = mid - 1;
-  }
-  return R;
+    return L;
+  if (!found)
+    return not_found;
+  return type == -1 ? L : R;
 }
-
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_SEARCH_HPP_
