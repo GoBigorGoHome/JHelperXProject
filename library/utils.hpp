@@ -24,8 +24,14 @@ inline void yes() {
 inline void no() {
   std::cout << "No\n";
 }
-inline void yn(bool p) {
+inline void Yn(bool p) {
   std::cout << (p ? "Yes\n" : "No\n");
+}
+inline void YN(bool p) {
+  std::cout << (p ? "YES\n" : "NO\n");
+}
+inline void yn(bool p) {
+  std::cout << (p ? "yes\n" : "no\n");
 }
 template<typename T> T &inc(T &cont) {
   for (auto &e : cont)
