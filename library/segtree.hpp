@@ -229,11 +229,11 @@ template<typename Value, typename Tag> class SegTree {
   }
   // find_first and find_last call all FALSE elements
   // to the left (right) of the sought position exactly once
-  int find_first(int ll, int rr, const std::function<bool(const Node &)> &f) {
+  int find_first(int ll, int rr, const std::function<bool(const Value &)> &f) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return find_first(0, 0, n - 1, ll, rr, f);
   }
-  int find_last(int ll, int rr, const std::function<bool(const Node &)> &f) {
+  int find_last(int ll, int rr, const std::function<bool(const Value &)> &f) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return find_last(0, 0, n - 1, ll, rr, f);
   }
