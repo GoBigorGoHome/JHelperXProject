@@ -80,18 +80,11 @@ template<typename Value, typename Tag> class SegTree {
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
     push(x, l, r);
-    Value res;
-    if (rr <= y) {
-      res = get(x + 1, l, y, ll, rr);
-    } else {
-      if (ll > y) {
-        res = get(z, y + 1, r, ll, rr);
-      } else {
-        res = get(x + 1, l, y, ll, rr) + get(z, y + 1, r, ll, rr);
-      }
-    }
-    pull(x, z);
-    return res;
+    if (rr <= y)
+      return get(x + 1, l, y, ll, rr);
+    if (ll > y)
+      return get(z, y + 1, r, ll, rr);
+    return get(x + 1, l, y, ll, rr) + get(z, y + 1, r, ll, rr);
   }
   template<typename... M>
   void modify_leaf(int x, int l, int r, int p, const M &... v) {
@@ -143,7 +136,6 @@ template<typename Value, typename Tag> class SegTree {
     if (rr > y && res == -1) {
       res = find_first(z, y + 1, r, ll, rr, f);
     }
-    pull(x, z);
     return res;
   }
   int find_last(int x, int l, int r, int ll, int rr,
@@ -164,7 +156,6 @@ template<typename Value, typename Tag> class SegTree {
     if (ll <= y && res == -1) {
       res = find_last(x + 1, l, y, ll, rr, f);
     }
-    pull(x, z);
     return res;
   }
 
@@ -183,7 +174,6 @@ template<typename Value, typename Tag> class SegTree {
     } else {
       res = find_first_knowingly(z, y + 1, r, f);
     }
-    pull(x, z);
     return res;
   }
 
@@ -201,7 +191,6 @@ template<typename Value, typename Tag> class SegTree {
     } else {
       res = find_last_knowingly(x + 1, l, y, f);
     }
-    pull(x, z);
     return res;
   }
   SegTree(int _n) : n(_n) {
