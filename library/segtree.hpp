@@ -119,9 +119,9 @@ template<typename Value, typename Tag> class SegTree {
     pull(x, z);
   }
   int find_first(int x, int l, int r, int ll, int rr,
-                 const std::function<bool(const Node &)> &f) {
+                 const std::function<bool(const Value &)> &f) {
     if (ll <= l && r <= rr) {
-      if (!f(tree[x])) {
+      if (!f(tree[x].val)) {
         return -1;
       }
       return find_first_knowingly(x, l, r, f);
@@ -139,9 +139,9 @@ template<typename Value, typename Tag> class SegTree {
     return res;
   }
   int find_last(int x, int l, int r, int ll, int rr,
-                const std::function<bool(const Node &)> &f) {
+                const std::function<bool(const Value &)> &f) {
     if (ll <= l && r <= rr) {
-      if (!f(tree[x])) {
+      if (!f(tree[x].val)) {
         return -1;
       }
       return find_last_knowingly(x, l, r, f);
@@ -158,10 +158,8 @@ template<typename Value, typename Tag> class SegTree {
     }
     return res;
   }
-
- public:
   int find_first_knowingly(int x, int l, int r,
-                           const std::function<bool(const Node &)> &f) {
+                           const std::function<bool(const Value &)> &f) {
     if (l == r) {
       return l;
     }
@@ -169,16 +167,15 @@ template<typename Value, typename Tag> class SegTree {
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
     int res;
-    if (f(tree[x + 1])) {
+    if (f(tree[x + 1].val)) {
       res = find_first_knowingly(x + 1, l, y, f);
     } else {
       res = find_first_knowingly(z, y + 1, r, f);
     }
     return res;
   }
-
   int find_last_knowingly(int x, int l, int r,
-                          const std::function<bool(const Node &)> &f) {
+                          const std::function<bool(const Value &)> &f) {
     if (l == r) {
       return l;
     }
@@ -186,13 +183,15 @@ template<typename Value, typename Tag> class SegTree {
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
     int res;
-    if (f(tree[z])) {
+    if (f(tree[z].val)) {
       res = find_last_knowingly(z, y + 1, r, f);
     } else {
       res = find_last_knowingly(x + 1, l, y, f);
     }
     return res;
   }
+
+ public:
   SegTree(int _n) : n(_n) {
     assert(n > 0);
     tree.resize(2 * n - 1);
