@@ -40,6 +40,7 @@ template<typename Value, typename Tag> class SegTree {
   }
   void build(int x, int l, int r) {
     if (l == r) {
+      tree[x].val.apply(l);
       return;
     }
     int y = (l + r) >> 1;
@@ -91,6 +92,21 @@ template<typename Value, typename Tag> class SegTree {
     }
     pull(x, z);
     return res;
+  }
+  template<typename... M>
+  void modify_leaf(int x, int l, int r, int p, const M &... v) {
+    if (l == r) {
+      tree[x].val.apply(p, v...);
+      return;
+    }
+    int y = (l + r) >> 1;
+    int z = x + ((y - l + 1) << 1);
+    push(x, l, r);
+    if (p <= y)
+      modify_leaf(x + 1, l, y, p, v...);
+    else
+      modify_leaf(z, y + 1, r, p, v...);
+    pull(x, z);
   }
   template<typename... M>
   void modify(int x, int l, int r, int ll, int rr, const M &... v) {
@@ -218,6 +234,10 @@ template<typename Value, typename Tag> class SegTree {
       return;
     assert(0 <= ll && rr <= n - 1);
     modify(0, 0, n - 1, ll, rr, v...);
+  }
+  template<typename... M> void modify_leaf(int p, const M &... v) {
+    assert(0 <= p && p < n);
+    modify_leaf(0, 0, n - 1, p, v...);
   }
   // find_first and find_last call all FALSE elements
   // to the left (right) of the sought position exactly once
