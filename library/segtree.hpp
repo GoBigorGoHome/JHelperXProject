@@ -40,37 +40,13 @@ template<typename Value, typename Tag> class SegTree {
   }
   void build(int x, int l, int r) {
     if (l == r) {
-      tree[x].val.apply(l);
+      tree[x].val.init_leaf(l);
       return;
     }
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
     build(x + 1, l, y);
     build(z, y + 1, r);
-    pull(x, z);
-  }
-  template<typename M>
-  void build(int x, int l, int r, const std::vector<M> &v) {
-    if (l == r) {
-      tree[x].apply(l, r, v[l]);
-      return;
-    }
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    build(x + 1, l, y, v);
-    build(z, y + 1, r, v);
-    pull(x, z);
-  }
-  template<typename Callable>
-  void build(int x, int l, int r, const Callable &f) {
-    if (l == r) {
-      tree[x].apply(l, r, f(l));
-      return;
-    }
-    int y = (l + r) >> 1;
-    int z = x + ((y - l + 1) << 1);
-    build(x + 1, l, y, f);
-    build(z, y + 1, r, f);
     pull(x, z);
   }
   Value get(int x, int l, int r, int ll, int rr) {
@@ -89,7 +65,7 @@ template<typename Value, typename Tag> class SegTree {
   template<typename... M>
   void modify_leaf(int x, int l, int r, int p, const M &... v) {
     if (l == r) {
-      tree[x].val.apply(p, v...);
+      tree[x].val.apply_to_leaf(p, v...);
       return;
     }
     int y = (l + r) >> 1;
@@ -196,17 +172,6 @@ template<typename Value, typename Tag> class SegTree {
     assert(n > 0);
     tree.resize(2 * n - 1);
     build(0, 0, n - 1);
-  }
-  template<typename M> SegTree(const std::vector<M> &v) {
-    n = v.size();
-    assert(n > 0);
-    tree.resize(2 * n - 1);
-    build(0, 0, n - 1, v);
-  }
-  template<typename Callable> SegTree(int _n, const Callable &f) : n(_n) {
-    assert(n > 0);
-    tree.resize(2 * n - 1);
-    build(0, 0, n - 1, f);
   }
   Value get() { return tree[0].val; }
   Value get(int ll, int rr) {
