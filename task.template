@@ -1,5 +1,6 @@
 #include <utils.hpp>
 using namespace std;
+
 void solve() {}
 /*
  * Make sure that your laptop is plugged in or the build may be slow.
