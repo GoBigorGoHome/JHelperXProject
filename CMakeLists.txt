@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable(testrunner testrunner/main.cpp testrunner/tester.cpp)
+target_include_directories(testrunner PRIVATE library)
 # use libstdc++ debug mode
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
 # use lld to speed up linking
@@ -25,14 +26,3 @@ if (MSVC)
     #    target_link_options(testrunner PRIVATE /libpath:D:\\LLVM\\lib\\clang\\10.0.0\\lib\\windows)
     #    target_link_libraries(testrunner PRIVATE clang_rt.asan-x86_64.lib)
 endif ()
-add_library(mylib INTERFACE)
-target_compile_definitions(mylib INTERFACE LOCAL)
-target_include_directories(mylib INTERFACE library)
-target_link_libraries(testrunner PRIVATE mylib)
-
-# to enable code insight for task.cpp, task.cpp must be source of some target.
-# JHelper will refresh CMake when new tasks are added.
-file(GLOB TASKS "tasks/*.cpp")
-add_library(tasks ${TASKS})
-target_link_libraries(tasks PRIVATE mylib)
-

@@ -4,6 +4,8 @@
   <component name="CidrRootsConfiguration">
     <sourceRoots>
       <file path="$PROJECT_DIR$/checker" />
+      <file path="$PROJECT_DIR$/library" />
+      <file path="$PROJECT_DIR$/tasks" />
     </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/spcppl" />
