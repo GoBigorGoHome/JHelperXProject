@@ -6,6 +6,9 @@ from tqdm import tqdm
 # 洛谷 cyaron 的文档
 # https://github.com/luogu-dev/cyaron/wiki/
 # String.random(N, charset="#.")
+# How to generate a permutation of 1..n.
+# p = list(range(1, n + 1))
+# random.shuffle(p)
 
 
 def ri(f):
@@ -48,11 +51,15 @@ def special_judge():
 
 def gen_input():
     input_file = IO(input_file_path)  # .out是临时文件
-    t = 1
-    n = randint(1, 150)
-    k = randint(0, 9)
+    p = [2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
+         26]
+    input_file.input_writeln(p)
+    len_a = randint(2, 200)
+    len_b = randint(len_a, 200)
+    s = String.random(len_a, charset="a")
+    t = String.random(len_b, charset="a")
+    input_file.input_writeln(s)
     input_file.input_writeln(t)
-    input_file.input_writeln(n, k)
 
 
 def duipai(**kwargs):
@@ -95,6 +102,7 @@ def stress_my():
             print("OK")
 
 
+# gen_input()
 duipai()
 # duipai(spj=special_judge)
 # stress_compare()
