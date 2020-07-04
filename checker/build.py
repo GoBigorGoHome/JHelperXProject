@@ -15,7 +15,7 @@ ac_exe = os.path.join(build_tree, "ac.exe")
 run_my = my_exe + r" < " + input_file_path + r" > " + my_output + " 2> NUL"
 run_ac = ac_exe + r" <" + input_file_path + r" > " + ac_output + " 2> NUL"
 diff = r"fc /A /N " + my_output + " " + ac_output
-diff_to_nul = diff + " > NUL"
+diff_to_nul = diff + " > NUL 2> NUL"
 run_both = run_my + ' && ' + run_ac
 
 generator_mingw = "CodeBlocks - MinGW Makefiles"
