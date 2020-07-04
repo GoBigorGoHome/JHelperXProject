@@ -11,7 +11,6 @@ struct fast_ios {
     std::cout << std::fixed;
   };
 } fast_ios_;
-namespace io {
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t);
 template<typename T, typename U>
@@ -59,8 +58,13 @@ std::ostream &operator<<(std::ostream &out, const std::pair<T, U> &p) {
 template<typename T>
 std::ostream &operator<<(std::ostream &out,
                          const std::vector<std::vector<T>> &t) {
+  bool is_first = true;
   for (const auto &row : t) {
-    out << row << '\n';
+    if (is_first)
+      is_first = false;
+    else
+      out << '\n';
+    out << row;
   }
   return out;
 }
@@ -75,10 +79,6 @@ void println(const First &first, const Args &... args) {
   ((std::cout << ' ' << args), ...);
   std::cout << '\n';
 }
-}// namespace io
-using io::scan;
-using io::print;
-using io::println;
 inline int ri() {
   int x;
   std::cin >> x;
