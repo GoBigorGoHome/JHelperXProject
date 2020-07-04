@@ -10,14 +10,6 @@
 #include <set>
 #include <io.hpp>
 #include <alias.hpp>
-void rg(int m, vv<int> &g) {
-  for (int i = 0, a, b; i < m; ++i) {
-    std::cin >> a >> b;
-    --a, --b;
-    g[a].push_back(b);
-    g[b].push_back(a);
-  }
-}
 inline void yes() {
   std::cout << "Yes\n";
 }
