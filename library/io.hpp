@@ -80,10 +80,10 @@ void println(const First &first, const Args &... args) {
   ((std::cout << ' ' << args), ...);
   std::cout << '\n';
 }
+}// namespace io
 inline int ri() {
   int x;
   std::cin >> x;
   return x;
 }
-}// namespace io
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_

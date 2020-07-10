@@ -91,4 +91,8 @@ template<class F> y_combinator(F) -> y_combinator<F>;
 #ifndef debug
 #define debug(...) 42
 #endif
+using io::scan;
+using io::print;
+using io::println;
+using namespace std;
 #endif// ALGO_UTILS
