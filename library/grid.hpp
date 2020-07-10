@@ -4,6 +4,8 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_GRID_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_GRID_HPP_
+#include <vector>
+#include <cassert>
 class grid {
   int n, m;
 

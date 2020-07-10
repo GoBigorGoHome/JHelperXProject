@@ -4,18 +4,22 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_DETECT_SEGMENTS_INTERSECT_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_DETECT_SEGMENTS_INTERSECT_HPP_
+#include <cmath>
+#include <vector>
+#include <algorithm>
+#include <set>
 const double EPS = 1E-9;
 
 struct pt {
   double x, y;
-  double len() const { return sqrt(x * x + y * y); }
+  double len() const { return std::sqrt(x * x + y * y); }
 };
 struct seg {
   pt p, q;
   int id;
 
   double get_y(double x) const {
-    if (abs(p.x - q.x) < EPS)
+    if (std::abs(p.x - q.x) < EPS)
       return p.y;
     return p.y + (q.y - p.y) * (x - p.x) / (q.x - p.x);
   }
@@ -31,7 +35,7 @@ bool intersect1d(double l1, double r1, double l2, double r2) {
 
 int vec(const pt &a, const pt &b, const pt &c) {
   double s = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
-  return abs(s) < EPS ? 0 : s > 0 ? +1 : -1;
+  return std::abs(s) < EPS ? 0 : s > 0 ? +1 : -1;
 }
 
 bool intersect(const seg &a, const seg &b) {
@@ -54,7 +58,7 @@ struct event {
   event(double x, int tp, int id) : x(x), tp(tp), id(id) {}
 
   bool operator<(const event &e) const {
-    if (abs(x - e.x) > EPS)
+    if (std::abs(x - e.x) > EPS)
       return x < e.x;
     return tp > e.tp;
   }
@@ -67,7 +71,7 @@ std::pair<int, int> detect_intersect(const std::vector<seg> &a) {
     e.push_back(event(std::min(a[i].p.x, a[i].q.x), +1, i));
     e.push_back(event(std::max(a[i].p.x, a[i].q.x), -1, i));
   }
-  sort(e.begin(), e.end());
+  std::sort(e.begin(), e.end());
   std::set<seg> s;
   std::vector<std::set<seg>::iterator> where(n);
   auto prev = [&s](std::set<seg>::iterator it) {

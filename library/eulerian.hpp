@@ -4,6 +4,8 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
 #define JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
+#include <vector>
+#include <cmath>
 template<typename T> class graph {
  public:
   struct edge {
@@ -12,8 +14,8 @@ template<typename T> class graph {
     T cost;
   };
 
-  vector<edge> edges;
-  vector<vector<int>> g;
+  std::vector<edge> edges;
+  std::vector<std::vector<int>> g;
   int n;
 
   graph(int _n) : n(_n) { g.resize(n); }
@@ -40,9 +42,9 @@ template<typename T> class undigraph : public graph<T> {
 };
 
 template<typename T>
-vector<int> find_eulerian_path(const graph<T> &g, int &root) {
-  vector<int> in_deg(g.n, 0);
-  vector<int> out_deg(g.n, 0);
+std::vector<int> find_eulerian_path(const graph<T> &g, int &root) {
+  std::vector<int> in_deg(g.n, 0);
+  std::vector<int> out_deg(g.n, 0);
   int cnt_edges = 0;
   for (int id = 0; id < (int) g.edges.size(); id++) {
     cnt_edges++;
@@ -62,7 +64,7 @@ vector<int> find_eulerian_path(const graph<T> &g, int &root) {
   }
   if (odd > 2) {
     root = -1;
-    return vector<int>();
+    return std::vector<int>();
   }
   if (root == -1) {
     root = 0;
@@ -71,13 +73,13 @@ vector<int> find_eulerian_path(const graph<T> &g, int &root) {
     }
     if (root == g.n) {
       root = 0;
-      return vector<int>();
+      return std::vector<int>();
     }
   }
-  vector<bool> used(g.edges.size(), false);
-  vector<int> ptr(g.n, 0);
-  vector<int> balance(g.n, 0);
-  vector<int> res(cnt_edges);
+  std::vector<bool> used(g.edges.size(), false);
+  std::vector<int> ptr(g.n, 0);
+  std::vector<int> balance(g.n, 0);
+  std::vector<int> res(cnt_edges);
   int stack_ptr = 0;
   int write_ptr = cnt_edges;
   int v = root;
@@ -109,11 +111,11 @@ vector<int> find_eulerian_path(const graph<T> &g, int &root) {
   }
   int disbalance = 0;
   for (int i = 0; i < g.n; i++) {
-    disbalance += abs(balance[i]);
+    disbalance += std::abs(balance[i]);
   }
   if (write_ptr != 0 || disbalance > 2) {
     root = -1;
-    return vector<int>();
+    return std::vector<int>();
   }
   return res;
   // returns edge ids in the path (or the cycle if it exists)
