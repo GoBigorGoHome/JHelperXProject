@@ -92,3 +92,6 @@ fabric.properties
 /checker/my_out.txt
 /checker/ac_out.txt
 /checker/in.txt
+
+.idea/vcs.xml
+exp.cpp
