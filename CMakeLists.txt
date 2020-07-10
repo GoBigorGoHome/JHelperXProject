@@ -28,3 +28,5 @@ if (MSVC)
 endif ()
 
 include_directories(library)
+
+add_executable(exp exp.cpp)
