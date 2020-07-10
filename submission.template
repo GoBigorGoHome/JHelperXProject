@@ -1,14 +1,6 @@
 %Code%
 
-class %ClassName% {
- public:
-  static void solve(istream &, ostream &) { ::solve(); }
-};
-
-#define in std::cin
-#define out std::cout
 int main() {
-  %ClassName% solver;
   %SolverCall%
   return 0;
 }
