@@ -26,3 +26,5 @@ if (MSVC)
     #    target_link_options(testrunner PRIVATE /libpath:D:\\LLVM\\lib\\clang\\10.0.0\\lib\\windows)
     #    target_link_libraries(testrunner PRIVATE clang_rt.asan-x86_64.lib)
 endif ()
+
+include_directories(library)
