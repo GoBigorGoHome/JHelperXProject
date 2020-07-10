@@ -86,8 +86,4 @@ inline int ri() {
   return x;
 }
 }// namespace io
-using io::println;
-using io::print;
-using io::scan;
-using io::ri;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
