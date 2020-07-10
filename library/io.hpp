@@ -11,6 +11,7 @@ struct fast_ios {
     std::cout << std::fixed;
   };
 } fast_ios_;
+namespace io {
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t);
 template<typename T, typename U>
@@ -84,4 +85,9 @@ inline int ri() {
   std::cin >> x;
   return x;
 }
+}// namespace io
+using io::println;
+using io::print;
+using io::scan;
+using io::ri;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_

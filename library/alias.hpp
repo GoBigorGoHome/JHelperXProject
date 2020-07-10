@@ -7,6 +7,7 @@
 #include <string>
 #include <cassert>
 #include <queue>
+#include <io.hpp>
 using ll = long long;
 using ull = unsigned long long;
 using vl = std::vector<ll>;
@@ -42,10 +43,10 @@ template<typename T> class vv {
       std::fill(row.begin(), row.end(), val);
   }
   friend std::istream &operator>>(std::istream &in, vv<T> &val) {
-    return in >> val.data;
+    return io::operator>>(in, val.data);
   }
   friend std::ostream &operator<<(std::ostream &out, const vv<T> &val) {
-    return out << val.data;
+    return io::operator<<(out, val.data);
   }
   friend auto begin(vv<T> &val) { return val.data.begin(); }
   friend auto end(vv<T> &val) { return val.data.end(); }

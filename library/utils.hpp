@@ -8,7 +8,6 @@
 #include <map>
 #include <numeric>
 #include <set>
-#include <io.hpp>
 #include <alias.hpp>
 inline void yes() {
   std::cout << "Yes\n";
