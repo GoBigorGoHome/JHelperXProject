@@ -53,18 +53,26 @@ template<typename T> class vv {
   friend auto rbegin(vv<T> &val) { return val.data.rbegin(); }
   friend auto rend(vv<T> &val) { return val.data.rend(); }
 };
-
+#define TOKENPASTE(x, y) x##y
+#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
 #define rng3(i, a, b)                                                          \
-  for (std::common_type<decltype(a), decltype(b)>::type i = a; i < b; ++i)
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = a,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
+       i < TOKENPASTE2(r_end_, __LINE__); ++i)
 #define rng2(i, n) rng3(i, 0, n)
 #define GET_MACRO(_1, _2, _3, NAME, ...) NAME
 #define rng(...) GET_MACRO(__VA_ARGS__, rng3, rng2)(__VA_ARGS__)
 #define up(i, a, b)                                                            \
-  for (std::common_type<decltype(a), decltype(b)>::type i = a; i <= b; ++i)
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = a,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
+       i <= TOKENPASTE2(r_end_, __LINE__); ++i)
 #define down(i, b, a)                                                          \
-  for (std::common_type<decltype(a), decltype(b)>::type i = b; i >= a; i--)
-#define TOKENPASTE(x, y) x##y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = b,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = a;                                  \
+       i >= TOKENPASTE2(r_end_, __LINE__); i--)
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
        TOKENPASTE2(_iter_, __LINE__) > 0; --TOKENPASTE2(_iter_, __LINE__))
