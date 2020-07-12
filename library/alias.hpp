@@ -95,5 +95,5 @@ template<typename T> class vv {
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
 #define INT(...) int __VA_ARGS__; scan(__VA_ARGS__)
 #define LL(...) long long __VA_ARGS__; scan(__VA_ARGS__)
-#define STR(...) std::string __vA_ARGS__; scan(__VA_ARGS__)
+#define STR(...) std::string __VA_ARGS__; scan(__VA_ARGS__)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
