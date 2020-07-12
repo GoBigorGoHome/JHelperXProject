@@ -203,7 +203,5 @@ template<typename Value, typename Tag> class SegTree {
     return find_last(0, 0, n - 1, ll, rr, f);
   }
 };
-struct Value;
-struct Tag;
-using segtree = SegTree<Value, Tag>;
+using segtree = SegTree<class Value, class Tag>;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
