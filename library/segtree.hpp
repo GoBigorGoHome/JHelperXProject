@@ -65,7 +65,7 @@ template<typename Value, typename Tag> class SegTree {
   template<typename... M>
   void modify_leaf(int x, int l, int r, int p, const M &... v) {
     if (l == r) {
-      tree[x].val.apply_to_leaf(p, v...);
+      tree[x].val.apply_to_leaf(v...);
       return;
     }
     int y = (l + r) >> 1;
