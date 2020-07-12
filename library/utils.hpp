@@ -1,5 +1,5 @@
-#ifndef ALGO_UTILS
-#define ALGO_UTILS
+#ifndef CP_UTILS
+#define CP_UTILS
 #include <algorithm>
 #include <bitset>
 #include <climits>
@@ -91,8 +91,6 @@ template<class F> y_combinator(F) -> y_combinator<F>;
 #ifndef debug
 #define debug(...) 42
 #endif
-using io::scan;
-using io::print;
-using io::println;
+using namespace io;
 using namespace std;
-#endif// ALGO_UTILS
+#endif// CP_UTILS
