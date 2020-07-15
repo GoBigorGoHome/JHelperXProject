@@ -6,6 +6,7 @@
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
 #include <functional>
 #include <vector>
+#include <cassert>
 //线段树是满二叉树。一棵有n个叶子的满二叉树共有2*n-1个节点。
 //按先序遍历的顺序给节点编号。
 
