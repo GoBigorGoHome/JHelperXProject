@@ -3,8 +3,7 @@
 #include <queue>
 #include <vector>
 // ftiasch's AC automaton template
-template<int C, char alpha, int N>
-struct AhoCorasick {
+template<int C, char alpha, int N> struct AhoCorasick {
   AhoCorasick() {
     weight.reserve(N);
     go.reserve(N);
@@ -30,7 +29,9 @@ struct AhoCorasick {
     int p = 0;
     for (int i = 0; s[i]; ++i) {
       int c = s[i] - alpha;
-      if (go[p][c] == -1) { return -1; }
+      if (go[p][c] == -1) {
+        return -1;
+      }
       p = go[p][c];
     }
     return p;
@@ -41,7 +42,9 @@ struct AhoCorasick {
     std::queue<int> queue;
     for (int c = 0; c < C; ++c) {
       int &v = go[0][c];
-      if (~v) { queue.push(v); }
+      if (~v) {
+        queue.push(v);
+      }
       (~v ? fail[v] : v) = 0;
     }
     while (!queue.empty()) {
@@ -50,7 +53,9 @@ struct AhoCorasick {
       weight[u] += weight[fail[u]];
       for (int c = 0; c < C; ++c) {
         int &v = go[u][c];
-        if (~v) { queue.push(v); }
+        if (~v) {
+          queue.push(v);
+        }
         (~v ? fail[v] : v) = go[fail[u]][c];
       }
     }
@@ -61,14 +66,13 @@ struct AhoCorasick {
   std::vector<int> fail;
 };
 
-template<typename RAIter>
-class kmp_searcher {
+template<typename RAIter> class kmp_searcher {
   RAIter pattern_, pattern_end_;
   int pattern_len_;
   std::vector<int> fail_;
-  template<typename T>
-  int get_next(T character, int i) const {
-    while (i != -1 && pattern_[i] != character) i = fail_[i];
+  template<typename T> int get_next(T character, int i) const {
+    while (i != -1 && pattern_[i] != character)
+      i = fail_[i];
     return i + 1;
   }
   void calc_fail() {
@@ -92,7 +96,9 @@ class kmp_searcher {
     int j = 0;
     for (RAIter2 it = first; it != last; ++it) {
       j = get_next(*it, j);
-      if (j == pattern_len_) { return {it + 1 - pattern_len_, it + 1}; }
+      if (j == pattern_len_) {
+        return {it + 1 - pattern_len_, it + 1};
+      }
     }
     return {last, last};
   }
