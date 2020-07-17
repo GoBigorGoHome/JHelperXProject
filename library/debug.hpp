@@ -4,7 +4,6 @@
 #include <tuple>
 #include <type_traits>
 #include <sstream>
-extern std::ostringstream debug_stream;
 namespace is_iterable_impl {
 using std::begin, std::end;
 template<typename T>
@@ -69,17 +68,12 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
   return out << ')';
 }
 
-void debug_out() {
-  debug_stream << '\n';
-}
-
-template<typename Head, typename... Tail>
-void debug_out(const Head &H, const Tail &... T) {
-  debug_stream << ' ';
-  debug_stream << H;
-  debug_out(T...);
+template<typename... Args>
+void debug_out(std::ostream &os, const Args &... args) {
+  ((os << ' ' << args), ...);
+  os << '\n';
 }
 }// namespace debug
-
-#define debug(...)                                                             \
-  debug_stream << "[" << #__VA_ARGS__ << "]:", debug::debug_out(__VA_ARGS__)
+#define show(...)                                                              \
+  std::cerr << "[" << #__VA_ARGS__ << "]:",                                    \
+      debug::debug_out(std::cerr, __VA_ARGS__)

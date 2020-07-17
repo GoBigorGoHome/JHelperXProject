@@ -91,6 +91,9 @@ template<class F> y_combinator(F) -> y_combinator<F>;
 #ifndef debug
 #define debug(...) 42
 #endif
+#ifndef show
+#define show(...) 42
+#endif
 using namespace io;
 using namespace std;
 #endif// CP_UTILS
