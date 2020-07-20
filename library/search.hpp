@@ -8,8 +8,8 @@
 template<typename Compare>
 int ternary_search(int L, int R, const Compare &compare) {
   assert(L <= R);
-  // mid 是 [L,R] 的中点，mm 是 [mid+1,R] 的中点，又 L < R，这就保证了 L <= mid
-  // < mm <= R。
+  // mid 是 [L,R] 的中点，mm 是 [mid+1,R] 的中点，
+  // 又 L < R，这就保证了 L <= mid < mm <= R。
   while (L < R) {
     int mid = L + (R - L) / 2, mm = mid + 1 + (R - mid - 1) / 2;
     if (compare(mid, mm)) {
