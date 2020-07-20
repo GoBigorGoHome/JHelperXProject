@@ -36,7 +36,7 @@
 
 void solver_call();
 extern std::vector<jhelper::Test> tests;
-
+extern const bool show_all_failed_tests;
 std::ostringstream debug_stream;
 
 namespace jhelper {
@@ -150,7 +150,6 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   // std::cerr，std::clog的flush()方法，而不管这三个stream
   //指向的buffer究竟是不是对应于stdin/stdout/stderr。
   os.flush();
-  std::exit(exit_code);
 }
 
 void test_runner() {
@@ -171,6 +170,7 @@ void test_runner() {
   int testID = 0;
   double maxTime = 0.0;
   int n_active_tests = 0;
+  int n_failed_tests = 0;
   for (const jhelper::Test &test : tests) {
     if (test.active) {
       ++n_active_tests;
@@ -191,23 +191,31 @@ void test_runner() {
       std::thread task_tread(std::move(task));
       task_tread.detach();
       auto status = res.wait_for(std::chrono::seconds(3));
-      if (status == std::future_status::timeout)
+      if (status == std::future_status::timeout) {
         print_test(real_cout, testID, 11);
-
+        std::exit(11);
+      }
       maxTime = std::max(res.get(), maxTime);
       auto task_output = task_out.str();
       if (test.has_output && not jhelper::check(test.output, task_output)
-          or not test.has_output)
+          or not test.has_output) {
         print_test(real_cout, testID, 0, task_output);
+        if (not show_all_failed_tests)
+          std::exit(0);
+        ++n_failed_tests;
+      }
     }
     ++testID;
   }
 
   if (n_active_tests == 0) {
     real_cout << YELLOW << "No active test\n" << RESET;
-  } else {
+  } else if (n_failed_tests == 0) {
     real_cout << BRIGHT_GREEN "All OK\n" RESET;
     real_cout << BRIGHT_BLACK "Maximal time: " << maxTime << "s.\n" RESET;
+  } else {
+    real_cout << RED "Failed " << n_failed_tests << '/' << n_active_tests
+              << " test(s)\n";
   }
   real_cout.flush();
   std::exit(0);
