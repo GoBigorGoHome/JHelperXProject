@@ -39,7 +39,7 @@ template<typename A, typename B> bool chkmin(A &a, const B &b) {
 }
 
 template<typename A, typename B> bool chkmax(A &a, const B &b) {
-  return b > a ? a = b, true : false;
+  return a < b ? a = b, true : false;
 }
 
 template<typename T> struct reversion_wrapper { T &iterable; };
