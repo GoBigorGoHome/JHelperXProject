@@ -162,6 +162,8 @@ void test_runner() {
 #endif
   debug_stream.precision(10);
   debug_stream << std::fixed << std::boolalpha;
+  std::cerr.precision(10);
+  std::cerr << std::fixed << std::boolalpha;
   auto cout_buff = std::cout.rdbuf();
   std::ostream real_cout(cout_buff);
   // to show time in decimal format
