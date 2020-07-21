@@ -20,9 +20,6 @@ run_both = run_my + ' && ' + run_ac
 
 generator_mingw = "CodeBlocks - MinGW Makefiles"
 generator_ninja = "Ninja"
-generate_build_system = "cmake --no-warn-unused-cli -DCMAKE_BUILD_TYPE=Release -DDUIPAI=1" \
-                        + " -G \"" + generator_ninja + "\"" + " -S " + source_tree \
-                        + " -B " + build_tree + " > NUL"
 
 
 def remove_build_tree():
@@ -30,13 +27,16 @@ def remove_build_tree():
         shutil.rmtree(build_tree)
 
 
-def generate():
-    return os.system(generate_build_system)
+def generate(build_type):
+    cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
+          + " -G \"" + generator_ninja + "\"" \
+          + " -S " + source_tree + " -B " + build_tree + " > NUL"
+    os.system(cmd)
 
 
-def regenerate():
+def regenerate(build_type):
     remove_build_tree()
-    generate()
+    generate(build_type)
 
 
 def build_all():
