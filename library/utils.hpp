@@ -9,12 +9,6 @@
 #include <numeric>
 #include <set>
 #include <alias.hpp>
-inline void yes() {
-  std::cout << "Yes\n";
-}
-inline void no() {
-  std::cout << "No\n";
-}
 inline void Yn(bool p) {
   std::cout << (p ? "Yes\n" : "No\n");
 }
