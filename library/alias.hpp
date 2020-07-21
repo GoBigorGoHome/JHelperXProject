@@ -72,7 +72,7 @@ template<typename T> class vv {
   for (std::common_type<decltype(a), decltype(b)>::type                        \
            i = b,                                                              \
            TOKENPASTE2(r_end_, __LINE__) = a;                                  \
-       i >= TOKENPASTE2(r_end_, __LINE__); i--)
+       i >= TOKENPASTE2(r_end_, __LINE__); --i)
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
        TOKENPASTE2(_iter_, __LINE__) > 0; --TOKENPASTE2(_iter_, __LINE__))
@@ -86,8 +86,6 @@ template<typename T> class vv {
 #define eb emplace_back
 #define ep emplace
 #define SZ(x) (int) (x).size()
-#define UNIQ(vec)                                                              \
-  sort(ALL(vec)), (vec).erase(std::unique(ALL(vec)), std::end(vec))
 #define rp(...) return println(__VA_ARGS__)
 #define adv(i, n)                                                              \
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
