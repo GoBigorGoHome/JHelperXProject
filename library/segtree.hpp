@@ -26,8 +26,7 @@ template<typename Value, typename Tag> class SegTree {
   inline void push(int x, int l, int r) {
     int y = (l + r) >> 1;
     int z = x + ((y - l + 1) << 1);
-    // 左儿子编号是x+1,右儿子编号是z。
-    // push from x into (x + 1) and z
+    // parent: x, left son: x + 1, right son: z
     if (tree[x].tag) {
       tree[x + 1].val.apply(tree[x].tag, l, y);
       tree[x + 1].tag += tree[x].tag;
