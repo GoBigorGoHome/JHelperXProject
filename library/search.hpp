@@ -42,6 +42,7 @@ Int binary_search(Int L, Int R, const Check &check, int type = 0,
       if (type == 0)
         return mid;
       found = true;
+      knowingly = false;
       type == -1 ? R = mid - 1 : L = mid + 1;
     }
   }
