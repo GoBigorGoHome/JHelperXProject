@@ -2,6 +2,7 @@ from typing import Sequence
 from cyaron import *
 from build import *
 from tqdm import tqdm
+import random
 
 
 # 洛谷 cyaron 的文档
@@ -55,12 +56,13 @@ def special_judge():
 
 def gen_input():
     input_file = IO(input_file_path)  # .out是临时文件
-    n = 100
-    input_file.input_writeln(n)
-    seq = Sequence(lambda i, f: randint(1, 10))
-    s = seq.get(1, n)
-    s.sort()
-    input_file.input_writeln(s)
+    n = randint(1, 250)
+    m = randint(1, 250)
+    p = list(range(1, n * m + 1))
+    random.shuffle(p)
+    input_file.input_writeln(n, m)
+    for i in range(n):
+        input_file.input_writeln(p[i * m: (i + 1) * m])
 
 
 def duipai(**kwargs):
@@ -104,11 +106,10 @@ def stress_my():
             print("OK")
 
 
-# gen_input()
-duipai()
+gen_input()
+# duipai()
 # duipai(spj=special_judge)
 # stress_compare()
 # stress_my()
-# run_once()
 # build_and_run_once()
 # regenerate()
