@@ -306,7 +306,7 @@
     <inspection_tool class="UnusedImportStatement" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedIncludeDirective" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedInstanceVariable" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnusedLocalVariable" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UnusedLocalVariable" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedLocalization" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedMacro" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedMethod" enabled="true" level="WARNING" enabled_by_default="true" />
