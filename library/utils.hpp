@@ -28,11 +28,11 @@ template<typename T> T &dec(T &cont) {
     --e;
   return cont;
 }
-template<typename A, typename B> bool chkmin(A &a, const B &b) {
+template<typename A, typename B> inline bool chkmin(A &a, const B &b) {
   return b < a ? a = b, true : false;
 }
 
-template<typename A, typename B> bool chkmax(A &a, const B &b) {
+template<typename A, typename B> inline bool chkmax(A &a, const B &b) {
   return a < b ? a = b, true : false;
 }
 
