@@ -86,7 +86,8 @@ template<typename T> class vv {
 #define eb emplace_back
 #define ep emplace
 #define SZ(x) (int) (x).size()
-#define rp(...) return println(__VA_ARGS__)
+#define rp(...) return pl(__VA_ARGS__)
+#define rpn(...) return pn(__VA_ARGS__)
 #define adv(i, n)                                                              \
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
 #define INT(...) int __VA_ARGS__; scan(__VA_ARGS__)

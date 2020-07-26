@@ -70,15 +70,19 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
-template<typename... Args> void print(Args &&... args) {
+template<typename... Args> void pt(Args &&... args) {
   ((std::cout << args << ' '), ...);
 }
 
 template<typename First, typename... Args>
-void println(const First &first, const Args &... args) {
+void pl(const First &first, const Args &... args) {
   std::cout << first;
   ((std::cout << ' ' << args), ...);
   std::cout << '\n';
+}
+
+template<typename... Args> void pn(const Args &... args) {
+  ((std::cout << args << '\n'), ...);
 }
 }// namespace io
 inline int ri() {
