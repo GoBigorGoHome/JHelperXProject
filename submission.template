@@ -1,4 +1,6 @@
+#ifndef LOCAL
 #define NDEBUG
+#endif
 %Code%
 
 int main() {

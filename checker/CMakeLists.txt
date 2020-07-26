@@ -13,4 +13,5 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
 
 add_executable(my my.cpp)
 add_executable(ac ac.cpp)
+target_compile_definitions(my PRIVATE LOCAL)
 
