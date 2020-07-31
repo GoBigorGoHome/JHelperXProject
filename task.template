@@ -1,4 +1,4 @@
-extern constexpr bool show_all_failed_tests = false;
+extern const bool show_all_failed_tests = false;
 #include <utils.hpp>
 
 void solve() {}
