@@ -9,8 +9,13 @@ add_executable(testrunner testrunner/main.cpp testrunner/tester.cpp)
 target_include_directories(testrunner PRIVATE library)
 # use libstdc++ debug mode
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
-# use lld to speed up linking
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # specify standards conformance mode
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor")
+else ()
+    # use lld to speed up linking
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(testrunner PRIVATE -Wno-shift-op-parentheses)
