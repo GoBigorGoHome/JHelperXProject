@@ -27,12 +27,23 @@
 #ifndef NOMINMAX
 #define NOMINMAX 1
 #endif
-#ifdef _MSC_VER
-#include <crtdbg.h>
-#endif
 #include <windows.h>
 #include <chrono>
 #include <future>
+#ifdef _MSC_VER
+int MyReportHook(int reportType, char *message, int *returnValue) {
+  if (reportType == _CRT_ASSERT) {
+    std::cerr << message << '\n';
+    std::_Exit(EXIT_FAILURE);
+  }
+  return FALSE;
+}
+#else
+#include <csignal>
+void signal_handler(int signal) {
+  std::_Exit(EXIT_FAILURE);
+}
+#endif
 
 void solver_call();
 extern std::vector<jhelper::Test> tests;
@@ -101,17 +112,27 @@ bool enable_virtual_terminal() {
   // Set output mode to handle virtual terminal sequences
   HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
   if (hOut == INVALID_HANDLE_VALUE) {
+    std::cerr << "invalid handle value\n";
     return false;
   }
   DWORD dwOriginalOutMode = 0;
   if (!GetConsoleMode(hOut, &dwOriginalOutMode)) {
+    std::cerr << "failed GetConsoleMode\n";
     return false;
   }
-  DWORD dwOutMode = dwOriginalOutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-  return SetConsoleMode(hOut, dwOutMode) != 0;
+  if ((dwOriginalOutMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
+    DWORD dwOutMode = dwOriginalOutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    if (SetConsoleMode(hOut, dwOutMode) == 0) {
+      std::cerr << "failed SetConsoleMode\n";
+      return false;
+    }
+    return true;
+  }
+  return true;
 }
 int line_cnt(const std::string &s) {
-  return std::count_if(s.begin(), s.end(), [](char x) { return x == '\n'; });
+  return (int) std::count_if(s.begin(), s.end(),
+                             [](char x) { return x == '\n'; });
 }
 void print_test(std::ostream &os, int test_id, int exit_code,
                 const std::string &task_output = "") {
@@ -153,13 +174,24 @@ void print_test(std::ostream &os, int test_id, int exit_code,
 }
 
 void test_runner() {
-  if (!enable_virtual_terminal()) {
-    std::cerr << "Enable virtual terminal failed\n";
+  if (!IsDebuggerPresent()) {
+    if (!enable_virtual_terminal()) {
+      std::cerr << "Enable virtual terminal failed\n";
+    }
   }
 #ifdef _MSC_VER
-  _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
-  _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+  _CrtSetReportHook(MyReportHook);
+  _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG | _CRTDBG_MODE_FILE);
+  _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
+  _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_DEBUG);
+#else
+  auto previous_handler = std::signal(SIGABRT, signal_handler);
+  if (previous_handler == SIG_ERR) {
+    std::cerr << "Setup failed\n";
+    std::_Exit(EXIT_FAILURE);
+  }
 #endif
+  //  set format for output streams
   debug_stream.precision(10);
   debug_stream << std::fixed << std::boolalpha;
   std::cerr.precision(10);
@@ -195,7 +227,7 @@ void test_runner() {
       auto status = res.wait_for(std::chrono::seconds(3));
       if (status == std::future_status::timeout) {
         print_test(real_cout, testID, 11);
-        std::exit(11);
+        std::exit(EXIT_FAILURE);
       }
       maxTime = std::max(res.get(), maxTime);
       auto task_output = task_out.str();
