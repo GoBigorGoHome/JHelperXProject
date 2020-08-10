@@ -24,23 +24,36 @@ using pq = std::priority_queue<T, std::vector<T>, U>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
 template<typename T> class vv {
   std::vector<std::vector<T>> data;
+  int n, m;
 
  public:
-  explicit vv(int n) {
+  explicit vv(int n) : n(n), m(0) {
     assert(n > 0);
     data.assign(n, std::vector<T>{});
   }
-  vv(int n, int m, T init = T{}) {
+  vv(int n, int m, T init = T{}) : n(n), m(m) {
     assert(n > 0 && m > 0);
     data.assign(n, std::vector<T>(m, init));
   }
   std::vector<T> &operator[](size_t i) {
-    assert(i < data.size());
+    assert(i < n);
+    return data[i];
+  }
+  const std::vector<T> &operator[](size_t i) const {
+    assert(i < n);
     return data[i];
   }
   void fill(T val) {
     for (auto &row : data)
       std::fill(row.begin(), row.end(), val);
+  }
+  vv<T> transpose() const {
+    assert(m > 0);
+    vv<T> ret(m, n);
+    for (int i = 0; i < m; ++i)
+      for (int j = 0; j < n; ++j)
+        ret.data[i][j] = data[j][i];
+    return ret;
   }
   friend std::istream &operator>>(std::istream &in, vv<T> &val) {
     return io::operator>>(in, val.data);
@@ -90,7 +103,13 @@ template<typename T> class vv {
 #define rpn(...) return pn(__VA_ARGS__)
 #define adv(i, n)                                                              \
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
-#define INT(...) int __VA_ARGS__; scan(__VA_ARGS__)
-#define LL(...) long long __VA_ARGS__; scan(__VA_ARGS__)
-#define STR(...) std::string __VA_ARGS__; scan(__VA_ARGS__)
+#define INT(...)                                                               \
+  int __VA_ARGS__;                                                             \
+  scan(__VA_ARGS__)
+#define LL(...)                                                                \
+  long long __VA_ARGS__;                                                       \
+  scan(__VA_ARGS__)
+#define STR(...)                                                               \
+  std::string __VA_ARGS__;                                                     \
+  scan(__VA_ARGS__)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
