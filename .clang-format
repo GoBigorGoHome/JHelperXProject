@@ -4,7 +4,7 @@ ForEachMacros: ['FOR', 'For', 'rng', 'up', 'down', 'rep', 'adv']
 AccessModifierOffset: -1
 AlignAfterOpenBracket: Align
 AlignConsecutiveAssignments: false
-AlignOperands: false
+AlignOperands: DontAlign
 AllowAllArgumentsOnNextLine: true
 AllowAllConstructorInitializersOnNextLine: false
 AllowAllParametersOfDeclarationOnNextLine: false
