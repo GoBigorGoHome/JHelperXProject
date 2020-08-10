@@ -24,14 +24,17 @@
     <inspection_tool class="CommandLineInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ConstExpressionRequired" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ConstantConditions" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ConstantConditionsOC" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstrainFunctionResult" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ConstructionIsNotAllowed" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="DanglingPointers" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="DeprecatedApi" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DerivedFunctionsReturnTypeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateAttribute" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateDeclarations" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateSwitchCase" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="EmptyDeclOrStmt" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="EmptyDeclOrStmt" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="EndlessLoop" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="EqualityInConditionalOperator" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="EqualityInConditionalOperatorWithSelf" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -81,6 +84,7 @@
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
     <inspection_tool class="HtmlUnknownTarget" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="HttpRequestPlaceholder" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="IgnoreFileDuplicateEntry" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ImplementationHasNoInterface" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ImplicitDeclarationOfIvar" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -113,7 +117,10 @@
     <inspection_tool class="KeyValueCoding" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LastArgumentMustBeNull" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LocalValueEscapesScope" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="LongLine" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="LongLine" enabled="true" level="WARNING" enabled_by_default="false">
+      <scope name="Project Source Files" level="WARNING" enabled="true" />
+    </inspection_tool>
+    <inspection_tool class="LoopDoesntUseConditionVariable" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LossyEncoding" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MarkdownUnresolvedFileReference" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MemberVisibility" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -154,6 +161,7 @@
     <inspection_tool class="OCUnusedProperty" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedStruct" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedTemplateParameter" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OCUnusedTypeAlias" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OtherCpp" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OtherObjC" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OverriddenAttributeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -265,10 +273,12 @@
     </inspection_tool>
     <inspection_tool class="RegExpAnonymousGroup" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpDuplicateAlternationBranch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RegExpDuplicateCharacterInClass" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpEmptyAlternationBranch" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpEscapedMetaCharacter" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="RegExpOctalEscape" enabled="true" level="INFORMATION" enabled_by_default="true" />
     <inspection_tool class="RegExpRedundantEscape" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RegExpRedundantNestedCharacterClass" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpRepeatedSpace" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpSingleCharAlternation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpUnexpectedAnchor" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -277,13 +287,19 @@
       <option name="myAdditionalRequiredHtmlAttributes" value="" />
     </inspection_tool>
     <inspection_tool class="ResourceNotFound" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="SSBasedInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SSBasedInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ScalarTypeRequired" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SetterForReadonlyProperty" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="SeveralTargetsMessage" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ShellCheck" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="SignednessMismatch" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="true">
+    <inspection_tool class="Simplify" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="false">
+      <scope name="Project Files" level="TYPO" enabled="true">
+        <option name="processCode" value="true" />
+        <option name="processLiterals" value="true" />
+        <option name="processComments" value="true" />
+      </scope>
       <option name="processCode" value="true" />
       <option name="processLiterals" value="true" />
       <option name="processComments" value="true" />
