@@ -10,12 +10,12 @@
 #include <set>
 const double EPS = 1E-9;
 
-struct pt {
+struct pnt {
   double x, y;
   double len() const { return std::sqrt(x * x + y * y); }
 };
 struct seg {
-  pt p, q;
+  pnt p, q;
   int id;
 
   double get_y(double x) const {
@@ -33,7 +33,7 @@ bool intersect1d(double l1, double r1, double l2, double r2) {
   return std::max(l1, l2) <= std::min(r1, r2) + EPS;
 }
 
-int vec(const pt &a, const pt &b, const pt &c) {
+int vec(const pnt &a, const pnt &b, const pnt &c) {
   double s = (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
   return std::abs(s) < EPS ? 0 : s > 0 ? +1 : -1;
 }
