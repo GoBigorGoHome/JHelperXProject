@@ -36,6 +36,19 @@ template<typename A, typename B> inline bool chkmax(A &a, const B &b) {
   return a < b ? a = b, true : false;
 }
 
+template <typename Container> Container& rev(Container& c) {
+  std::reverse(std::begin(c), std::end(c));
+  return c;
+}
+
+template <typename Container> auto max(const Container&  c) {
+  return *std::max_element(std::begin(c), std::end(c));
+}
+
+template <typename Container> auto min(const Container& c) {
+  return *std::min_element(std::begin(c), std::end(c));
+}
+
 template<typename T> struct reversion_wrapper { T &iterable; };
 template<typename T> auto begin(reversion_wrapper<T> w) {
   using std::rbegin;
