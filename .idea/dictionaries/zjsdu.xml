@@ -1,13 +1,18 @@
 <component name="ProjectDictionaryState">
   <dictionary name="zjsdu">
     <words>
+      <w>abrahams</w>
       <w>algo</w>
       <w>automata</w>
+      <w>beman</w>
       <w>binom</w>
+      <w>boostinspect</w>
+      <w>brey</w>
       <w>cand</w>
       <w>cerr</w>
       <w>chkmax</w>
       <w>chkmin</w>
+      <w>compatibity</w>
       <w>corasick</w>
       <w>cout</w>
       <w>cpeditor</w>
@@ -19,22 +24,39 @@
       <w>eulerian</w>
       <w>ftiasch</w>
       <w>gitignore</w>
+      <w>iostream</w>
       <w>jhelper</w>
+      <w>joaquín</w>
       <w>lowbit</w>
+      <w>lópez</w>
       <w>minp</w>
+      <w>mladenov</w>
+      <w>mladenov's</w>
+      <w>muñoz</w>
       <w>mylib</w>
+      <w>nolicense</w>
       <w>nominmax</w>
       <w>noncommutative</w>
+      <w>nonnegative</w>
       <w>nonoverlap</w>
+      <w>noskipws</w>
+      <w>operability</w>
+      <w>ostringstream</w>
       <w>rall</w>
       <w>rbegin</w>
+      <w>resetter</w>
       <w>segtree</w>
+      <w>setw</w>
+      <w>showbase</w>
+      <w>showpos</w>
       <w>sstream</w>
       <w>stdin</w>
+      <w>streamsize</w>
       <w>testrunner</w>
       <w>tokenpaste</w>
       <w>typelist</w>
       <w>uniq</w>
+      <w>zeisel</w>
       <w>zjsdu</w>
     </words>
   </dictionary>
