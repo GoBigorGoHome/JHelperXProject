@@ -1,4 +1,4 @@
-#if defined LOCAL and not defined NDEBUG
+#if not defined LOCAL and not defined NDEBUG
 #define NDEBUG
 #endif
 %Code%
