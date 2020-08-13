@@ -3,6 +3,7 @@
 //
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_SAMPLE_HPP_
+#define JHELPER_EXAMPLE_PROJECT_LIBRARY_SAMPLE_HPP_
 #include <unordered_set>
 #include <random>
 #include <algorithm>
@@ -39,6 +40,4 @@ std::vector<int> pick(int N, int k) {
   std::shuffle(result.begin(), result.end(), gen);
   return result;
 }
-#define JHELPER_EXAMPLE_PROJECT_LIBRARY_SAMPLE_HPP_
-
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SAMPLE_HPP_
