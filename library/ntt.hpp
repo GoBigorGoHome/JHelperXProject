@@ -34,7 +34,9 @@ template<typename T> class NTT {
       max_base++;
     }
     root = 2;
-    // 这里是如何计算域的生成元的？
+    //　Search for an element of order 2^max_base in the cyclic group
+    // {1, 2, ..., md - 1} where md is a prime. To do this, it is not necessary
+    // to find a generator first (a.k.a a primitive root modulo md).
     while (power(root, (md - 1) >> 1) == 1) {
       root++;
     }
@@ -64,7 +66,7 @@ template<typename T> class NTT {
     // 计算长度为2k的变换，需要用到一个2k阶元的0到k-1次方
     // roots[k+i] := 2k阶元的i次方
     while (base < nbase) {
-      Modular<T> z = power(root, 1 << (max_base - 1 - base));
+      Modular<T> z = power(root, 1LL << (max_base - 1 - base));
       for (int i = 1 << (base - 1); i < (1 << base); i++) {
         roots[i << 1] = roots[i];
         roots[(i << 1) + 1] = roots[i] * z;
