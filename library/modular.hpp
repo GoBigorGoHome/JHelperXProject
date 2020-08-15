@@ -82,8 +82,7 @@ template<typename T> class Modular {
   Modular operator-() const { return Modular(-value); }
 
   template<typename U = T>
-  typename std::enable_if<std::is_same<typename Modular<U>::Type, int>::value,
-                          Modular>::type &
+  std::enable_if_t<std::is_same_v<typename Modular<U>::Type, int>, Modular> &
   operator*=(const Modular &rhs) {
 #ifdef _WIN32
     uint64_t x = static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value);
@@ -99,9 +98,8 @@ template<typename T> class Modular {
   }
 
   template<typename U = T>
-  typename std::enable_if<
-      std::is_same<typename Modular<U>::Type, int64_t>::value, Modular>::type &
-  operator*=(const Modular &rhs) {
+  std::enable_if_t<std::is_same_v<typename Modular<U>::Type, int64_t>, Modular>
+      &operator*=(const Modular &rhs) {
     int64_t q = static_cast<int64_t>(static_cast<long double>(value) * rhs.value
                                      / mod());
     value = normalize(value * rhs.value - q * mod());
@@ -109,8 +107,7 @@ template<typename T> class Modular {
   }
 
   template<typename U = T>
-  typename std::enable_if<!std::is_integral<typename Modular<U>::Type>::value,
-                          Modular>::type &
+  std::enable_if_t<not std::is_integral_v<typename Modular<U>::Type>, Modular> &
   operator*=(const Modular &rhs) {
     value = normalize(value * rhs.value);
     return *this;
@@ -150,16 +147,13 @@ template<typename T, typename U> bool operator==(U lhs, const Modular<T> &rhs) {
   return Modular<T>(lhs) == rhs;
 }
 
-template<typename T>
-bool operator!=(const Modular<T> &lhs, const Modular<T> &rhs) {
-  return !(lhs == rhs);
-}
-
 template<typename T, typename U> bool operator!=(const Modular<T> &lhs, U rhs) {
   return !(lhs == rhs);
 }
 
-template<typename T, typename U> bool operator!=(U lhs, const Modular<T> &rhs) {
+template<typename T, typename U,
+         typename = std::enable_if_t<not std::is_same_v<U, Modular<T>>>>
+bool operator!=(U lhs, const Modular<T> &rhs) {
   return !(lhs == rhs);
 }
 
@@ -168,24 +162,15 @@ bool operator<(const Modular<T> &lhs, const Modular<T> &rhs) {
   return lhs.value < rhs.value;
 }
 
-template<typename T>
-Modular<T> operator+(const Modular<T> &lhs, const Modular<T> &rhs) {
-  return Modular<T>(lhs) += rhs;
-}
-
 template<typename T, typename U>
 Modular<T> operator+(const Modular<T> &lhs, U rhs) {
   return Modular<T>(lhs) += rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U,
+         typename = std::enable_if_t<not std::is_same_v<U, Modular<T>>>>
 Modular<T> operator+(U lhs, const Modular<T> &rhs) {
   return Modular<T>(lhs) += rhs;
-}
-
-template<typename T>
-Modular<T> operator-(const Modular<T> &lhs, const Modular<T> &rhs) {
-  return Modular<T>(lhs) -= rhs;
 }
 
 template<typename T, typename U>
@@ -193,14 +178,10 @@ Modular<T> operator-(const Modular<T> &lhs, U rhs) {
   return Modular<T>(lhs) -= rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U,
+         typename = std::enable_if_t<not std::is_same_v<U, Modular<T>>>>
 Modular<T> operator-(U lhs, const Modular<T> &rhs) {
   return Modular<T>(lhs) -= rhs;
-}
-
-template<typename T>
-Modular<T> operator*(const Modular<T> &lhs, const Modular<T> &rhs) {
-  return Modular<T>(lhs) *= rhs;
 }
 
 template<typename T, typename U>
@@ -208,14 +189,10 @@ Modular<T> operator*(const Modular<T> &lhs, U rhs) {
   return Modular<T>(lhs) *= rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U,
+         typename = std::enable_if_t<not std::is_same_v<U, Modular<T>>>>
 Modular<T> operator*(U lhs, const Modular<T> &rhs) {
   return Modular<T>(lhs) *= rhs;
-}
-
-template<typename T>
-Modular<T> operator/(const Modular<T> &lhs, const Modular<T> &rhs) {
-  return Modular<T>(lhs) /= rhs;
 }
 
 template<typename T, typename U>
@@ -223,7 +200,8 @@ Modular<T> operator/(const Modular<T> &lhs, U rhs) {
   return Modular<T>(lhs) /= rhs;
 }
 
-template<typename T, typename U>
+template<typename T, typename U,
+         typename = std::enable_if_t<not std::is_same_v<U, Modular<T>>>>
 Modular<T> operator/(U lhs, const Modular<T> &rhs) {
   return Modular<T>(lhs) /= rhs;
 }
@@ -246,10 +224,6 @@ template<typename T> bool IsZero(const Modular<T> &number) {
   return number() == 0;
 }
 
-template<typename T> std::string to_string(const Modular<T> &number) {
-  return std::to_string(number());
-}
-
 template<typename T>
 std::ostream &operator<<(std::ostream &stream, const Modular<T> &number) {
   return stream << number();
@@ -257,15 +231,19 @@ std::ostream &operator<<(std::ostream &stream, const Modular<T> &number) {
 
 template<typename T>
 std::istream &operator>>(std::istream &stream, Modular<T> &number) {
-  typename std::common_type<typename Modular<T>::Type, int64_t>::type x;
+  std::common_type_t<typename Modular<T>::Type, int64_t> x;
   stream >> x;
   number.value = Modular<T>::normalize(x);
   return stream;
 }
 
-template<int md>
-using Mint = Modular<
-    std::integral_constant<typename std::decay<decltype(md)>::type, md>>;
+template<int md> using Mint = Modular<std::integral_constant<int, md>>;
+
+/// 'int64_t' and 'long long' may be different types on some platforms, e.g.,
+/// AtCoder. See https://atcoder.jp/contests/practice/submissions/15865276
+template<int64_t md>
+using Mint64 = Modular<std::integral_constant<int64_t, md>>;
+
 using ModType = int;
 struct VarMod {
   static ModType value;
