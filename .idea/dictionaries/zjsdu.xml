@@ -19,7 +19,9 @@
       <w>cyaron</w>
       <w>declval</w>
       <w>dereferenced</w>
+      <w>divl</w>
       <w>duipai</w>
+      <w>elems</w>
       <w>endl</w>
       <w>eulerian</w>
       <w>ftiasch</w>
@@ -42,6 +44,7 @@
       <w>noskipws</w>
       <w>operability</w>
       <w>ostringstream</w>
+      <w>powmod</w>
       <w>rall</w>
       <w>rbegin</w>
       <w>resetter</w>
