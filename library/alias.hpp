@@ -112,4 +112,7 @@ template<typename T> class vv {
 #define STR(...)                                                               \
   std::string __VA_ARGS__;                                                     \
   scan(__VA_ARGS__)
+#define rd(type, name, ...)                                                    \
+  type name(__VA_ARGS__);                                                             \
+  scan(name)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
