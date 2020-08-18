@@ -156,7 +156,7 @@
     <inspection_tool class="OCUnusedGlobalDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedIncludeDirective" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedInstanceVariable" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="OCUnusedMacro" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OCUnusedMacro" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedMethod" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedProperty" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedStruct" enabled="false" level="WARNING" enabled_by_default="false" />
