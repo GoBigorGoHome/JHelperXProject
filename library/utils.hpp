@@ -18,15 +18,15 @@ inline void YN(bool p) {
 inline void yn(bool p) {
   std::cout << (p ? "yes\n" : "no\n");
 }
-template<typename T> T &inc(T &cont) {
-  for (auto &e : cont)
+template<typename Container> Container inc(Container &&c) {
+  for (auto &e : c)
     ++e;
-  return cont;
+  return c;
 }
-template<typename T> T &dec(T &cont) {
-  for (auto &e : cont)
+template<typename Container> Container dec(Container &&c) {
+  for (auto &e : c)
     --e;
-  return cont;
+  return c;
 }
 template<typename A, typename B> inline bool chkmin(A &a, const B &b) {
   return b < a ? a = b, true : false;
@@ -36,17 +36,31 @@ template<typename A, typename B> inline bool chkmax(A &a, const B &b) {
   return a < b ? a = b, true : false;
 }
 
-template <typename Container> Container& rev(Container& c) {
+template<typename Container> Container rev(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
   return c;
 }
 
-template <typename Container> auto max(const Container&  c) {
+template<typename Container> auto max(const Container &c) {
   return *std::max_element(std::begin(c), std::end(c));
 }
 
-template <typename Container> auto min(const Container& c) {
+template<typename Container> auto min(const Container &c) {
   return *std::min_element(std::begin(c), std::end(c));
+}
+
+template<typename Container> Container iota(Container &&c, int v = 0) {
+  std::iota(std::begin(c), std::end(c), v);
+  return c;
+}
+
+template<typename Container, typename Compare = void *>
+Container sort(Container &&c, Compare comp = nullptr) {
+  if constexpr (std::is_same_v<Compare, void *>)
+    std::sort(std::begin(c), std::end(c));
+  else
+    std::sort(std::begin(c), std::end(c), comp);
+  return c;
 }
 
 template<typename T> struct reversion_wrapper { T &iterable; };
