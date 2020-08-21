@@ -23,9 +23,9 @@
     </Objective-C>
     <Objective-C-extensions>
       <extensions>
+        <pair source="cpp" header="hpp" fileNamingConvention="NONE" />
         <pair source="cpp" header="h" fileNamingConvention="NONE" />
         <pair source="c" header="h" fileNamingConvention="NONE" />
-        <pair source="cpp" header="hpp" fileNamingConvention="NONE" />
       </extensions>
       <rules>
         <rule entity="MACRO" visibility="ANY" specifier="ANY" prefix="" style="SCREAMING_SNAKE_CASE" suffix="" />
