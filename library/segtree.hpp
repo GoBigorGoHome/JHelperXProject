@@ -10,7 +10,7 @@
 //线段树是满二叉树。一棵有n个叶子的满二叉树共有2*n-1个节点。
 //按先序遍历的顺序给节点编号。
 
-template<typename Value, typename Tag> class SegTree {
+template<typename Value, typename Tag, typename Result> class SegTree {
   struct Node {
     Value val;
     Tag tag;
@@ -20,7 +20,7 @@ template<typename Value, typename Tag> class SegTree {
       val.apply(delta, l, r);
     }
   };
-  const Tag empty_tag;
+  const Tag empty_tag{};
   int n;
   std::vector<Node> tree;
   inline void push(int x, int l, int r) {
@@ -49,7 +49,7 @@ template<typename Value, typename Tag> class SegTree {
     build(z, y + 1, r);
     pull(x, z);
   }
-  Value get(int x, int l, int r, int ll, int rr) {
+  Result get(int x, int l, int r, int ll, int rr) {
     if (ll <= l && r <= rr) {
       return tree[x].val;
     }
@@ -173,12 +173,12 @@ template<typename Value, typename Tag> class SegTree {
     tree.resize(2 * n - 1);
     build(0, 0, n - 1);
   }
-  Value get() { return tree[0].val; }
-  Value get(int ll, int rr) {
+  Result get() { return tree[0].val; }
+  Result get(int ll, int rr) {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return get(0, 0, n - 1, ll, rr);
   }
-  Value get(int p) {
+  Result get(int p) {
     assert(0 <= p && p <= n - 1);
     return get(0, 0, n - 1, p, p);
   }
@@ -202,6 +202,8 @@ template<typename Value, typename Tag> class SegTree {
     assert(0 <= ll && ll <= rr && rr <= n - 1);
     return find_last(0, 0, n - 1, ll, rr, f);
   }
-};
-using segtree = SegTree<class Value, class Tag>;
+} ;
+template<typename Result>
+using segtree_t = SegTree<struct Value, struct Tag, Result>;
+using segtree = segtree_t<struct Value>;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
