@@ -2,6 +2,7 @@ from typing import Sequence
 from cyaron import *
 from build import *
 from tqdm import tqdm
+from functools import partial
 import random
 
 
@@ -14,10 +15,30 @@ import random
 # How to generate a sequence of integers.
 # seq = Sequence(lambda i, f: randint(1, 10))
 # s = seq.get(1, 100)
+# 生成无重边、无自环的连通无向图
+# graph = Graph.UDAG(n, m, self_loop=False, repeated_edges=False)
+# input_file.input_writeln(graph.to_str(output=Edge.unweighted_edge))
 
 
 def ri(f):
     return map(int, f.readline().split())
+
+
+def rf(f):
+    return map(float, f.readline().split())
+
+
+def rcmp(epsilon):
+    with open(ac_output) as ac_out:
+        x, = rf(ac_out)
+
+    with open(my_output, "r") as my_out:
+        y, = rf(my_out)
+        error = abs(y - x) / max(1, abs(y))
+        if error > epsilon:
+            print("expected: {:.8f}, found: {:.8f},  error = {:.8f}".format(x, y, error))
+            return False
+        return True
 
 
 def special_judge():
@@ -56,13 +77,9 @@ def special_judge():
 
 def gen_input():
     input_file = IO(input_file_path)  # .out是临时文件
-    n = randint(1, 250)
-    m = randint(1, 250)
-    p = list(range(1, n * m + 1))
-    random.shuffle(p)
-    input_file.input_writeln(n, m)
-    for i in range(n):
-        input_file.input_writeln(p[i * m: (i + 1) * m])
+    n = randint(1, 5)
+    input_file.input_writeln(n)
+    input_file.input_writeln(String.random(n, charset='01?'))
 
 
 def duipai(**kwargs):
@@ -108,6 +125,7 @@ def stress_my():
 
 gen_input()
 # duipai()
+# duipai(spj=partial(rcmp, 1E-6))
 # duipai(spj=special_judge)
 # stress_compare()
 # stress_my()
