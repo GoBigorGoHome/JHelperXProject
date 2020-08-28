@@ -22,29 +22,16 @@ using vii = std::vector<pii>;
 template<typename T, typename U = std::less<T>>
 using pq = std::priority_queue<T, std::vector<T>, U>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
-template<typename T> class vv {
-  std::vector<std::vector<T>> data;
-  int n, m;
+template<typename T> class vv : public std::vector<std::vector<T>> {
+  size_t n, m = 0;
 
  public:
-  explicit vv(int n) : n(n), m(0) {
-    assert(n > 0);
-    data.assign(n, std::vector<T>{});
-  }
-  vv(int n, int m, T init = T{}) : n(n), m(m) {
-    assert(n > 0 && m > 0);
-    data.assign(n, std::vector<T>(m, init));
-  }
-  std::vector<T> &operator[](size_t i) {
-    assert(i < n);
-    return data[i];
-  }
-  const std::vector<T> &operator[](size_t i) const {
-    assert(i < n);
-    return data[i];
-  }
+  vv(size_t n, size_t m, T init = T{})
+      : std::vector<std::vector<T>>(n, std::vector<T>(m, init)), n(n), m(m) {}
+  using std::vector<std::vector<T>>::vector;
   void fill(T val) {
-    for (auto &row : data)
+    assert(m > 0);
+    for (auto &row : *this)
       std::fill(row.begin(), row.end(), val);
   }
   vv<T> transpose() const {
@@ -52,19 +39,9 @@ template<typename T> class vv {
     vv<T> ret(m, n);
     for (int i = 0; i < m; ++i)
       for (int j = 0; j < n; ++j)
-        ret.data[i][j] = data[j][i];
+        ret[i][j] = (*this)[j][i];
     return ret;
   }
-  friend std::istream &operator>>(std::istream &in, vv<T> &val) {
-    return io::operator>>(in, val.data);
-  }
-  friend std::ostream &operator<<(std::ostream &out, const vv<T> &val) {
-    return io::operator<<(out, val.data);
-  }
-  friend auto begin(vv<T> &val) { return val.data.begin(); }
-  friend auto end(vv<T> &val) { return val.data.end(); }
-  friend auto rbegin(vv<T> &val) { return val.data.rbegin(); }
-  friend auto rend(vv<T> &val) { return val.data.rend(); }
 };
 #define TOKENPASTE(x, y) x##y
 #define TOKENPASTE2(x, y) TOKENPASTE(x, y)
