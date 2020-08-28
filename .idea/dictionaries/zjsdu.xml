@@ -47,6 +47,7 @@
       <w>powmod</w>
       <w>rall</w>
       <w>rbegin</w>
+      <w>rerooting</w>
       <w>resetter</w>
       <w>segtree</w>
       <w>setw</w>
@@ -55,6 +56,7 @@
       <w>sstream</w>
       <w>stdin</w>
       <w>streamsize</w>
+      <w>suff</w>
       <w>testrunner</w>
       <w>tokenpaste</w>
       <w>typelist</w>
