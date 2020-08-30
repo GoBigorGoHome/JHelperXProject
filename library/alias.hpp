@@ -66,8 +66,7 @@ template<typename T> class vv : public std::vector<std::vector<T>> {
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
        TOKENPASTE2(_iter_, __LINE__) > 0; --TOKENPASTE2(_iter_, __LINE__))
-#define FOR(x, cont) for (const auto &x : cont)
-#define For(x, cont) for (auto &x : cont)
+#define FOR(x, cont) for (auto &&x : cont)
 #define ALL(x) begin(x), end(x)
 // hat off to 300iq
 #define RALL(x) rbegin(x), rend(x)
