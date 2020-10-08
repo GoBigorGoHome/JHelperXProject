@@ -4,6 +4,10 @@
 %Code%
 
 int main() {
+#ifdef FILE_IO
+  freopen(FILE_IO ".in", "r", stdin);
+  freopen(FILE_IO ".out", "w", stdout);
+#endif
   %SolverCall%
   return 0;
 }
