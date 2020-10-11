@@ -1,6 +1,7 @@
 from random import randint
 from build import *
 from tqdm import tqdm
+from gen import *
 
 
 def random_seq(a, b, n):
@@ -28,10 +29,10 @@ def rcmp(epsilon):
         return True
 
 
-def duipai(**kwargs):
+def duipai(cnt, **kwargs):
     build_all()
     spj = kwargs.get('spj', None)
-    for i in tqdm(range(1000)):
+    for i in tqdm(range(cnt)):
         gen_input()
         if os.system(run_both):
             print("Runtime Error!")
