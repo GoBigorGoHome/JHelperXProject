@@ -4,7 +4,7 @@
 %Code%
 
 int main() {
-#ifdef FILE_IO
+#if defined FILE_IO and not defined LOCAL
   freopen(FILE_IO ".in", "r", stdin);
   freopen(FILE_IO ".out", "w", stdout);
 #endif
