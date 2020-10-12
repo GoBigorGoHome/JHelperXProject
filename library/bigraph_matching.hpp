@@ -15,34 +15,57 @@
 /// in the right part is matched with.
 std::vector<int> max_matching(const std::vector<std::vector<int>> &g,
                               unsigned R) {
-  int L = (int) g.size();
-  std::vector<int> order(L);
-  std::iota(order.begin(), order.end(), 0);
-  std::sort(order.begin(), order.end(),
-            [&g](int u, int v) { return g[u].size() < g[v].size(); });
+  auto L = g.size();
   std::vector<bool> bad(L);
-  std::vector<int> match(R, -1), time_stamp(R, -1);
+  std::vector<int> match(R, -1), time_stamp(R, -1), order(R), low(R);
+  std::vector<bool> in_stack(R), excluded(R);
   int now = 0;
   auto augment = [&](int u) {
-    auto dfs_impl = [&](int u, auto dfs) -> bool {
-      for (int v : g[u])
+    int time = 0;
+    auto dfs_impl = [&](int u, const auto &dfs) -> int {
+      int low_value = INT_MAX;
+      for (int v : g[u]) {
+        if (match[v] == u or excluded[v])
+          continue;
         if (time_stamp[v] == -1) {
           time_stamp[v] = now;
           match[v] = u;
-          return true;
-        } else if (time_stamp[v] < now and not bad[time_stamp[v]]) {
+          return -1;
+        } else if (time_stamp[v] < now) {
+          if (bad[time_stamp[v]])
+            continue;
           time_stamp[v] = now;
-          if (dfs(match[v], dfs)) {
+          order[v] = low[v] = time;
+          in_stack[time] = true;
+          ++time;
+          auto ret = dfs(match[v], dfs);
+          in_stack[order[v]] = false;
+          if (ret == -1) {
             match[v] = u;
-            return true;
+            return -1;
+          } else {
+            low_value = std::min(low_value, ret);
+            low[v] = std::min(low[v], ret);
+            if (low[v] == order[v]) {
+              excluded[v] = true;
+            }
+          }
+        } else {
+          if (in_stack[order[v]]) {
+            low_value = std::min(low_value, order[v]);
+          } else if (in_stack[low[v]]) {
+            low_value = std::min(low_value, low[v]);
+          } else {
+            excluded[v] = true;
           }
         }
-      return false;
+      }
+      return low_value;
     };
-    // search augmenting path from u
-    return dfs_impl(u, dfs_impl);
+    // Search for an augmenting path from u.
+    return dfs_impl(u, dfs_impl) == -1;
   };
-  for (int u : order) {
+  for (int u = 0; u < L; ++u) {
     if (not augment(u))
       bad[now] = true;
     ++now;
