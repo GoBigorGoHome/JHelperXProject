@@ -21,4 +21,8 @@ template<typename T> inline T get_mid(T l, T r) {
   return l + (r - l >> 1);
 }
 
+inline bool is_subset(int sub, int s) {
+  return (sub & s) == sub;
+}
+
 #define popcnt(x) __builtin_popcountll((x))
