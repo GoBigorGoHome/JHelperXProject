@@ -8,6 +8,7 @@
 #include <cassert>
 #include <queue>
 #include <io.hpp>
+#include <ndarray.hpp>
 using ll = long long;
 using ull = unsigned long long;
 using vl = std::vector<ll>;
@@ -22,27 +23,7 @@ using vii = std::vector<pii>;
 template<typename T, typename U = std::less<T>>
 using pq = std::priority_queue<T, std::vector<T>, U>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
-template<typename T> class vv : public std::vector<std::vector<T>> {
-  size_t n, m = 0;
-
- public:
-  vv(size_t n, size_t m, T init = T{})
-      : std::vector<std::vector<T>>(n, std::vector<T>(m, init)), n(n), m(m) {}
-  using std::vector<std::vector<T>>::vector;
-  void fill(T val) {
-    assert(m > 0);
-    for (auto &row : *this)
-      std::fill(row.begin(), row.end(), val);
-  }
-  vv<T> transpose() const {
-    assert(m > 0);
-    vv<T> ret(m, n);
-    for (int i = 0; i < m; ++i)
-      for (int j = 0; j < n; ++j)
-        ret[i][j] = (*this)[j][i];
-    return ret;
-  }
-};
+template<typename T> using vv = vec<2, T>;
 #define TOKENPASTE(x, y) x##y
 #define TOKENPASTE2(x, y) TOKENPASTE(x, y)
 #define rng3(i, a, b)                                                          \
