@@ -31,14 +31,25 @@ template<typename T> using vv = vec<2, T>;
            i = a,                                                              \
            TOKENPASTE2(r_end_, __LINE__) = b;                                  \
        i < TOKENPASTE2(r_end_, __LINE__); ++i)
+#define rng4(i, a, b, c)                                                       \
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = a,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
+       i < TOKENPASTE2(r_end_, __LINE__); i += c)
 #define rng2(i, n) rng3(i, 0, n)
-#define GET_MACRO(_1, _2, _3, NAME, ...) NAME
-#define rng(...) GET_MACRO(__VA_ARGS__, rng3, rng2)(__VA_ARGS__)
-#define up(i, a, b)                                                            \
+#define GET4(_1, _2, _3, _4, NAME, ...) NAME
+#define rng(...) GET4(__VA_ARGS__, rng4, rng3, rng2)(__VA_ARGS__)
+#define up3(i, a, b)                                                           \
   for (std::common_type<decltype(a), decltype(b)>::type                        \
            i = a,                                                              \
            TOKENPASTE2(r_end_, __LINE__) = b;                                  \
        i <= TOKENPASTE2(r_end_, __LINE__); ++i)
+#define up4(i, a, b, c)                                                        \
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = a,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
+       i <= TOKENPASTE2(r_end_, __LINE__); i += c)
+#define up(...) GET4(__VA_ARGS__, up4, up3, NO_IMPL)(__VA_ARGS__)
 #define down(i, b, a)                                                          \
   for (std::common_type<decltype(a), decltype(b)>::type                        \
            i = b,                                                              \
