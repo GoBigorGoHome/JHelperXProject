@@ -5,13 +5,13 @@ class UnionFind {
   std::vector<int> par, sz;
   int nTree;
 
-public:
-  explicit UnionFind(int n) : par(n), sz(n, 1), nTree(n) { // 0-indexed
+ public:
+  explicit UnionFind(int n) : par(n), sz(n, 1), nTree(n) {// 0-indexed
     std::iota(par.begin(), par.end(), 0);
   }
   void init() {
     std::fill(par.begin(), par.end(), 1);
-    nTree = par.size();
+    nTree = (int) par.size();
     std::iota(par.begin(), par.end(), 0);
   }
   int n_tree() const { return nTree; }
@@ -20,12 +20,15 @@ public:
 
   int root(int x) { return x == par[x] ? x : par[x] = root(par[x]); }
 
-  bool unite(int x, int y) {
+  template<typename F>
+  bool unite(
+      int x, int y, const F &f = [](int, int) {}) {
     int rx = root(x), ry = root(y);
     if (rx != ry) {
       par[rx] = ry;
       --nTree;
       sz[ry] += sz[rx];
+      f(ry, rx);
       return true;
     }
     return false;
