@@ -5,6 +5,7 @@
       <w>algo</w>
       <w>automata</w>
       <w>beman</w>
+      <w>bigraph</w>
       <w>binom</w>
       <w>boostinspect</w>
       <w>brey</w>
@@ -36,6 +37,7 @@
       <w>mladenov's</w>
       <w>muñoz</w>
       <w>mylib</w>
+      <w>ndarray</w>
       <w>nolicense</w>
       <w>nominmax</w>
       <w>noncommutative</w>
@@ -64,6 +66,7 @@
       <w>uniq</w>
       <w>zeisel</w>
       <w>zjsdu</w>
+      <w>zjsdut</w>
     </words>
   </dictionary>
 </component>
