@@ -19,16 +19,17 @@ class UnionFind {
   int size(int x) { return sz[root(x)]; }
 
   int root(int x) { return x == par[x] ? x : par[x] = root(par[x]); }
-
-  template<typename F>
+  //! @brief Merge tree y into tree x.
+  //! @param f Function for extra processing, called as f(x, y).
+  template<typename F = void (*)(int, int)>
   bool unite(
       int x, int y, const F &f = [](int, int) {}) {
     int rx = root(x), ry = root(y);
     if (rx != ry) {
-      par[rx] = ry;
+      par[ry] = rx;
       --nTree;
-      sz[ry] += sz[rx];
-      f(ry, rx);
+      sz[rx] += sz[ry];
+      f(rx, ry);
       return true;
     }
     return false;
