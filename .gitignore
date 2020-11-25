@@ -94,4 +94,7 @@ fabric.properties
 /checker/in.txt
 
 .idea/vcs.xml
+.idea/deployment.xml
 exp.cpp
+ac-library/
+TODO
