@@ -50,11 +50,17 @@ template<typename T> using vv = vec<2, T>;
            TOKENPASTE2(r_end_, __LINE__) = b;                                  \
        i <= TOKENPASTE2(r_end_, __LINE__); i += c)
 #define up(...) GET4(__VA_ARGS__, up4, up3, NO_IMPL)(__VA_ARGS__)
-#define down(i, b, a)                                                          \
+#define down3(i, b, a)                                                         \
   for (std::common_type<decltype(a), decltype(b)>::type                        \
            i = b,                                                              \
            TOKENPASTE2(r_end_, __LINE__) = a;                                  \
        i >= TOKENPASTE2(r_end_, __LINE__); --i)
+#define down4(i, b, a, c)                                                      \
+  for (std::common_type<decltype(a), decltype(b)>::type                        \
+           i = b,                                                              \
+           TOKENPASTE2(r_end_, __LINE__) = a;                                  \
+       i >= TOKENPASTE2(r_end_, __LINE__); i -= c)
+#define down(...) GET4(__VA_ARGS__, down4, down3, NO_IMPL)(__VA_ARGS__)
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
        TOKENPASTE2(_iter_, __LINE__) > 0; --TOKENPASTE2(_iter_, __LINE__))
