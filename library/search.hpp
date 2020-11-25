@@ -23,11 +23,13 @@ int ternary_search(int L, int R, const Compare &compare) {
   assert(L == R);
   return L;
 }
+//! @param check returns: -1, too small; 1, too large; 0, OK
+//! @param type -1, find first; 0, find any; 1, find last
+//! @param knowingly true if we know that at least one integer in the range [L,
+//! R] is OK
 template<typename Int, typename Check>
-Int binary_search(Int L, Int R, const Check &check, int type = 0,
-                  bool knowingly = false) {
-  // check returns: -1, too small; 1, too large; 0, OK
-  // type: -1, find first; 0, find any; 1, find last
+Int bin_search(Int L, Int R, const Check &check, int type = 0,
+               bool knowingly = false) {
   assert(L <= R);
   Int not_found = R + 1;
   bool found = false;
