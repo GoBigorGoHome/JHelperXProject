@@ -1,4 +1,5 @@
 extern const bool show_all_failed_tests = false;
+extern const bool compare_real_numbers = false;
 #include <utils.hpp>
 
 void solve() {}

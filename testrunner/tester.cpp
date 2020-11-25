@@ -21,6 +21,7 @@
 #define BRIGHT_CYAN CSI "96m"
 #define BRIGHT_WHITE CSI "97m"
 #include "tester.h"
+#include "compare_floats.h"
 #include <iostream>
 #include <sstream>
 #include <regex>
@@ -48,7 +49,9 @@ void signal_handler(int signal) {
 void solver_call();
 extern std::vector<jhelper::Test> tests;
 extern const bool show_all_failed_tests;
+extern const bool compare_real_numbers;
 std::ostringstream debug_stream;
+std::ostringstream diagnostic_stream;
 
 namespace jhelper {
 // copy from https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
@@ -77,8 +80,12 @@ bool checkIgnoreTrailingSpaces(const std::string &output,
   auto answerLines = split(ans, '\n');
 
   // if they are considered the same, they must have the same number of lines
-  if (outputLines.size() != answerLines.size())
+  if (outputLines.size() != answerLines.size()) {
+    diagnostic_stream << "number of output lines differ:\n";
+    diagnostic_stream << "ACTUAL: " << outputLines.size() << "\n";
+    diagnostic_stream << "ANSWER: " << answerLines.size() << "\n";
     return false;
+  }
 
   for (int i = 0; i < outputLines.size(); ++i) {
     auto &outputLine = outputLines[i];
@@ -92,8 +99,10 @@ bool checkIgnoreTrailingSpaces(const std::string &output,
 
     // if they are considered the same, the current line should be exactly the
     // same after removing trailing spaces
-    if (outputLine != answerLine)
+    if (outputLine != answerLine) {
+      diagnostic_stream << "the " << i + 1 << "th line differ.\n";
       return false;
+    }
   }
 
   // all tests are passed, this output is accepted
@@ -105,6 +114,8 @@ bool check(std::string expected, std::string actual) {
     expected.pop_back();
   while (!actual.empty() && isspace(*actual.rbegin()))
     actual.pop_back();
+  if (compare_real_numbers)
+    return compare_floats(actual, expected);
   return checkIgnoreTrailingSpaces(actual, expected);
 }
 
@@ -170,6 +181,7 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   //我的理解是：std::exit()会调用 std::cout,
   // std::cerr，std::clog的flush()方法，而不管这三个stream
   //指向的buffer究竟是不是对应于stdin/stdout/stderr。
+  os << RED << diagnostic_stream.str() << RESET;
   os.flush();
 }
 
