@@ -16,14 +16,16 @@ class grid {
     m = col;
   }
   inline bool cover(int i, int j) const {
-    return i >= 0 and i < n && j >= 0 && j < m;
+    return i >= 0 and i < n and j >= 0 and j < m;
   }
   static constexpr int dx[] = {0, 0, -1, 1}, dy[] = {-1, 1, 0, 0};
-  inline std::vector<std::pair<int, int>> rc(int x, int y) const {
+  template<typename Predicate = bool (*)(int, int)>
+  inline std::vector<std::pair<int, int>> neighbors(
+      int x, int y, Predicate p = [](int x, int y) { return true; }) const {
     assert(cover(x, y));
     std::vector<std::pair<int, int>> res;
     for (int i = 0; i < 4; i++) {
-      if (cover(x + dx[i], y + dy[i]))
+      if (cover(x + dx[i], y + dy[i]) and p(x + dx[i], y + dy[i]))
         res.emplace_back(x + dx[i], y + dy[i]);
     }
     return res;
