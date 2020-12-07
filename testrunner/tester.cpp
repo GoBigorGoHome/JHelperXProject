@@ -173,7 +173,7 @@ void print_test(std::ostream &os, int test_id, int exit_code,
     os << YELLOW "TIMEOUT\n" RESET;
   } else {
     os << "Actual output: \n"
-       << BLACK
+       << BRIGHT_WHITE
        << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
        << RESET << '\n';
   }
