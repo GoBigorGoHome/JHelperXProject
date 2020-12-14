@@ -18,8 +18,7 @@ class vec : public std::vector<vec<dimension - 1, T>> {
 };
 template<typename T> class vec<1, T> : public std::vector<T> {
  public:
-  vec<1, T>() = default;
   template<typename... Args>
-  vec<1, T>(Args &&... args) : std::vector<T>(std::forward<Args...>(args...)) {}
+  vec<1, T>(Args &&...args) : std::vector<T>(std::forward<Args>(args)...) {}
 };
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_NDARRAY_HPP_
