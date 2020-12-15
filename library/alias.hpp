@@ -77,6 +77,8 @@ template<typename T> using vv = vec<2, T>;
 #define rpn(...) return pn(__VA_ARGS__)
 #define adv(i, n)                                                              \
   for (auto TOKENPASTE2(_n_, __LINE__) = n; i < TOKENPASTE2(_n_, __LINE__); ++i)
+#define radv(i, n)                                                             \
+  for (auto TOKENPASTE2(_n_, __LINE__) = n; i > TOKENPASTE2(_n_, __LINE__); --i)
 #define INT(...)                                                               \
   int __VA_ARGS__;                                                             \
   scan(__VA_ARGS__)
