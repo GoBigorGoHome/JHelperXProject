@@ -181,7 +181,8 @@ void print_test(std::ostream &os, int test_id, int exit_code,
   //我的理解是：std::exit()会调用 std::cout,
   // std::cerr，std::clog的flush()方法，而不管这三个stream
   //指向的buffer究竟是不是对应于stdin/stdout/stderr。
-  os << RED << diagnostic_stream.str() << RESET;
+  os << YELLOW << diagnostic_stream.str() << RESET;
+  os << BLUE "====================================\n"  RESET;
   os.flush();
 }
 
@@ -209,9 +210,14 @@ void test_runner() {
   std::cerr.precision(10);
   std::cerr << std::fixed << std::boolalpha;
   auto cout_buff = std::cout.rdbuf();
+  auto cin_buff = std::cin.rdbuf();
   std::ostream real_cout(cout_buff);
   // to show time in decimal format
   real_cout << std::fixed;
+  auto reset_streams = [&cout_buff, &cin_buff]() {
+    std::cout.rdbuf(cout_buff);
+    std::cin.rdbuf(cin_buff);
+  };
   //////////////////////////////////
   int testID = 0;
   double maxTime = 0.0;
@@ -222,6 +228,7 @@ void test_runner() {
       ++n_active_tests;
       std::stringstream in(test.input);
       debug_stream.str("");
+      diagnostic_stream.str("");
       std::ostringstream task_out;
       std::cin.rdbuf(in.rdbuf());
       std::cout.rdbuf(task_out.rdbuf());
@@ -246,8 +253,12 @@ void test_runner() {
       if (test.has_output && not jhelper::check(test.output, task_output)
           or not test.has_output) {
         print_test(real_cout, testID, 0, task_output);
-        if (not show_all_failed_tests)
-          std::exit(0);
+        if (not show_all_failed_tests) {
+          real_cout << RED "Fail test " << testID << "\n" RESET;
+          real_cout.flush();
+          reset_streams();
+          return;
+        }
         ++n_failed_tests;
       }
     }
@@ -255,16 +266,16 @@ void test_runner() {
   }
 
   if (n_active_tests == 0) {
-    real_cout << YELLOW << "No active test\n" << RESET;
+    real_cout << YELLOW "No active test\n" RESET;
   } else if (n_failed_tests == 0) {
     real_cout << BRIGHT_GREEN "All OK\n" RESET;
     real_cout << BRIGHT_BLACK "Maximal time: " << maxTime << "s.\n" RESET;
   } else {
     real_cout << RED "Failed " << n_failed_tests << '/' << n_active_tests
-              << " test(s)\n";
+              << " test(s)\n" RESET;
   }
   real_cout.flush();
-  std::exit(0);
+  reset_streams();
 }
 
 void display_color() {
