@@ -24,42 +24,32 @@ template<typename T, typename U = std::less<T>>
 using pq = std::priority_queue<T, std::vector<T>, U>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
 template<typename T> using vv = vec<2, T>;
+template<typename T> struct range_tuple {
+  const T &ref = beg;
+  T beg;
+  const T end;
+  range_tuple(T b, T e) : beg(b), end(e) {}
+};
 #define TOKENPASTE(x, y) x##y
 #define TOKENPASTE2(x, y) TOKENPASTE(x, y)
-#define rng3(i, a, b)                                                          \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = a,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
-       i < TOKENPASTE2(r_end_, __LINE__); ++i)
 #define rng4(i, a, b, c)                                                       \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = a,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
-       i < TOKENPASTE2(r_end_, __LINE__); i += c)
+  for (auto &&[i, TOKENPASTE2(iter_, __LINE__), TOKENPASTE2(end_, __LINE__)] = \
+           range_tuple<std::common_type<decltype(a), decltype(b)>::type>(a,    \
+                                                                         b);   \
+       i < TOKENPASTE2(end_, __LINE__); TOKENPASTE2(iter_, __LINE__) += c)
+#define rng3(i, a, b) rng4(i, a, b, 1)
 #define rng2(i, n) rng3(i, 0, n)
 #define GET4(_1, _2, _3, _4, NAME, ...) NAME
 #define rng(...) GET4(__VA_ARGS__, rng4, rng3, rng2)(__VA_ARGS__)
-#define up3(i, a, b)                                                           \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = a,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
-       i <= TOKENPASTE2(r_end_, __LINE__); ++i)
-#define up4(i, a, b, c)                                                        \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = a,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = b;                                  \
-       i <= TOKENPASTE2(r_end_, __LINE__); i += c)
+#define up4(i, a, b, c) rng (i, a, b + 1, c)
+#define up3(i, a, b) up4(a, b, 1)
 #define up(...) GET4(__VA_ARGS__, up4, up3, NO_IMPL)(__VA_ARGS__)
-#define down3(i, b, a)                                                         \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = b,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = a;                                  \
-       i >= TOKENPASTE2(r_end_, __LINE__); --i)
 #define down4(i, b, a, c)                                                      \
-  for (std::common_type<decltype(a), decltype(b)>::type                        \
-           i = b,                                                              \
-           TOKENPASTE2(r_end_, __LINE__) = a;                                  \
-       i >= TOKENPASTE2(r_end_, __LINE__); i -= c)
+  for (auto &&[i, TOKENPASTE2(iter_, __LINE__), TOKENPASTE2(end_, __LINE__)] = \
+           range_tuple<std::common_type<decltype(a), decltype(b)>::type>(b,    \
+                                                                         a);   \
+       i >= TOKENPASTE2(end_, __LINE__); TOKENPASTE2(iter_, __LINE__) -= c)
+#define down3(i, b, a, c) down4(i, b, a, 1)
 #define down(...) GET4(__VA_ARGS__, down4, down3, NO_IMPL)(__VA_ARGS__)
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
