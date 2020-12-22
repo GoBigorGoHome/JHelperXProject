@@ -4,13 +4,13 @@ extern std::ostringstream debug_stream;
   debug_stream << "[" << #__VA_ARGS__ << "]:",                                 \
       debug::debug_out(debug_stream, __VA_ARGS__)
 #include "%TaskFile%"
-#include "tester.h"
+#include "test_runner.h"
 std::vector<jhelper::Test> tests{%Tests%};
 void solver_call() {
   %SolverCall%
 }
 
 int main() {
-  jhelper::test_runner();
+  jhelper::test_runner(jhelper::TestType::%TestType%);
   return 0;
 }

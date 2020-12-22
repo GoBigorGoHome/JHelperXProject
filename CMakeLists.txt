@@ -5,7 +5,14 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable(testrunner testrunner/main.cpp testrunner/tester.cpp testrunner/compare_floats.cpp)
+add_executable(testrunner
+        testrunner/main.cpp
+        testrunner/test_runner.cpp
+        testrunner/compare_floats.cpp
+        testrunner/string_utils.cpp
+        testrunner/checker.cpp
+        testrunner/print_test.cpp
+        testrunner/color.cpp)
 target_include_directories(testrunner PRIVATE library)
 # use libstdc++ debug mode
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
