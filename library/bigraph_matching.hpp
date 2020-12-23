@@ -13,8 +13,8 @@
 /// @param R Number of nodes in the right part of g.
 /// @return An array match[0..R) where match[i] is the node that the i-th node
 /// in the right part is matched with.
-std::vector<int> max_matching(const std::vector<std::vector<int>> &g,
-                              unsigned R) {
+template<typename Graph>
+std::vector<int> max_matching(const Graph &g, unsigned R) {
   auto L = g.size();
   std::vector<bool> bad(L);
   std::vector<int> match(R, -1), time_stamp(R, -1), order(R), low(R);
