@@ -12,6 +12,8 @@ struct fast_ios {
   };
 } fast_ios_;
 namespace io {
+template<typename T, typename U>
+std::ostream &operator<<(std::ostream &out, const std::pair<T, U> &p);
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t);
 template<typename T, typename U>
@@ -29,11 +31,11 @@ std::istream &operator>>(std::istream &stream, std::vector<T> &vec) {
 
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, const std::tuple<Ts...> &t) {
-  std::apply([&in](auto &... args) { ((in >> args), ...); }, t);
+  std::apply([&in](auto &...args) { ((in >> args), ...); }, t);
   return in;
 }
 
-template<class... Args> void scan(Args &... args) {
+template<class... Args> void scan(Args &...args) {
   ((std::cin >> args), ...);
 }
 
@@ -70,18 +72,18 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
-template<typename... Args> void pt(Args &&... args) {
+template<typename... Args> void pt(Args &&...args) {
   ((std::cout << args << ' '), ...);
 }
 
 template<typename First, typename... Args>
-void pl(const First &first, const Args &... args) {
+void pl(const First &first, const Args &...args) {
   std::cout << first;
   ((std::cout << ' ' << args), ...);
   std::cout << '\n';
 }
 
-template<typename... Args> void pn(const Args &... args) {
+template<typename... Args> void pn(const Args &...args) {
   ((std::cout << args << '\n'), ...);
 }
 }// namespace io
