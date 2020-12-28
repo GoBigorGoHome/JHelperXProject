@@ -49,7 +49,7 @@ template<typename T> struct range_tuple {
            range_tuple<std::common_type<decltype(a), decltype(b)>::type>(b,    \
                                                                          a);   \
        i >= TOKENPASTE2(end_, __LINE__); TOKENPASTE2(iter_, __LINE__) -= c)
-#define down3(i, b, a, c) down4(i, b, a, 1)
+#define down3(i, b, a) down4(i, b, a, 1)
 #define down(...) GET4(__VA_ARGS__, down4, down3, NO_IMPL)(__VA_ARGS__)
 #define rep(n)                                                                 \
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
