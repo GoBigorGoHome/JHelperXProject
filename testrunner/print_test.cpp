@@ -75,11 +75,13 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id,
     }
     os << '\n';
   }
+  os << '\n';
   os << "Expected output: \n";
   while (b != e) {
     os << *b << '\n';
     ++b;
   }
+  os << '\n';
   os << "Actual output: \n"
      << BRIGHT_WHITE
      << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
