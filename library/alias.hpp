@@ -42,7 +42,7 @@ template<typename T> struct range_tuple {
 #define GET4(_1, _2, _3, _4, NAME, ...) NAME
 #define rng(...) GET4(__VA_ARGS__, rng4, rng3, rng2)(__VA_ARGS__)
 #define up4(i, a, b, c) rng (i, a, b + 1, c)
-#define up3(i, a, b) up4(a, b, 1)
+#define up3(i, a, b) up4(i, a, b, 1)
 #define up(...) GET4(__VA_ARGS__, up4, up3, NO_IMPL)(__VA_ARGS__)
 #define down4(i, b, a, c)                                                      \
   for (auto &&[i, TOKENPASTE2(iter_, __LINE__), TOKENPASTE2(end_, __LINE__)] = \
