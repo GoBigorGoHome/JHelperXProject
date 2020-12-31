@@ -180,6 +180,16 @@ void test_runner(TestType testType) {
           }
           std::string task_output = task_out.str();
           auto outputLines = normalize(task_output);
+          if (outputLines.empty()) {
+            print_subtest(real_cout, testID, subtest_id, input_pos,
+                          answer_lines.cbegin() + n_matched_lines,
+                          answer_lines.cend(), task_output);
+            real_cout << RED "No output on subtest " << testID << '.'
+                      << subtest_id << "\n" RESET;
+            real_cout.flush();
+            reset_streams();
+            return;
+          }
           if (not checkLines(outputLines, answer_lines, n_matched_lines)) {
             if (n_matched_lines + outputLines.size() > answer_lines.size())
               print_subtest(real_cout, testID, subtest_id, input_pos,
