@@ -1,3 +1,4 @@
+#include <common.hpp>
 #include <cassert>
 template<typename int_t> inline int_t lowbit(int_t x) {
   return x & -x;
@@ -22,3 +23,16 @@ inline bool is_subset(int sub, int s) {
 }
 
 #define popcnt(x) __builtin_popcountll((x))
+
+template<typename T> struct subset_tuple {
+  explicit subset_tuple(T u) : s(u), u(u) {}
+  const T &ref = s;
+  T s;
+  const T u;
+};
+
+#define for_each_nonempty_subset(s, u)                                         \
+  for (auto &&[s, TOKENPASTE2(subset_, __LINE__),                              \
+               TOKENPASTE2(set_, __LINE__)] = subset_tuple(u);                 \
+       s > 0;                                                                  \
+       TOKENPASTE2(subset_, __LINE__) = (s - 1) & TOKENPASTE2(set_, __LINE__))
