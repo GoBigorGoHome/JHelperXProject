@@ -98,3 +98,18 @@ long long gcd(long long a, long long b, long long &x, long long &y) {
   y -= x * (a / b);
   return t;
 }
+
+template<typename T> T inverse(T a, T m) {
+  assert(a != 0);
+  assert(m > 0);
+  T b = m, u = 0, v = 1;
+  while (a != 0) {
+    T t = b / a;
+    b -= t * a;
+    swap(a, b);
+    u -= t * v;
+    swap(u, v);
+  }
+  assert(b == 1);
+  return u < 0 ? u + m : u;
+}
