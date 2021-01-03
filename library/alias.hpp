@@ -4,6 +4,7 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
+#include <common.hpp>
 #include <string>
 #include <cassert>
 #include <queue>
@@ -30,8 +31,6 @@ template<typename T> struct range_tuple {
   const T end;
   range_tuple(T b, T e) : beg(b), end(e) {}
 };
-#define TOKENPASTE(x, y) x##y
-#define TOKENPASTE2(x, y) TOKENPASTE(x, y)
 #define rng4(i, a, b, c)                                                       \
   for (auto &&[i, TOKENPASTE2(iter_, __LINE__), TOKENPASTE2(end_, __LINE__)] = \
            range_tuple<std::common_type<decltype(a), decltype(b)>::type>(a,    \
