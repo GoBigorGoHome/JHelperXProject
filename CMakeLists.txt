@@ -22,6 +22,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 else ()
     # use lld to speed up linking
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=conversion")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-conversion")
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
