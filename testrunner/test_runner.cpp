@@ -207,7 +207,7 @@ void test_runner(TestType testType) {
             reset_streams();
             return;
           } else {
-            n_matched_lines += outputLines.size();
+            n_matched_lines += (int) outputLines.size();
             total_time += res.get();
             ++subtest_id;
             debug_stream.str("");
