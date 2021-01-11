@@ -4,9 +4,11 @@
 class UnionFind {
   std::vector<int> par, sz;
   int nTree;
+  std::vector<bool> has_cycle_;
 
  public:
-  explicit UnionFind(int n) : par(n), sz(n, 1), nTree(n) {// 0-indexed
+  explicit UnionFind(int n)
+      : par(n), sz(n, 1), nTree(n), has_cycle_(n) {// 0-indexed
     std::iota(par.begin(), par.end(), 0);
   }
   void init() {
@@ -17,6 +19,8 @@ class UnionFind {
   int n_tree() const { return nTree; }
 
   int size(int x) { return sz[root(x)]; }
+
+  bool has_cycle(int x) { return has_cycle_[root(x)]; }
 
   int root(int x) { return x == par[x] ? x : par[x] = root(par[x]); }
   //! @brief Merge tree y into tree x.
@@ -29,9 +33,11 @@ class UnionFind {
       par[ry] = rx;
       --nTree;
       sz[rx] += sz[ry];
+      has_cycle_[rx] = has_cycle_[rx] or has_cycle_[ry];
       f(rx, ry);
       return true;
     }
+    has_cycle_[rx] = true;
     return false;
   }
 
