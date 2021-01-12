@@ -98,3 +98,4 @@ fabric.properties
 exp.cpp
 ac-library/
 TODO
+/checker/tests/

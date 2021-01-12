@@ -2,6 +2,7 @@ from random import randint
 from build import *
 from tqdm import tqdm
 from gen import *
+import build
 
 
 def random_seq(a, b, n):
@@ -73,3 +74,35 @@ def stress_my(**kwargs):
                 return
         else:
             print("OK")
+
+
+def stress_ac(**kwargs):
+    spj = kwargs.get('spj', None)
+    generate("Debug")
+    build_all()
+    while True:
+        gen_input()
+        ret = os.system(run_ac_)
+        if ret != 0:
+            print("RUNTIME ERROR", ret)
+            break
+        elif spj is not None:
+            if not spj():
+                print("Wrong Answer")
+                return
+        else:
+            print("OK")
+
+
+def gen_tests(prefix, b, e):
+    build.generate("Debug")
+    build.build_my_()
+    tests_dir = os.path.join("tests", prefix)
+    os.makedirs(tests_dir, exist_ok=True)
+    for i in range(b, e):
+        in_file = os.path.abspath(os.path.join(tests_dir, prefix + str(i) + '.in'))
+        out_file = os.path.abspath(os.path.join(tests_dir, prefix + str(i) + '.out'))
+        gen_test(in_file, i)
+        cmd = build.my_exe + ' < ' + in_file + ' > ' + out_file
+        os.system(cmd)
+    shutil.make_archive(os.path.join("tests", prefix), 'zip', tests_dir)
