@@ -2,7 +2,7 @@
 // Created by zjsdu on 12/22/2020.
 //
 #include "string_utils.h"
-#include <iosfwd>
+#include <sstream>
 #include <regex>
 namespace jhelper {
 // copy from https://www.fluentcpp.com/2017/04/21/how-to-split-a-string-in-c/
