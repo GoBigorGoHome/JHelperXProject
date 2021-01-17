@@ -7,7 +7,7 @@
 #include <sstream>
 
 extern std::ostringstream diagnostic_stream;
-extern bool compare_real_numbers;
+extern const bool compare_real_numbers;
 
 namespace jhelper {
 // copy from cpeditor
