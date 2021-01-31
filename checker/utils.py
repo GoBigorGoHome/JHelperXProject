@@ -105,4 +105,4 @@ def gen_tests(prefix, b, e):
         gen_test(in_file, i)
         cmd = build.my_exe + ' < ' + in_file + ' > ' + out_file
         os.system(cmd)
-    shutil.make_archive(os.path.join("tests", prefix), 'zip', tests_dir)
+    shutil.make_archive(tests_dir, 'zip', tests_dir)
