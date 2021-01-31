@@ -24,7 +24,7 @@ using vii = std::vector<pii>;
 template<typename T, typename U = std::less<T>>
 using pq = std::priority_queue<T, std::vector<T>, U>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
-template<typename T> using vv = vec<2, T>;
+template<typename T> using vv = ndarray<2, T>;
 template<typename T> struct range_tuple {
   const T &ref = beg;
   T beg;
