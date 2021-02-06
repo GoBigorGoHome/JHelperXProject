@@ -83,5 +83,8 @@ template<typename T> struct range_tuple {
 #define rd(type, name, ...)                                                    \
   type name(__VA_ARGS__);                                                      \
   scan(name)
-#define NL std::cout << '\n'
+#define NL                                                                     \
+  [] {                                                                         \
+    std::cout << '\n';                                                         \
+  }()
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_
