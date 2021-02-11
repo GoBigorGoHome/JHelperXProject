@@ -18,7 +18,7 @@ target_include_directories(testrunner PRIVATE library)
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor /Zc:__cplusplus")
 else ()
     # use lld to speed up linking
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld")
