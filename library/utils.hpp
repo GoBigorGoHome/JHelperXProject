@@ -75,18 +75,28 @@ template<typename T> auto end(reversion_wrapper<T> w) {
 template<typename T> reversion_wrapper<T> reverse(T &&iterable) {
   return {iterable};
 }
-template<typename T, typename U> T ceil(T x, U y) {
+template<typename T, typename U> T ceil_div(T x, U y) {
   assert(y > 0);
   if (x > 0)
     x += y - 1;
   return x / y;
 }
 
-template<typename T, typename U> T floor(T x, U y) {
+template<typename T, typename U> T floor_div(T x, U y) {
   assert(y > 0);
   if (x < 0)
     x -= y - 1;
   return x / y;
+}
+
+template<typename T, typename U> T ceil(T x, U y) {
+  assert(y > 0);
+  return ceil_div(x, y) * y;
+}
+
+template<typename T, typename U> T floor(T x, U y) {
+  assert(y > 0);
+  return floor_div(x, y) * y;
 }
 
 template<class...> struct typelist {};
@@ -97,14 +107,14 @@ constexpr bool any_same = (std::is_same_v<T, Ts> || ...);
 template<class F> struct y_combinator {
   template<class... TLs> struct ref {
     y_combinator &self;
-    template<class... Args> decltype(auto) operator()(Args &&... args) const {
+    template<class... Args> decltype(auto) operator()(Args &&...args) const {
       using G = std::conditional_t<any_same<typelist<Args...>, TLs...>,
                                    ref<TLs...>, ref<TLs..., typelist<Args...>>>;
       return self.f(G{self}, std::forward<Args>(args)...);
     }
   };
   F f;
-  template<class... Args> decltype(auto) operator()(Args &&... args) {
+  template<class... Args> decltype(auto) operator()(Args &&...args) {
     return ref<>{*this}(std::forward<Args>(args)...);
   }
 };
