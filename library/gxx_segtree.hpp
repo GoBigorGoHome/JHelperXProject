@@ -127,7 +127,7 @@ template<typename Value, typename Tag, typename Result> class SegTree {
     tree.resize(2 * n - 1);
     build(0, n - 1, f);
   }
-  Result get() { return tree[0].val; }
+  Result get() { return tree[index(0, n - 1)].val; }
   Result get(int ll, int rr) {
     if (ll > rr)
       return Result{};
@@ -149,10 +149,10 @@ template<typename Value, typename Tag, typename Result> class SegTree {
     f(tree[2 * leaf].val);
     for (int l = leaf, r = leaf, s; (s = tree[index(l, r)].p) != -1;)
       if (s < l + r) {
-        tree[s | 1] = tree[index(s - r, l - 1)] + tree[index(l, r)];
+        tree[s | 1].val = tree[index(s - r, l - 1)].val + tree[index(l, r)].val;
         l = s - r;
       } else {
-        tree[s | 1] = tree[index(l, r)] + tree[index(r + 1, s - l)];
+        tree[s | 1].val = tree[index(l, r)].val + tree[index(r + 1, s - l)].val;
         r = s - l;
       }
   }
