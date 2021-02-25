@@ -77,16 +77,14 @@ template<typename T> reversion_wrapper<T> reverse(T &&iterable) {
 }
 template<typename T, typename U> T ceil_div(T x, U y) {
   assert(y > 0);
-  if (x > 0)
-    x += y - 1;
-  return x / y;
+  T q = x / y;
+  return q + (q * y < x);
 }
 
 template<typename T, typename U> T floor_div(T x, U y) {
   assert(y > 0);
-  if (x < 0)
-    x -= y - 1;
-  return x / y;
+  T q = x / y;
+  return q - (q * y > x);
 }
 
 template<typename T, typename U> T ceil(T x, U y) {
