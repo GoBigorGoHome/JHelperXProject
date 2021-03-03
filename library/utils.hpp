@@ -40,6 +40,11 @@ template<typename Container> Container rev(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
   return c;
 }
+//! \pre s must be sorted before passed to uniq.
+template<typename Sequence> Sequence uniq(Sequence &&s) {
+  s.erase(std::unique(std::begin(s), std::end(s)), std::end(s));
+  return s;
+}
 
 template<typename Container> auto max(const Container &c) {
   return *std::max_element(std::begin(c), std::end(c));
@@ -62,6 +67,14 @@ Container sort(Container &&c, Compare comp = nullptr) {
     std::sort(std::begin(c), std::end(c), comp);
   return c;
 }
+
+template<typename iterator> struct range {
+  iterator beg_, end_;
+  iterator begin() const { return beg_; }
+  iterator end() const { return end_; }
+  //! @brief Make a range from a pair of iterators.
+  range(iterator beg, iterator end) : beg_(beg), end_(end) {}
+};
 
 template<typename T> struct reversion_wrapper { T &iterable; };
 template<typename T> auto begin(reversion_wrapper<T> w) {
