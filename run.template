@@ -1,3 +1,4 @@
+#include <vector>
 #include "debug.hpp"
 extern std::ostringstream debug_stream;
 #define debug(...)                                                             \
