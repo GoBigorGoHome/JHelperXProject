@@ -1,14 +1,14 @@
 #include <vector>
-std::vector<long long> divisors(long long n) {
-  std::vector<long long> res;
-  long long i = 1;
-  for (; i * i < n; ++i) {
+template<typename T> std::vector<T> divisors(T n) {
+  std::vector<T> res;
+  T i = 1;
+  for (; (unsigned long long) i * i < n; ++i) {
     if (n % i == 0) {
       res.push_back(i);
     }
   }
   int j = (int) res.size() - 1;
-  if (i * i == n)
+  if ((unsigned long long) i * i == n)
     res.push_back(i);
   while (j >= 0) {
     res.push_back(n / res[j]);
@@ -17,9 +17,9 @@ std::vector<long long> divisors(long long n) {
   return res;
 }
 
-std::vector<std::pair<long long, int>> factorize_p(long long n) {
-  std::vector<std::pair<long long, int>> res;
-  for (long long i = 2; i * i <= n; ++i) {
+template<typename T> std::vector<std::pair<T, int>> factorize_p(T n) {
+  std::vector<std::pair<T, int>> res;
+  for (T i = 2; (unsigned long long) i * i <= n; ++i) {
     int cnt = 0;
     while (n % i == 0) {
       n /= i;
@@ -35,10 +35,10 @@ std::vector<std::pair<long long, int>> factorize_p(long long n) {
   return res;
 }
 
-auto factorize(long long n) {
-  std::vector<long long> res;
-  for (long long i = 2; i * i <= n; ++i) {
-    long long t = 1;
+template<typename T> std::vector<T> factorize(T n) {
+  std::vector<T> res;
+  for (T i = 2; (unsigned long long) i * i <= n; ++i) {
+    T t = 1;
     while (n % i == 0) {
       t *= i;
       n /= i;
@@ -97,19 +97,4 @@ long long gcd(long long a, long long b, long long &x, long long &y) {
   // (y - x * (a / b)) * b + x * a == gcd(a, b)
   y -= x * (a / b);
   return t;
-}
-
-template<typename T> T inverse(T a, T m) {
-  assert(a != 0);
-  assert(m > 0);
-  T b = m, u = 0, v = 1;
-  while (a != 0) {
-    T t = b / a;
-    b -= t * a;
-    swap(a, b);
-    u -= t * v;
-    swap(u, v);
-  }
-  assert(b == 1);
-  return u < 0 ? u + m : u;
 }
