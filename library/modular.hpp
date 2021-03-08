@@ -2,20 +2,8 @@
 #define ALGO_MODULAR
 #include <iostream>
 #include <cassert>
+#include <inverse.hpp>
 // tourist's modular-arithmetic class
-template<typename T> T inverse(T a, T m) {
-  T u = 0, v = 1;
-  while (a != 0) {
-    T t = m / a;
-    m -= t * a;
-    std::swap(a, m);
-    u -= t * v;
-    std::swap(u, v);
-  }
-  assert(m == 1);
-  return u;
-}
-
 template<typename T> class Modular {
  public:
   using Type = typename std::decay<decltype(T::value)>::type;
