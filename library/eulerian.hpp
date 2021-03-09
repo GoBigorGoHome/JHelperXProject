@@ -4,122 +4,60 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
 #define JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
-#include <vector>
-#include <cmath>
-template<typename T> class graph {
- public:
-  struct edge {
-    int from;
-    int to;
-    T cost;
-  };
-
-  std::vector<edge> edges;
-  std::vector<std::vector<int>> g;
-  int n;
-
-  graph(int _n) : n(_n) { g.resize(n); }
-
-  virtual int add(int from, int to, T cost) = 0;
-};
-
-template<typename T> class undigraph : public graph<T> {
- public:
-  using graph<T>::edges;
-  using graph<T>::g;
-  using graph<T>::n;
-
-  undigraph(int _n) : graph<T>(_n) {}
-
-  int add(int from, int to, T cost = 1) {
-    assert(0 <= from && from < n && 0 <= to && to < n);
-    int id = (int) edges.size();
-    g[from].push_back(id);
-    g[to].push_back(id);
-    edges.push_back({from, to, cost});
-    return id;
-  }
-};
-
-template<typename T>
-std::vector<int> find_eulerian_path(const graph<T> &g, int &root) {
-  std::vector<int> in_deg(g.n, 0);
-  std::vector<int> out_deg(g.n, 0);
-  int cnt_edges = 0;
-  for (int id = 0; id < (int) g.edges.size(); id++) {
-    cnt_edges++;
-    auto &e = g.edges[id];
-    out_deg[e.from]++;
-    in_deg[e.to]++;
-  }
-  root = -1;
-  int odd = 0;
-  for (int i = 0; i < g.n; i++) {
-    if ((in_deg[i] + out_deg[i]) % 2 == 1) {
-      odd++;
-      if (root == -1 || out_deg[i] - in_deg[i] > out_deg[root] - in_deg[root]) {
-        root = i;
-      }
-    }
-  }
-  if (odd > 2) {
-    root = -1;
-    return std::vector<int>();
-  }
-  if (root == -1) {
-    root = 0;
-    while (root < g.n && in_deg[root] + out_deg[root] == 0) {
-      root++;
-    }
-    if (root == g.n) {
-      root = 0;
-      return std::vector<int>();
-    }
-  }
-  std::vector<bool> used(g.edges.size(), false);
-  std::vector<int> ptr(g.n, 0);
-  std::vector<int> balance(g.n, 0);
-  std::vector<int> res(cnt_edges);
+#include <optional>
+#include <undigraph.hpp>
+/// \brief Try to find an Eulerian path or cycle starting from a specified
+/// vertex u on an UNDIRECTED graph g.
+/// \return A list vertices of the found Eulerian path or cycle from vertex u.
+std::optional<std::vector<int>> find_eulerian_path_from(int u,
+                                                        const undigraph &g) {
+  std::vector<int> res(g.e_size_enabled() + 1);
   int stack_ptr = 0;
-  int write_ptr = cnt_edges;
-  int v = root;
+  int write_ptr = g.e_size_enabled();
+  std::vector<bool> used(g.e_size());
+  // Non-recursive implementation of dfs.
+  // Each search-after-backtrace finds a cycle.
+  std::vector<int> ptr(g.v_size());
+  res[0] = u;
   while (true) {
     bool found = false;
-    while (ptr[v] < (int) g.g[v].size()) {
-      int id = g.g[v][ptr[v]++];
-      if (used[id]) {
+    while (ptr[u] < (int) g.edges_at(u).size()) {
+      int id = g.edges_at(u)[ptr[u]++];
+      if (not g.is_enabled(id) or used[id])
         continue;
-      }
       used[id] = true;
-      res[stack_ptr++] = id;
-      auto &e = g.edges[id];
-      balance[v]++;
-      v ^= e.from ^ e.to;
-      balance[v]--;
+      auto &e = g.edge(id);
+      u ^= e.u ^ e.v;
+      res[++stack_ptr] = u;
       found = true;
       break;
     }
-    if (!found) {
-      if (stack_ptr == 0) {
+    if (not found) {
+      res[write_ptr--] = u;
+      if (stack_ptr == 0)
         break;
-      }
-      int id = res[--stack_ptr];
-      res[--write_ptr] = id;
-      auto &e = g.edges[id];
-      v ^= e.from ^ e.to;
+      u = res[--stack_ptr];
     }
   }
-  int disbalance = 0;
-  for (int i = 0; i < g.n; i++) {
-    disbalance += std::abs(balance[i]);
-  }
-  if (write_ptr != 0 || disbalance > 2) {
-    root = -1;
-    return std::vector<int>();
-  }
+  if (write_ptr != -1)
+    return nullopt;
   return res;
-  // returns edge ids in the path (or the cycle if it exists)
-  // root == -1 if there is no path
-  // (or res.empty(), but this is also true when there are no edges)
+}
+/// \brief Try to find an Eulerian path or cycle on an UNDIRECTED graph g.
+/// \return A list vertices of the found Eulerian path or cycle.
+std::optional<std::vector<int>> find_eulerian_path(const undigraph &g) {
+  int n = g.v_size();
+  int odd = 0;
+  int first_odd = -1;
+  for (int i = 0; i < n; ++i) {
+    if (g.degree(i) & 1) {
+      if (first_odd == -1)
+        first_odd = i;
+      odd++;
+    }
+  }
+  if (odd > 2)
+    return nullopt;
+  return find_eulerian_path_from(first_odd == -1 ? 0 : first_odd, g);
 }
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
