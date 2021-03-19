@@ -52,37 +52,41 @@ template<typename T> std::vector<T> factorize(T n) {
 }
 
 std::vector<int> get_prime(int n) {
-  std::vector<int> minp((size_t) n + 1), p;
+  std::vector<int> mpf(n + 1);
+  std::vector<int> primes;
   for (int i = 2; i <= n; i++) {
-    if (!minp[i]) {
-      minp[i] = i;
-      p.push_back(i);
+    if (mpf[i] == 0) {
+      mpf[i] = i;
+      primes.push_back(i);
     }
-    for (auto x : p) {
-      if (x <= minp[i] && (long long) x * i <= n)
-        minp[x * i] = x;
+    const int max_p = std::min(mpf[i], n / i);
+    for (auto p : primes) {
+      if (p <= max_p)
+        mpf[p * i] = p;
       else
         break;
     }
   }
-  return p;
+  return primes;
 }
 
 std::vector<int> get_mpf(int n) {
-  std::vector<int> minp((size_t) n + 1), p;
+  std::vector<int> mpf(n + 1);
+  std::vector<int> primes;
   for (int i = 2; i <= n; i++) {
-    if (!minp[i]) {
-      minp[i] = i;
-      p.push_back(i);
+    if (mpf[i] == 0) {
+      mpf[i] = i;
+      primes.push_back(i);
     }
-    for (int x : p) {
-      if (x <= minp[i] && (long long) x * i <= n) {
-        minp[x * i] = x;
-      } else
+    const int max_p = std::min(mpf[i], n / i);
+    for (int p : primes) {
+      if (p <= max_p)
+        mpf[p * i] = p;
+      else
         break;
     }
   }
-  return minp;
+  return mpf;
 }
 
 long long gcd(long long a, long long b, long long &x, long long &y) {
