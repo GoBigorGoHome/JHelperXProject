@@ -103,6 +103,15 @@ void test_runner(TestType testType) {
     if (test.active) {
       ++n_active_tests;
       std::stringstream in(test.input);
+      while (in.good() and isspace(in.peek())) {
+        in.get();
+      }
+      if (not in.good()) {
+        real_cout << RED "No input found on test " << testID << ".\n" RESET;
+        real_cout.flush();
+        reset_streams();
+        return;
+      }
       debug_stream.str("");
       diagnostic_stream.str("");
       std::ostringstream task_out;
