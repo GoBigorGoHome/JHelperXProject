@@ -15,7 +15,7 @@
 template<unsigned dimension, typename T>
 class ndarray : public std::vector<ndarray<dimension - 1, T>> {
  public:
-  ndarray() = default;
+  using std::vector<ndarray<dimension - 1, T>>::vector;
   template<typename... Args>
   ndarray(unsigned d, Args... args)
       : std::vector<ndarray<dimension - 1, T>>(
@@ -23,6 +23,7 @@ class ndarray : public std::vector<ndarray<dimension - 1, T>> {
 };
 template<typename T> class ndarray<1, T> : public std::vector<T> {
  public:
+  using std::vector<T>::vector;
   template<typename... Args>
   ndarray<1, T>(Args &&...args) : std::vector<T>(std::forward<Args>(args)...) {}
 };
