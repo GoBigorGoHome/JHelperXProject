@@ -144,6 +144,8 @@ void test_runner(TestType testType) {
             print_test(real_cout, testID, task_output);
             if (not show_all_failed_tests) {
               real_cout << RED "WA on test " << testID << "\n" RESET;
+              real_cout << BRIGHT_BLACK "Maximal time: " << maxTime
+                        << "s.\n" RESET;
               real_cout.flush();
               reset_streams();
               return;
@@ -237,12 +239,14 @@ void test_runner(TestType testType) {
 
   if (n_active_tests == 0) {
     real_cout << YELLOW "No active test\n" RESET;
-  } else if (n_failed_tests == 0) {
-    real_cout << BRIGHT_GREEN "All OK\n" RESET;
-    real_cout << BRIGHT_BLACK "Maximal time: " << maxTime << "s.\n" RESET;
   } else {
-    real_cout << RED "Failed " << n_failed_tests << '/' << n_active_tests
-              << " test(s)\n" RESET;
+    if (n_failed_tests == 0) {
+      real_cout << BRIGHT_GREEN "All OK\n" RESET;
+    } else {
+      real_cout << RED "Failed " << n_failed_tests << '/' << n_active_tests
+                << " test(s)\n" RESET;
+    }
+    real_cout << BRIGHT_BLACK "Maximal time: " << maxTime << "s.\n" RESET;
   }
   real_cout.flush();
   reset_streams();
