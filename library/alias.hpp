@@ -21,8 +21,9 @@ using pli = std::pair<ll, int>;
 using pil = std::pair<int, ll>;
 using pll = std::pair<ll, ll>;
 using vii = std::vector<pii>;
-template<typename T, typename U = std::less<T>>
-using pq = std::priority_queue<T, std::vector<T>, U>;
+template<typename T>
+using pq = std::priority_queue<std::pair<T, int>,
+                               std::vector<std::pair<T, int>>, std::greater<>>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
 template<typename T> using vv = ndarray<2, T>;
 template<typename T> struct range_tuple {
@@ -54,9 +55,9 @@ template<typename T> struct range_tuple {
   for (auto TOKENPASTE2(_iter_, __LINE__) = n;                                 \
        TOKENPASTE2(_iter_, __LINE__) > 0; --TOKENPASTE2(_iter_, __LINE__))
 #define FOR(x, cont) for (auto &&x : cont)
-#define ALL(x) begin(x), end(x)
+#define ALL(x) std::begin(x), std::end(x)
 // hat off to 300iq
-#define RALL(x) rbegin(x), rend(x)
+#define RALL(x) std::rbegin(x), std::rend(x)
 #define pb push_back
 #define mp make_pair
 #define eb emplace_back
