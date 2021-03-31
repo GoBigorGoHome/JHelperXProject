@@ -1,4 +1,4 @@
-#include <common.hpp>
+#include <macros.h>
 #include <cassert>
 template<typename int_t> inline int_t lowbit(int_t x) {
   return x & -x;
@@ -32,7 +32,6 @@ template<typename T> struct subset_tuple {
 };
 
 #define for_each_nonempty_subset(s, u)                                         \
-  for (auto &&[s, TOKENPASTE2(subset_, __LINE__),                              \
-               TOKENPASTE2(set_, __LINE__)] = subset_tuple(u);                 \
-       s > 0;                                                                  \
-       TOKENPASTE2(subset_, __LINE__) = (s - 1) & TOKENPASTE2(set_, __LINE__))
+  for (auto &&[s, JOIN(subset_, __LINE__), JOIN(set_, __LINE__)] =             \
+           subset_tuple(u);                                                    \
+       s > 0; JOIN(subset_, __LINE__) = (s - 1) & JOIN(set_, __LINE__))
