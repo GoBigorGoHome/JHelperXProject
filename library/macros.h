@@ -26,7 +26,7 @@
   function(arg1, arg2) TERMINATE_OR(peek, FOR_EACH_2_IMPL1)                    \
       PAUSE(function, peek, __VA_ARGS__)
 
-#define FOR_EACH_2_IMPL1(function, arg1, arg2, peek...)                        \
+#define FOR_EACH_2_IMPL1(function, arg1, arg2, peek, ...)                      \
   function(arg1, arg2) TERMINATE_OR(peek, FOR_EACH_2_IMPL0)                    \
       PAUSE(function, peek, __VA_ARGS__)
 
