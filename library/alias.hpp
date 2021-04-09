@@ -92,9 +92,6 @@ template<typename T> struct range_tuple {
 #define CHAR(...)                                                              \
   char __VA_ARGS__;                                                            \
   scan(__VA_ARGS__)
-#define rd(type, name, ...)                                                    \
-  type name(__VA_ARGS__);                                                      \
-  scan(name)
 #define NL                                                                     \
   [] {                                                                         \
     std::cout << '\n';                                                         \
