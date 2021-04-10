@@ -47,10 +47,12 @@ template<typename Sequence> Sequence uniq(Sequence &&s) {
 }
 
 template<typename Container> auto max(const Container &c) {
+  assert(std::size(c) > 0);
   return *std::max_element(std::begin(c), std::end(c));
 }
 
 template<typename Container> auto min(const Container &c) {
+  assert(std::size(c) > 0);
   return *std::min_element(std::begin(c), std::end(c));
 }
 
