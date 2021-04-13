@@ -4,8 +4,10 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_BINOM_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_BINOM_HPP_
+#include <vector>
+#include <cassert>
 template<typename T> struct Binom {
-  vector<T> fact_, inv_fact_;
+  std::vector<T> fact_, inv_fact_;
   int n_;
   explicit Binom(int n) : fact_(n + 1), inv_fact_(n + 1), n_(n) {
     fact_[0] = 1;
