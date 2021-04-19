@@ -42,6 +42,7 @@ template<typename Container> Container rev(Container &&c) {
 }
 //! \pre s must be sorted before passed to uniq.
 template<typename Sequence> Sequence uniq(Sequence &&s) {
+  assert(std::is_sorted(std::begin(s), std::end(s)));
   s.erase(std::unique(std::begin(s), std::end(s)), std::end(s));
   return s;
 }
