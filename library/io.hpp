@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <tuple>
+#include <type_traits.hpp>
 struct fast_ios {
   fast_ios() {
     std::cin.tie(nullptr);
@@ -39,15 +40,17 @@ template<class... Args> void scan(Args &...args) {
   ((std::cin >> args), ...);
 }
 
-template<typename T>
-std::ostream &operator<<(std::ostream &out, const std::vector<T> &vec) {
+template<typename Container,
+         typename = std::enable_if_t<std::conjunction_v<
+             is_iterable<Container>, std::negation<is_string<Container>>>>>
+std::ostream &operator<<(std::ostream &out, const Container &container) {
   bool first = true;
-  for (const T &t : vec) {
+  for (auto &element : container) {
     if (first)
       first = false;
     else
       out << ' ';
-    out << t;
+    out << element;
   }
   return out;
 }
