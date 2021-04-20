@@ -2,57 +2,39 @@
 #include <ostream>
 #include <iterator>
 #include <tuple>
-#include <type_traits>
 #include <sstream>
-namespace is_iterable_impl {
-using std::begin, std::end;
-template<typename T>
-using check_specs = std::enable_if_t<
-    std::is_same_v<decltype(begin(std::declval<T &>())),// has begin()
-                   decltype(end(std::declval<T &>()))   // has end()
-                   >>;// ... begin() and end() are the same type ...
-/*
-decltype(*begin(std::declval<T &>())) // ... which can be dereferenced
-*/
-
-template<class T, class = void> struct is_iterable : std::false_type {};
-// specialization
-template<class T> struct is_iterable<T, check_specs<T>> : std::true_type {};
-}// namespace is_iterable_impl
-
-template<class T> using is_iterable = is_iterable_impl::is_iterable<T>;
-
-template<class T> constexpr bool is_iterable_v = is_iterable<T>::value;
+#include <type_traits.hpp>
 
 namespace debug {
 template<typename... Args>
-std::ostream &operator<<(std::ostream &os, std::tuple<Args...> const &t);
-std::ostream &operator<<(std::ostream &os, const std::string &s) {
+std::ostream &operator<<(std::ostream &, std::tuple<Args...> const &);
+std::ostream &operator<<(std::ostream &out, const std::string &s) {
   using std::operator<<;
-  return os << '"' << s << '"';
+  return out << '"' << s << '"';
 }
-std::ostream &operator<<(std::ostream &os, const char *s) {
+std::ostream &operator<<(std::ostream &out, const char *s) {
   using std::operator<<;
-  return os << '"' << s << '"';
+  return out << '"' << s << '"';
 }
 template<typename A, typename B>
-std::ostream &operator<<(std::ostream &os, const std::pair<A, B> &p) {
-  os << '(' << p.first;
-  os << ',' << ' ' << p.second;
-  return os << ')';
+std::ostream &operator<<(std::ostream &out, const std::pair<A, B> &p) {
+  out << '(' << p.first;
+  out << ',' << ' ' << p.second;
+  return out << ')';
 }
-template<typename A, typename B = std::enable_if_t<is_iterable_v<A>>>
-std::ostream &operator<<(std::ostream &os, const A &v) {
+template<typename Container,
+         typename = std::enable_if_t<is_iterable_v<Container>>>
+std::ostream &operator<<(std::ostream &out, const Container &container) {
   bool first = true;
-  os << '{';
-  for (const auto &x : v) {
+  out << '{';
+  for (auto &element : container) {
     if (!first) {
-      os << ',' << ' ';
+      out << ',' << ' ';
     }
     first = false;
-    os << x;
+    out << element;
   }
-  return os << '}';
+  return out << '}';
 }
 
 template<typename... Ts>
@@ -60,7 +42,7 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
   bool first = true;
   out << '(';
   std::apply(
-      [&out, &first](auto &... args) {
+      [&out, &first](auto &...args) {
         ((std::operator<<(out, (first ? first = false, "" : ", ")) << args),
          ...);
       },
@@ -69,9 +51,9 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
 }
 
 template<typename... Args>
-void debug_out(std::ostream &os, const Args &... args) {
-  ((os << ' ' << args), ...);
-  os << '\n';
+void debug_out(std::ostream &out, const Args &...args) {
+  ((out << ' ' << args), ...);
+  out << '\n';
 }
 }// namespace debug
 #define show(...)                                                              \
