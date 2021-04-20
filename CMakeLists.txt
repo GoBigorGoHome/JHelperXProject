@@ -45,3 +45,5 @@ endif ()
 include_directories(library)
 
 add_executable(exp exp.cpp)
+
+add_subdirectory(checker)
