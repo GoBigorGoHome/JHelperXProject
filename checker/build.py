@@ -6,7 +6,7 @@ input_file_path = r"in.txt"
 my_output = r"my_out.txt"
 ac_output = r"ac_out.txt"
 
-source_tree = os.getcwd()
+source_tree = os.path.abspath("../")
 build_tree = os.path.abspath("build")
 
 my_exe = os.path.join(build_tree, "my.exe")

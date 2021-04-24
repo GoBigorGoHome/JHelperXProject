@@ -46,4 +46,6 @@ include_directories(library)
 
 add_executable(exp exp.cpp)
 
-add_subdirectory(checker)
+add_executable(my checker/my.cpp)
+target_compile_definitions(my PRIVATE LOCAL)
+add_executable(ac checker/ac.cpp)
