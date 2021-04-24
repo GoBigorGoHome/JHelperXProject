@@ -44,12 +44,15 @@ template<typename Container,
          typename = std::enable_if_t<std::conjunction_v<
              is_iterable<Container>, std::negation<is_string<Container>>>>>
 std::ostream &operator<<(std::ostream &out, const Container &container) {
+  using std::begin;
+  constexpr char delimiter =
+      is_iterable_v<decltype(*begin(std::declval<Container &>()))> ? '\n' : ' ';
   bool first = true;
   for (auto &element : container) {
     if (first)
       first = false;
     else
-      out << ' ';
+      out << delimiter;
     out << element;
   }
   return out;
