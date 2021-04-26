@@ -134,10 +134,10 @@ template<class F> struct y_combinator {
 };
 template<class F> y_combinator(F) -> y_combinator<F>;
 #ifndef debug
-#define debug(...) 42
+#define debug(...)
 #endif
 #ifndef show
-#define show(...) 42
+#define show(...)
 #endif
 using namespace io;
 using namespace std;
