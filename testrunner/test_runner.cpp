@@ -95,6 +95,7 @@ void test_runner(TestType testType) {
     std::cin.rdbuf(cin_buff);
   };
   //////////////////////////////////
+  constexpr std::chrono::seconds time_limit(3);
   int testID = 0;
   double maxTime = 0.0;
   int n_active_tests = 0;
@@ -129,7 +130,7 @@ void test_runner(TestType testType) {
         auto res = task.get_future();
         std::thread task_tread(std::move(task));
         task_tread.detach();
-        auto status = res.wait_for(std::chrono::seconds(3));
+        auto status = res.wait_for(time_limit);
         if (status == std::future_status::timeout) {
           print_test(real_cout, testID, "N/A");
           real_cout << RED "TLE on test " << testID << "\n" RESET;
@@ -178,7 +179,7 @@ void test_runner(TestType testType) {
           auto res = task.get_future();
           std::thread task_tread(std::move(task));
           task_tread.detach();
-          auto status = res.wait_for(std::chrono::seconds(3));
+          auto status = res.wait_for(time_limit);
           if (status == std::future_status::timeout) {
             print_subtest(real_cout, testID, subtest_id, input_pos,
                           answer_lines.cbegin() + n_matched_lines,
