@@ -17,6 +17,9 @@ template<typename T, typename U>
 std::ostream &operator<<(std::ostream &out, const std::pair<T, U> &p);
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t);
+template<typename... Ts>
+std::ostream &operator<<(std::ostream &, const std::tuple<Ts...> &);
+
 template<typename T, typename U>
 std::istream &operator>>(std::istream &in, std::pair<T, U> &p) {
   in >> p.first >> p.second;
@@ -55,6 +58,18 @@ std::ostream &operator<<(std::ostream &out, const Container &container) {
       out << delimiter;
     out << element;
   }
+  return out;
+}
+
+// Source: https://en.cppreference.com/w/cpp/utility/apply
+template<typename... Ts>
+std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &theTuple) {
+  std::apply(
+      [&out](Ts const &...tupleArgs) {
+        std::size_t n{0};
+        ((out << tupleArgs << (++n != sizeof...(Ts) ? " " : "")), ...);
+      },
+      theTuple);
   return out;
 }
 
