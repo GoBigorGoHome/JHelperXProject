@@ -48,8 +48,9 @@ template<typename Container,
              is_iterable<Container>, std::negation<is_string<Container>>>>>
 std::ostream &operator<<(std::ostream &out, const Container &container) {
   using std::begin;
+  using value_type = decltype(*begin(std::declval<Container &>()));
   constexpr char delimiter =
-      is_iterable_v<decltype(*begin(std::declval<Container &>()))> ? '\n' : ' ';
+      is_iterable_v<value_type> or is_tuple_like_v<value_type> ? '\n' : ' ';
   bool first = true;
   for (auto &element : container) {
     if (first)
