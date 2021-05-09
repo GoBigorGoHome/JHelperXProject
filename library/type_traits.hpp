@@ -40,4 +40,13 @@ using is_string =
                      std::is_same<std::string, typename std::decay_t<T>>>;
 template<typename T> constexpr bool is_string_v = is_string<T>::value;
 // Source: https://stackoverflow.com/a/57812868/6793559
+
+template<typename T1, typename T2>
+struct is_tuple_like_impl : std::false_type {};
+template<typename T>
+struct is_tuple_like_impl<T, decltype(std::tuple_size<std::decay_t<T>>::value)>
+    : std::true_type {};
+template<typename T>
+using is_tuple_like = is_tuple_like_impl<T, const std::size_t>;
+template<typename T> constexpr bool is_tuple_like_v = is_tuple_like<T>::value;
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
