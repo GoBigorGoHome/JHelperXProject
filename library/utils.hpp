@@ -71,14 +71,6 @@ Container sort(Container &&c, Compare comp = nullptr) {
   return c;
 }
 
-template<typename iterator> struct range {
-  iterator beg_, end_;
-  iterator begin() const { return beg_; }
-  iterator end() const { return end_; }
-  //! @brief Make a range from a pair of iterators.
-  range(iterator beg, iterator end) : beg_(beg), end_(end) {}
-};
-
 template<typename T> struct reversion_wrapper { T &iterable; };
 template<typename T> auto begin(reversion_wrapper<T> w) {
   using std::rbegin;
