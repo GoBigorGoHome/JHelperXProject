@@ -32,11 +32,6 @@ endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(testrunner PRIVATE -Wno-shift-op-parentheses)
-    if (NOT CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
-        # fix linking error when using std::future with Clang
-        # see https://stackoverflow.com/a/31639828/6793559 for detail
-        target_compile_options(testrunner PRIVATE -femulated-tls)
-    endif ()
 endif ()
 
 if (MSVC)
