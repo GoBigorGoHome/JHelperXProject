@@ -1,6 +1,7 @@
 #if not defined LOCAL and not defined NDEBUG
 #define NDEBUG
 #endif
+#include <iostream>
 %Code%
 
 int main() {
