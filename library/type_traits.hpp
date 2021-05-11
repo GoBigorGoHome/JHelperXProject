@@ -41,12 +41,21 @@ using is_string =
 template<typename T> constexpr bool is_string_v = is_string<T>::value;
 // Source: https://stackoverflow.com/a/57812868/6793559
 
-template<typename T1, typename T2>
-struct is_tuple_like_impl : std::false_type {};
+template<template<typename...> typename Target, typename Aux, typename... Ts>
+struct is_specialized_for_impl : std::false_type {};
+
+template<template<typename...> typename Target, typename... Args>
+struct is_specialized_for_impl<Target, decltype(sizeof(Target<Args...>)),
+                               Args...> : std::true_type {};
+
+template<template<typename...> typename Target, typename... Args>
+using is_specialized_for =
+    is_specialized_for_impl<Target, std::size_t, Args...>;
+template<template<typename...> typename Target, typename... Args>
+constexpr bool is_specialized_for_v =
+    is_specialized_for<Target, Args...>::value;
+
 template<typename T>
-struct is_tuple_like_impl<T, decltype(std::tuple_size<std::decay_t<T>>::value)>
-    : std::true_type {};
-template<typename T>
-using is_tuple_like = is_tuple_like_impl<T, const std::size_t>;
+using is_tuple_like = is_specialized_for<std::tuple_size, T>;
 template<typename T> constexpr bool is_tuple_like_v = is_tuple_like<T>::value;
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
