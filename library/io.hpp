@@ -110,9 +110,4 @@ template<typename... Args> void pn(const Args &...args) {
   ((std::cout << args << '\n'), ...);
 }
 }// namespace io
-inline int ri() {
-  int x;
-  std::cin >> x;
-  return x;
-}
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
