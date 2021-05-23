@@ -51,7 +51,8 @@ class dijkstra {
   }
 };
 
-template<typename Distance> using dij = dijkstra<Distance, 1, std::vector<int>>;
+template<typename Distance>
+using dij = dijkstra<Distance, 1, std::vector<Distance>>;
 template<typename Distance>
 using dij2 = dijkstra<Distance, 2, ndarray<2, Distance>>;
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_DIJKSTRA_HPP_
