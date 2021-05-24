@@ -5,12 +5,12 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_PRIMITIVE_ROOT_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_PRIMITIVE_ROOT_HPP_
 #include <vector>
-int powmod(int a, int b, int p) {
-  int res = 1;
-  for (; b; a = a * 1ll * a % p, b >>= 1)
+int powmod(long long a, long long b, int p) {
+  long long res = 1;
+  for (; b; a = a * a % p, b >>= 1)
     if (b & 1)
-      res = res * 1ll * a % p;
-  return res;
+      res = res * a % p;
+  return (int) res;
 }
 /// return minimum primitive root of modulo p
 int generator(int p) {
