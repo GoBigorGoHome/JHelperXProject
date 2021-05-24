@@ -97,11 +97,11 @@ template<typename T> struct range_tuple {
     std::cout << '\n';                                                         \
   }()
 #define RI                                                                     \
-  [] {                                                                         \
+  ([] {                                                                        \
     int x;                                                                     \
     std::cin >> x;                                                             \
     return x;                                                                  \
-  }()
+  })()
 #define READ_VI(NAME, LEN)                                                     \
   std::vector<int> NAME(LEN);                                                  \
   scan(NAME);
