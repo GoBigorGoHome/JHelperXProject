@@ -13,5 +13,6 @@ class tree : public graph {
     g[u].push_back(v);
     g[v].push_back(u);
   }
+  const std::vector<int> &neighbors(int u) const { return g[u]; }
 };
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_TREE_HPP_
