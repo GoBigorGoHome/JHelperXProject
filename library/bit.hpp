@@ -18,7 +18,7 @@ template<typename T> inline int bit(T a, int i) {
   return a >> i & 1;
 }
 
-inline bool is_subset(int sub, int s) {
+inline bool is_subset(long long sub, long long s) {
   return (sub & s) == sub;
 }
 
