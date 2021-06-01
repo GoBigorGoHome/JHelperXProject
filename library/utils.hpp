@@ -8,6 +8,8 @@
 #include <map>
 #include <numeric>
 #include <set>
+#include <random>
+#include <chrono>
 #include <alias.hpp>
 inline void Yn(bool p) {
   std::cout << (p ? "Yes\n" : "No\n");
@@ -125,6 +127,8 @@ template<class F> struct y_combinator {
   }
 };
 template<class F> y_combinator(F) -> y_combinator<F>;
+std::mt19937_64
+    RNG(std::chrono::steady_clock::now().time_since_epoch().count());
 #ifndef debug
 #define debug(...)
 #endif
