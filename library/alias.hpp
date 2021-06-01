@@ -69,9 +69,8 @@ template<typename T> struct range_tuple {
 #define ALL(x) std::begin(x), std::end(x)
 // hat off to 300iq
 #define RALL(x) std::rbegin(x), std::rend(x)
-#define pb push_back
+#define pb emplace_back
 #define mp make_pair
-#define eb emplace_back
 #define ep emplace
 #define SZ(x) (int) (x).size()
 #define rp(...) return pl(__VA_ARGS__)
