@@ -99,3 +99,4 @@ exp.cpp
 ac-library/
 TODO
 /checker/tests/
+/checker/my.cpp
