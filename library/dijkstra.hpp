@@ -7,25 +7,8 @@
 #include <array>
 #include <queue>
 #include <utility>
-#include <type_traits>
-
-template<typename T, typename = void>
-struct rank_ : public std::integral_constant<std::size_t, 0> {};
-
-template<typename T>
-struct rank_<T, std::void_t<decltype(std::declval<T>()[0])>>
-    : public std::integral_constant<
-          std::size_t, rank_<decltype(std::declval<T>()[0])>::value + 1> {};
-
-template<typename T, typename = void> struct remove_all_extents_ {
-  typedef std::remove_reference_t<T> type;
-};
-
-template<typename T>
-struct remove_all_extents_<T, std::void_t<decltype(std::declval<T>()[0])>> {
-  typedef
-      typename remove_all_extents_<decltype(std::declval<T>()[0])>::type type;
-};
+#include <tuple>
+#include <type_traits.hpp>
 
 template<typename DistanceArray> class dijkstra {
   DistanceArray &d;// TODO: Is it possible make d a void*?

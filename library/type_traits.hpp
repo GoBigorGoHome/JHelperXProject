@@ -5,6 +5,7 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
 #define JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
 #include <type_traits>
+#include <string>
 template<typename T> T type();// no definition
 template<typename Container> auto value_type_of_() {
   if constexpr (std::is_array_v<Container>)
@@ -57,4 +58,22 @@ constexpr bool is_specialized_for_v =
 template<typename T>
 using is_tuple_like = is_specialized_for<std::tuple_size, T>;
 template<typename T> constexpr bool is_tuple_like_v = is_tuple_like<T>::value;
+
+template<typename T, typename = void> struct remove_all_extents_ {
+  typedef std::remove_reference_t<T> type;
+};
+
+template<typename T>
+struct remove_all_extents_<T, std::void_t<decltype(std::declval<T>()[0])>> {
+  typedef
+      typename remove_all_extents_<decltype(std::declval<T>()[0])>::type type;
+};
+
+template<typename T, typename = void>
+struct rank_ : public std::integral_constant<std::size_t, 0> {};
+
+template<typename T>
+struct rank_<T, std::void_t<decltype(std::declval<T>()[0])>>
+    : public std::integral_constant<
+          std::size_t, rank_<decltype(std::declval<T>()[0])>::value + 1> {};
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
