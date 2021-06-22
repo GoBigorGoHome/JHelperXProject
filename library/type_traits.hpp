@@ -46,11 +46,12 @@ template<template<typename...> typename Target, typename Aux, typename... Ts>
 struct is_specialized_for_impl : std::false_type {};
 
 template<template<typename...> typename Target, typename... Args>
-struct is_specialized_for_impl<Target, std::void_t<Target<Args...>>, Args...>
-    : std::true_type {};
+struct is_specialized_for_impl<Target, decltype(sizeof(Target<Args...>)),
+                               Args...> : std::true_type {};
 
 template<template<typename...> typename Target, typename... Args>
-using is_specialized_for = is_specialized_for_impl<Target, void, Args...>;
+using is_specialized_for =
+    is_specialized_for_impl<Target, std::size_t, Args...>;
 template<template<typename...> typename Target, typename... Args>
 constexpr bool is_specialized_for_v =
     is_specialized_for<Target, Args...>::value;
