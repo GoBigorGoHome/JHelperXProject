@@ -1,28 +1,29 @@
 #include <vector>
-#include <numeric>
+#include <algorithm>
 
 class UnionFind {
-  std::vector<int> par, sz;
+  std::vector<int> parent_or_size;
   int nTree;
   std::vector<bool> has_cycle_;
 
  public:
   explicit UnionFind(int n)
-      : par(n), sz(n, 1), nTree(n), has_cycle_(n) {// 0-indexed
-    std::iota(par.begin(), par.end(), 0);
+      : parent_or_size(n, -1), nTree(n), has_cycle_(n) {// 0-indexed
   }
   void init() {
-    std::fill(par.begin(), par.end(), 1);
-    nTree = (int) par.size();
-    std::iota(par.begin(), par.end(), 0);
+    std::fill(parent_or_size.begin(), parent_or_size.end(), -1);
+    nTree = (int) parent_or_size.size();
   }
   int n_tree() const { return nTree; }
 
-  int size(int x) { return sz[root(x)]; }
+  int size(int x) { return -parent_or_size[root(x)]; }
 
   bool has_cycle(int x) { return has_cycle_[root(x)]; }
 
-  int root(int x) { return x == par[x] ? x : par[x] = root(par[x]); }
+  int root(int x) {
+    return parent_or_size[x] < 0 ? x
+                                 : parent_or_size[x] = root(parent_or_size[x]);
+  }
   //! @brief Merge tree y into tree x.
   //! @param f Function for extra processing, called as f(x, y).
   template<typename F = void (*)(int, int)>
@@ -30,9 +31,9 @@ class UnionFind {
       int x, int y, const F &f = [](int, int) {}) {
     int rx = root(x), ry = root(y);
     if (rx != ry) {
-      par[ry] = rx;
+      parent_or_size[rx] += parent_or_size[ry];
+      parent_or_size[ry] = rx;
       --nTree;
-      sz[rx] += sz[ry];
       has_cycle_[rx] = has_cycle_[rx] or has_cycle_[ry];
       f(rx, ry);
       return true;
@@ -41,6 +42,6 @@ class UnionFind {
     return false;
   }
 
-  bool is_root(int x) const { return par[x] == x; }
+  bool is_root(int x) const { return parent_or_size[x] < 0; }
   bool same(int x, int y) { return root(x) == root(y); }
 };
