@@ -35,3 +35,20 @@ template<typename T> struct subset_tuple {
   for (auto &&[s, JOIN(subset_, __LINE__), JOIN(set_, __LINE__)] =             \
            subset_tuple(u);                                                    \
        s > 0; JOIN(subset_, __LINE__) = (s - 1) & JOIN(set_, __LINE__))
+
+template<typename T> struct loop_controller {
+  T loop_var;
+  bool flag;
+  const T u;
+  explicit loop_controller(T u) : loop_var(u), flag(u >= 0), u(u) {}
+  void after() {
+    flag = loop_var > 0;
+    loop_var = (loop_var - 1) & u;
+  }
+};
+
+#define for_each_subset(s, u)                                                  \
+  loop_controller JOIN(loop_controller_, __LINE__)(u);                         \
+  for (const auto &s = JOIN(loop_controller_, __LINE__).loop_var;              \
+       JOIN(loop_controller_, __LINE__).flag;                                  \
+       JOIN(loop_controller_, __LINE__).after())
