@@ -1,4 +1,20 @@
 #include <vector>
+
+template<typename T> std::vector<T> prime_divisors(T n) {
+  std::vector<T> res;
+  for (T i = 2; i * i <= n; i++) {
+    if (n % i == 0) {
+      res.push_back(i);
+      do {
+        n /= i;
+      } while (n % i == 0);
+    }
+  }
+  if (n > 1)
+    res.push_back(n);
+  return res;
+}
+
 template<typename T> std::vector<T> divisors(T n) {
   std::vector<T> res;
   T i = 1;
