@@ -42,7 +42,7 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &t) {
   bool first = true;
   out << '(';
   std::apply(
-      [&out, &first](auto &...args) {
+      [&out, &first](const Ts &...args) {
         ((std::operator<<(out, (first ? first = false, "" : ", ")) << args),
          ...);
       },
