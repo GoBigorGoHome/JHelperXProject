@@ -40,4 +40,15 @@ long long inversion_number(const std::vector<T> &p1, const std::vector<T> &p2) {
   return result;
 }
 
+/// @param p A permutation of 0, 1, 2, ..., n - 1.
+long long inversion_number(const std::vector<int> &p) {
+  long long result = 0;
+  int n = (int) p.size();
+  BIT<int> b(n);
+  for (int i = n - 1; i >= 0; --i) {
+    result += b.sum(p[i]);
+    b.add(p[i], 1);
+  }
+  return result;
+}
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_INVERSION_NUMBER_HPP_
