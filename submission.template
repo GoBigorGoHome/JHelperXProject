@@ -1,8 +1,8 @@
 #if not defined LOCAL and not defined NDEBUG
 #define NDEBUG
 #endif
-#include <iostream>
 %Code%
+#include <iostream>
 
 int main() {
 #if defined FILE_IO and not defined LOCAL
