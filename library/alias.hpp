@@ -105,6 +105,10 @@ template<typename T> struct range_tuple {
   std::vector<int> NAME(LEN);                                                  \
   scan(NAME);
 #define VI(...) FOR_EACH_2(READ_VI, __VA_ARGS__)
+#define READ_VII(NAME, LEN)                                                    \
+  std::vector<std::pair<int, int>> NAME(LEN);                                  \
+  scan(NAME);
+#define VII(...) FOR_EACH_2(READ_VII, __VA_ARGS__)
 #define READ_VL(NAME, LEN)                                                     \
   std::vector<long long> NAME(LEN);                                            \
   scan(NAME);
