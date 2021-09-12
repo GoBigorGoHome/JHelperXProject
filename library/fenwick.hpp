@@ -19,6 +19,7 @@ class BIT {
 
   T sum(int x) const {
     T res = 0;
+    x = std::min((int)a.size() - 1, x);
     while (x >= 0) {
       res += a[x];
       x = (x & (x + 1)) - 1;
