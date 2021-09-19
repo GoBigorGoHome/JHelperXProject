@@ -12,6 +12,7 @@ class UnionFind {
   }
   void init() {
     std::fill(parent_or_size.begin(), parent_or_size.end(), -1);
+    std::fill(has_cycle_.begin(), has_cycle_.end(), false);
     nTree = (int) parent_or_size.size();
   }
   int n_tree() const { return nTree; }
