@@ -59,6 +59,34 @@ template<typename Container> auto min(const Container &c) {
   return *std::min_element(std::begin(c), std::end(c));
 }
 
+template<typename Array> int maxi(const Array &a) {
+  assert(a.size() > 0);
+  return int(std::max_element(std::begin(a), std::end(a)) - std::begin(a));
+}
+
+template<typename Array> int mini(const Array &a) {
+  assert(a.size() > 0);
+  return int(std::min_element(std::begin(a), std::end(a)) - std::begin(a));
+}
+
+template<typename Array, typename Value> auto lb(const Array &a, Value v) {
+  assert(std::size(a) > 0);
+  return std::lower_bound(std::begin(a), std::end(a), v);
+}
+
+template<typename Array, typename Value> auto ub(const Array &a, Value v) {
+  assert(std::size(a) > 0);
+  return std::upper_bound(std::begin(a), std::end(a), v);
+}
+
+template<typename Array, typename Value> int lbi(const Array &a, Value v) {
+  return int(lb(a, v) - std::begin(a));
+}
+
+template<typename Array, typename Value> int ubi(const Array &a, Value v) {
+  return int(ub(a, v) - std::begin(a));
+}
+
 template<typename Container> Container iota(Container &&c, int v = 0) {
   std::iota(std::begin(c), std::end(c), v);
   return c;
