@@ -70,7 +70,7 @@ template<typename T> struct range_tuple {
 // hat off to 300iq
 #define RALL(x) std::rbegin(x), std::rend(x)
 #define pb emplace_back
-#define mp make_pair
+#define MP make_pair
 #define ep emplace
 #define SZ(x) (int) (x).size()
 #define rp(...) return pl(__VA_ARGS__)
