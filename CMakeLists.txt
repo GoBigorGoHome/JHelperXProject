@@ -20,18 +20,17 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor /Zc:__cplusplus")
 else ()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=uninitialized")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=conversion")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=unused")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=vla")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-backtrace-limit=0")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-conversion")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare")
     # use lld to speed up linking
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
     # Set stack size to 256 MiB
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,268435456")
+    target_compile_options(testrunner PRIVATE -Werror)
+    target_compile_options(testrunner PRIVATE -Werror=conversion)
+    target_compile_options(testrunner PRIVATE -Wno-sign-conversion)
+    target_compile_options(testrunner PRIVATE -Wno-sign-compare)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
