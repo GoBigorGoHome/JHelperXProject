@@ -105,10 +105,6 @@ template<typename T> class Modular {
     return *this *= Modular(inverse(other.value, mod()));
   }
 
-  template<typename U> friend const Modular<U> &abs(const Modular<U> &v) {
-    return v;
-  }
-
   template<typename U>
   friend bool operator==(const Modular<U> &lhs, const Modular<U> &rhs);
 
