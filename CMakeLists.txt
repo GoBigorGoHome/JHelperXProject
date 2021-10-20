@@ -13,6 +13,7 @@ add_executable(testrunner
         testrunner/checker.cpp
         testrunner/print_test.cpp
         testrunner/color.cpp)
+target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 # use libstdc++ debug mode
 target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG LOCAL)
@@ -20,6 +21,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor /Zc:__cplusplus")
 else ()
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=vla")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-backtrace-limit=0")
@@ -31,6 +33,7 @@ else ()
     target_compile_options(testrunner PRIVATE -Werror=conversion)
     target_compile_options(testrunner PRIVATE -Wno-sign-conversion)
     target_compile_options(testrunner PRIVATE -Wno-sign-compare)
+    target_compile_options(testrunner PRIVATE -Wno-unused)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
