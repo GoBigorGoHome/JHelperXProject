@@ -57,8 +57,8 @@ ll dot(vec a, vec b) {
   return a.x * b.x + a.y * b.y;
 }
 
-vec cross(vec a, vec b) {
-  return {a.x * b.y - a.y * b.x};
+ll cross(vec a, vec b) {
+  return a.x * b.y - a.y * b.x;
 }
 
 vec operator+(vec a, vec b) {
