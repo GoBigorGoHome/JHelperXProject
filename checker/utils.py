@@ -3,6 +3,7 @@ from build import *
 from tqdm import tqdm
 from gen import *
 import build
+import concurrent.futures
 
 
 def random_seq(a, b, n):
@@ -74,6 +75,28 @@ def stress_my(**kwargs):
                 return
         else:
             print("OK")
+
+
+def timed_my():
+    then = time.time()
+    res = os.system(run_my)
+    elapsed = time.time() - then
+    return elapsed, res
+
+
+def stress_my_with_tl(time_limit):
+    generate("Release")
+    build_my()
+    while True:
+        gen_input()
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(timed_my)
+            try:
+                elapsed, result = future.result(timeout=time_limit)
+                print("finished in", elapsed, "seconds")
+            except concurrent.futures.TimeoutError:
+                print("Time out!")
+                return
 
 
 def stress_ac(**kwargs):
