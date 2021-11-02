@@ -392,8 +392,17 @@ constexpr bool rational<IntType>::operator<(const rational<IntType> &r) const {
   // checks is that for 2's complement systems, INT_MIN has no corresponding
   // positive, so negating it during normalization keeps it INT_MIN, which
   // is bad for later calculations that assume a positive denominator.
-  assert(this->den > zero);
-  assert(r.den > zero);
+  assert(this->den >= zero);
+  assert(r.den >= zero);
+
+  if (this->den == 0) {
+    if (r.den == 0)
+      return this->num < r.num;
+    return this->num < 0;
+  }
+  if (r.den == 0) {
+    return r.num > 0;
+  }
 
   // Determine relative order_ by expanding each value to its simple continued
   // fraction representation using the Euclidean GCD algorithm.
@@ -472,7 +481,7 @@ constexpr bool rational<IntType>::operator==(const rational<IntType> &r) const {
 // Invariant check
 template<typename IntType>
 constexpr bool rational<IntType>::test_invariant() const {
-  return (this->den > int_type(0))
+  return (this->den >= int_type(0))
       && (std::gcd(this->num, this->den) == int_type(1));
 }
 
@@ -481,23 +490,17 @@ template<typename IntType> constexpr void rational<IntType>::normalize() {
   // Avoid repeated construction
   IntType zero(0);
 
-  if (den == zero)
-    throw bad_rational();
+  if (den == zero && num == zero)
+    throw bad_rational("bad rational: 0/0");
 
-  // Handle the case of zero separately, to avoid division by zero
-  if (num == zero) {
-    den = IntType(1);
-    return;
+  if (den < -(std::numeric_limits<IntType>::max)()) {
+    throw bad_rational("bad rational: non-zero singular denominator");
   }
 
   IntType g = std::gcd(num, den);
 
   num /= g;
   den /= g;
-
-  if (den < -(std::numeric_limits<IntType>::max)()) {
-    throw bad_rational("bad rational: non-zero singular denominator");
-  }
 
   // Ensure that the denominator is positive
   if (den < zero) {
