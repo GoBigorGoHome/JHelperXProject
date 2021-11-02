@@ -14,6 +14,7 @@
 #include <numeric>
 #include <sstream>
 #include <iomanip>
+#include <cassert>
 
 class bad_rational : public std::domain_error {
  public:
