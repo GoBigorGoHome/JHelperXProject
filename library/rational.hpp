@@ -493,14 +493,14 @@ template<typename IntType> constexpr void rational<IntType>::normalize() {
   if (den == zero && num == zero)
     throw bad_rational("bad rational: 0/0");
 
-  if (den < -(std::numeric_limits<IntType>::max)()) {
-    throw bad_rational("bad rational: non-zero singular denominator");
-  }
-
   IntType g = std::gcd(num, den);
 
   num /= g;
   den /= g;
+
+  if (den < -std::numeric_limits<IntType>::max()) {
+    throw bad_rational("bad rational: non-zero singular denominator");
+  }
 
   // Ensure that the denominator is positive
   if (den < zero) {
