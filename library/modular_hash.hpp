@@ -21,8 +21,7 @@ template<int modulus> class modular_hash {
 
  public:
   modular_hash() = default;
-  /// @brief Construct the hash function (as used in the Rabin-Karp
-  /// algorithm) in linear time.
+  /// @brief Construct the hash function in linear time.
   /// @param a the given string
   /// @param radix the radix chosen for hash function
   template<typename String>
