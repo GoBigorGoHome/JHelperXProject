@@ -532,8 +532,9 @@ std::ostream &operator<<(std::ostream &os, const rational<IntType> &r) {
   ss.str("");
   ss.flags(os.flags());
   ss << std::setw(
-      w < 0 || (os.flags() & std::ios::adjustfield) != std::ios::internal ? 0
-                                                                          : w)
+      w < 0 || (os.flags() & std::ios::adjustfield) != std::ios::internal
+          ? 0
+          : (int) w)
      << r.numerator();
   return os << ss.str() + tail;
 }
