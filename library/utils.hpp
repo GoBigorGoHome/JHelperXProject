@@ -83,6 +83,16 @@ template<typename Array, typename Value> int lbi(const Array &a, Value v) {
   return int(lb(a, v) - std::begin(a));
 }
 
+template<typename Iter, typename Value> int lbi(Iter beg, int count, Value v) {
+  assert(count > 0);
+  return int(std::lower_bound(beg, beg + count, v) - beg);
+}
+
+template<typename Iter, typename Value> int ubi(Iter beg, int count, Value v) {
+  assert(count > 0);
+  return int(std::upper_bound(beg, beg + count, v) - beg);
+}
+
 template<typename Array, typename Value> int ubi(const Array &a, Value v) {
   return int(ub(a, v) - std::begin(a));
 }
