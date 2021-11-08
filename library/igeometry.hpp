@@ -141,4 +141,14 @@ vec get_y_intercept(point p, vec direction) {
   return {fz / g, fm / g};
 };
 
+int quadrant(const point& p) {
+  assert(p.x != 0 or p.y != 0);
+  if (p.x > 0 and p.y >= 0)
+    return 1;
+  if (p.y > 0 and p.x <= 0)
+    return 1;
+  if (p.x < 0 and p.y <= 0)
+    return 3;
+  return 4;
+}
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IGEOMETRY_HPP_
