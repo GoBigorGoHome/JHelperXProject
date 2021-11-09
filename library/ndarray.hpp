@@ -25,6 +25,6 @@ template<typename T> class ndarray<1, T> : public std::vector<T> {
  public:
   using std::vector<T>::vector;
   template<typename... Args>
-  ndarray<1, T>(Args &&...args) : std::vector<T>(std::forward<Args>(args)...) {}
+  ndarray(Args &&...args) : std::vector<T>(std::forward<Args>(args)...) {}
 };
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_NDARRAY_HPP_
