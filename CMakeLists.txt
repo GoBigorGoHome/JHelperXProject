@@ -35,12 +35,12 @@ else ()
     target_compile_options(testrunner PRIVATE -Wno-trigraphs)
     target_compile_options(testrunner PRIVATE -Wno-sign-compare)
     target_compile_options(testrunner PRIVATE -Wno-unused)
-    target_compile_options(testrunner PRIVATE -Wno-logical-op-parentheses)
     target_compile_options(testrunner PRIVATE -Wno-parentheses)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(testrunner PRIVATE -Wno-shift-op-parentheses)
+    target_compile_options(testrunner PRIVATE -Wno-logical-op-parentheses)
     target_compile_options(testrunner PRIVATE -Wno-missing-braces)
     if (NOT CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
         # fix linking error when using std::future with Clang
