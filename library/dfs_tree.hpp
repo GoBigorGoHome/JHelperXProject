@@ -32,7 +32,8 @@ class dfs_tree : public tree {
   }
 
  public:
-  dfs_tree(int n) : tree(n), parent_(n), depth_(n), L(n), R(n), sz(n) {}
+  explicit dfs_tree(int n)
+      : tree(n), L(n), R(n), sz(n), depth_(n), parent_(n) {}
 
   void dfs(int u) {
     assert(0 <= u and u < n);

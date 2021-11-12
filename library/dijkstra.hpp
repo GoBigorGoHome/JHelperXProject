@@ -12,7 +12,7 @@
 
 template<typename DistanceArray> class dijkstra {
   DistanceArray &d;// TODO: Is it possible make d a void*?
-  typedef typename remove_all_extents_<DistanceArray>::type Distance;
+  using Distance = remove_all_extents_<DistanceArray>::type;
   static constexpr std::size_t Dimension = rank_<DistanceArray>::value;
   struct S {
     Distance distance;
@@ -44,7 +44,7 @@ template<typename DistanceArray> class dijkstra {
   }
 
  public:
-  dijkstra(DistanceArray &d) : d(d) {}
+  explicit dijkstra(DistanceArray &d) : d(d) {}
   template<typename... Ts> void relax(Distance distance, Ts... indices) {
     Distance &dis = get_distance(indices...);
     if (dis > distance) {

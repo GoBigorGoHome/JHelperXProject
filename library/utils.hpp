@@ -23,12 +23,12 @@ inline void yn(bool p) {
 template<typename Container> Container inc(Container &&c) {
   for (auto &e : c)
     ++e;
-  return c;
+  return std::forward<Container>(c);
 }
 template<typename Container> Container dec(Container &&c) {
   for (auto &e : c)
     --e;
-  return c;
+  return std::forward<Container>(c);
 }
 template<typename A, typename B> inline bool chkmin(A &a, const B &b) {
   return b < a ? a = b, true : false;
@@ -40,13 +40,13 @@ template<typename A, typename B> inline bool chkmax(A &a, const B &b) {
 
 template<typename Container> Container rev(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
-  return c;
+  return std::forward<Container>(c);
 }
 //! \pre s must be sorted before passed to uniq.
 template<typename Sequence> Sequence uniq(Sequence &&s) {
   assert(std::is_sorted(std::begin(s), std::end(s)));
   s.erase(std::unique(std::begin(s), std::end(s)), std::end(s));
-  return s;
+  return std::forward<Sequence>(s);
 }
 
 template<typename Container> auto max(const Container &c) {
@@ -99,7 +99,7 @@ template<typename Array, typename Value> int ubi(const Array &a, Value v) {
 
 template<typename Container> Container iota(Container &&c, int v = 0) {
   std::iota(std::begin(c), std::end(c), v);
-  return c;
+  return std::forward<Container>(c);
 }
 
 template<typename Container, typename Compare = void *>
@@ -108,7 +108,7 @@ Container sort(Container &&c, Compare comp = nullptr) {
     std::sort(std::begin(c), std::end(c));
   else
     std::sort(std::begin(c), std::end(c), comp);
-  return c;
+  return std::forward<Container>(c);
 }
 
 template<typename T> struct reversion_wrapper { T &iterable; };
@@ -121,7 +121,7 @@ template<typename T> auto end(reversion_wrapper<T> w) {
   return rend(w.iterable);
 }
 template<typename T> reversion_wrapper<T> reverse(T &&iterable) {
-  return {iterable};
+  return {std::forward<T>(iterable)};
 }
 template<typename T, typename U> T ceil_div(T x, U y) {
   assert(y > 0);
