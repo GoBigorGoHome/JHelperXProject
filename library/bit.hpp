@@ -4,14 +4,27 @@ template<typename int_t> inline int_t lowbit(int_t x) {
   return x & -x;
 }
 
-inline int h_bit(unsigned long long x) {
+/// @brief Finds the smallest number of bits needed to represent the given
+/// value.
+inline int bit_width(unsigned long long x) {
+  assert(x > 0);
   return int(sizeof(unsigned long long) * 8 - __builtin_clzll(x));
 }
 
-unsigned long long pow2(unsigned long long x) {// round up to power of 2
+/// @brief Round down to power of 2.
+template<typename int_t> inline int_t bit_floor(int_t x) {
+  assert(x >= 0);
+  while (x > lowbit(x)) {
+    x &= x - 1;
+  }
+  return x;
+}
+
+/// @brief Round up to power of 2.
+unsigned long long bit_ceil(unsigned long long x) {
   if (x == 0)
     return 1;
-  return x == lowbit(x) ? x : 1ULL << h_bit(x);
+  return x == lowbit(x) ? x : 1ULL << bit_width(x);
 }
 
 template<typename T> inline int bit(T a, int i) {
