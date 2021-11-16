@@ -27,7 +27,7 @@ template<typename Container,
 std::ostream &operator<<(std::ostream &out, const Container &container) {
   bool first = true;
   out << '{';
-  for (auto &element : container) {
+  for (const auto &element : container) {
     if (!first) {
       out << ',' << ' ';
     }
