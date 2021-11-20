@@ -126,26 +126,31 @@ template<typename T> auto end(reversion_wrapper<T> w) {
 template<typename T> reversion_wrapper<T> reverse(T &&iterable) {
   return {std::forward<T>(iterable)};
 }
-template<typename T, typename U> T ceil_div(T x, U y) {
+
+/// @return nearest integer not less than the quotient x/y.
+template<typename T, typename U> T qceil(T x, U y) {
   assert(y > 0);
   T q = x / y;
   return q + (q * y < x);
 }
 
-template<typename T, typename U> T floor_div(T x, U y) {
+/// @return nearest integer not greater than the quotient x/y.
+template<typename T, typename U> T qfloor(T x, U y) {
   assert(y > 0);
   T q = x / y;
   return q - (q * y > x);
 }
 
-template<typename T, typename U> T ceil(T x, U y) {
+/// @return nearest multiple of y not less than x.
+template<typename T, typename U> T mceil(T x, U y) {
   assert(y > 0);
-  return ceil_div(x, y) * y;
+  return qceil(x, y) * y;
 }
 
-template<typename T, typename U> T floor(T x, U y) {
+/// @return nearest multiple of y not greater than x.
+template<typename T, typename U> T mfloor(T x, U y) {
   assert(y > 0);
-  return floor_div(x, y) * y;
+  return qfloor(x, y) * y;
 }
 
 template<class...> struct typelist {};

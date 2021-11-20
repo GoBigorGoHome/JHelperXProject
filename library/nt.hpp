@@ -67,7 +67,8 @@ template<typename T> std::vector<T> factorize(T n) {
   return res;
 }
 
-std::vector<int> get_prime(int n) {
+/// @return a list of primes not greater than \p n.
+std::vector<int> get_primes(int n) {
   std::vector<int> mpf(n + 1);
   std::vector<int> primes;
   for (int i = 2; i <= n; i++) {
