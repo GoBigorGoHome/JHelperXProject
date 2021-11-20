@@ -11,6 +11,8 @@
 #include <random>
 #include <chrono>
 #include <alias.hpp>
+#include <type_traits.hpp>
+
 inline void Yn(bool p) {
   std::cout << (p ? "Yes\n" : "No\n");
 }
@@ -97,7 +99,8 @@ template<typename Array, typename Value> int ubi(const Array &a, Value v) {
   return int(ub(a, v) - std::begin(a));
 }
 
-template<typename Container> Container iota(Container &&c, int v = 0) {
+template<typename Container>
+Container iota(Container &&c, value_type_of<Container> v) {
   std::iota(std::begin(c), std::end(c), v);
   return std::forward<Container>(c);
 }
