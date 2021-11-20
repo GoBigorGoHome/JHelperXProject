@@ -14,7 +14,8 @@ template<typename Container> auto value_type_of_() {
     return type<typename Container::value_type>();
 }
 template<typename Container>
-using value_type_of = decltype(value_type_of_<Container>());
+using value_type_of =
+    decltype(value_type_of_<std::remove_reference_t<Container>>());
 // Source: https://foonathan.net/2020/10/iife-metaprogramming/
 
 namespace is_iterable_impl {
