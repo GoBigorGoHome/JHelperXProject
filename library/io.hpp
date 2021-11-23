@@ -4,14 +4,7 @@
 #include <vector>
 #include <tuple>
 #include <type_traits.hpp>
-struct fast_ios {
-  fast_ios() {
-    std::cin.tie(nullptr);
-    std::ios::sync_with_stdio(false);
-    std::cout.precision(10);
-    std::cout << std::fixed;
-  };
-} fast_ios_;
+
 namespace io {
 template<typename T, typename U>
 std::ostream &operator<<(std::ostream &out, const std::pair<T, U> &p);
