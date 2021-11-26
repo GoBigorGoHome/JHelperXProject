@@ -41,6 +41,8 @@ class ndvector : public vector_t<T, Dimension> {
  public:
   template<typename... Args>
   explicit ndvector(Args... args) : ndvector(std::make_tuple(args...)) {}
+
+  ndvector(const base_type& a) : base_type(a) {}
 };
 
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_NDVECTOR_HPP_
