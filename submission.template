@@ -9,12 +9,6 @@ int main() {
   freopen(FILE_IO ".in", "r", stdin);
   freopen(FILE_IO ".out", "w", stdout);
 #endif
-
-  std::cin.tie(nullptr);
-  std::ios::sync_with_stdio(false);
-  std::cout.precision(10);
-  std::cout << std::fixed;
-
   %SolverCall%
   return 0;
 }
