@@ -4,6 +4,7 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_NDARRAY_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_NDARRAY_HPP_
 #include <vector>
+
 // arbitrary-dimensional array that allows non-constexpr extents.
 // Usage: ndarray<dimension, value_type> arr(extents..., init_value);
 // All extensions but one for the last dimension are required. An initial value
@@ -21,10 +22,12 @@ class ndarray : public std::vector<ndarray<dimension - 1, T>> {
       : std::vector<ndarray<dimension - 1, T>>(
           d, ndarray<dimension - 1, T>(args...)) {}
 };
+
 template<typename T> class ndarray<1, T> : public std::vector<T> {
  public:
   using std::vector<T>::vector;
   template<typename... Args>
-  ndarray(Args &&...args) : std::vector<T>(std::forward<Args>(args)...) {}
+  explicit ndarray(Args&&... args)
+      : std::vector<T>(std::forward<Args>(args)...) {}
 };
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_NDARRAY_HPP_
