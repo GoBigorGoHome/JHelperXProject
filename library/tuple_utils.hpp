@@ -4,6 +4,8 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_TUPLE_UTILS_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_TUPLE_UTILS_HPP_
+#include <utility>
+#include <tuple>
 
 namespace detail {
 

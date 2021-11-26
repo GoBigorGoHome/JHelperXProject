@@ -6,6 +6,7 @@
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_MONOTONIC_QUEUE_HPP_
 #include <deque>
 #include <cassert>
+#include <functional>
 
 /// @brief A monotonic queue is an abstract data type with similar semantics to
 /// that of a \c std::priority_queue. When an element e is to be inserted into
