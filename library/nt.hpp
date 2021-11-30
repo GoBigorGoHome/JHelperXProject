@@ -1,4 +1,5 @@
 #include <vector>
+#include <cassert>
 
 template<typename T> std::vector<T> prime_divisors(T n) {
   std::vector<T> res;
@@ -118,4 +119,23 @@ long long gcd(long long a, long long b, long long &x, long long &y) {
   // (y - x * (a / b)) * b + x * a == gcd(a, b)
   y -= x * (a / b);
   return t;
+}
+
+template<typename T> T phi(T n) {
+  assert(n > 0);
+  T result = 1;
+  for (T i = 2; i * i <= n; ++i) {
+    if (n % i == 0) {
+      n /= i;
+      T t = 1;
+      while (n % i == 0) {
+        n /= i;
+        t *= i;
+      }
+      result *= t * (i - 1);
+    }
+  }
+  if (n > 1)
+    result *= n - 1;
+  return result;
 }
