@@ -156,10 +156,12 @@ template<typename Value, typename Tag, typename Result> class SegTree {
         r = s - l;
       }
   }
-  template<typename F> void collect(int leaf, const F &f) const {
+  Tag collect_tags(int leaf) const {
+    Tag t;
     assert(0 <= leaf && leaf < n);
     for (int i = 2 * leaf; i != -1; i = tree[i].p | 1)
-      f(tree[i].tag);
+      t.apply(tree[i].tag);
+    return t;
   }
   // find_first and find_last call all FALSE elements
   // to the left (right) of the sought position exactly once
