@@ -139,3 +139,34 @@ template<typename T> T phi(T n) {
     result *= n - 1;
   return result;
 }
+
+/// @brief Compute Mobius function for positive integers not greater than n.
+/// @return A list \c mu of integers, \c mu[0] is 0.
+// https://mathoverflow.net/a/99545/303233
+std::vector<int> get_mu(int n) {
+  assert(n > 0);
+  std::vector<int> mu(n + 1, 1);
+  mu[0] = 0;
+  for (int i = 2; i * i <= n; i++) {
+    if (mu[i] == 1) {// i is a prime number.
+      for (int j = i; j <= n; j += i) {
+        mu[j] *= -i;
+      }
+      for (int k = i * i, j = k; j <= n; j += k) {
+        mu[j] = 0;
+      }
+    }
+  }
+  for (int i = 2; i <= n; i++) {
+    if (mu[i] == i)
+      mu[i] = 1;
+    else if (mu[i] == -i)
+      mu[i] = -1;
+    else if (mu[i] > 0)
+      mu[i] = -1;
+    else if (mu[i] < 0)
+      mu[i] = 1;
+    // else mu[i] == 0
+  }
+  return mu;
+}
