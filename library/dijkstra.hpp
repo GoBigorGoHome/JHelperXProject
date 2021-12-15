@@ -8,20 +8,26 @@
 #include <queue>
 #include <utility>
 #include <tuple>
+#include <cassert>
 #include <type_traits.hpp>
 
 template<typename DistanceArray> class dijkstra {
-  DistanceArray &d;// TODO: Is it possible make d a void*?
-  using Distance = remove_all_extents_<DistanceArray>::type;
+  DistanceArray& d;// TODO: Is it possible make d a void*?
   static constexpr std::size_t Dimension = rank_<DistanceArray>::value;
+
+  using Distance = typename remove_all_extents_<DistanceArray>::type;
+
   struct S {
     Distance distance;
     std::array<int, Dimension> index;
-    bool operator<(const S &other) const { return distance > other.distance; }
+
+    bool operator<(const S& other) const { return distance > other.distance; }
+
     template<typename T> struct tuple_factory_;
+
     template<std::size_t... Is>
     struct tuple_factory_<std::index_sequence<Is...>> {
-      static auto to_tuple(const S &s) {
+      static auto to_tuple(const S& s) {
         return std::tuple(s.distance, s.index[Is]...);
       }
     };
@@ -31,28 +37,39 @@ template<typename DistanceArray> class dijkstra {
           *this);
     }
   };
+
   std::priority_queue<S> q;
-  template<typename T> Distance &get_distance_(T &dis, int index) {
+
+  template<typename T> Distance& get_distance_(T& dis, int index) {
     return dis[index];
   }
+
   template<typename T, typename... Ts>
-  Distance &get_distance_(T &dis, int index, Ts... indices) {
+  Distance& get_distance_(T& dis, int index, Ts... indices) {
     return get_distance_(dis[index], indices...);
   }
-  template<typename... Ts> Distance &get_distance(Ts... indices) {
+
+  template<typename... Ts> Distance& get_distance(Ts... indices) {
     return get_distance_(d, indices...);
   }
 
  public:
-  explicit dijkstra(DistanceArray &d) : d(d) {}
+  explicit dijkstra(DistanceArray& d) : d(d) {}
+
   template<typename... Ts> void relax(Distance distance, Ts... indices) {
-    Distance &dis = get_distance(indices...);
+    Distance& dis = get_distance(indices...);
     if (dis > distance) {
       dis = distance;
       q.push({dis, std::array<int, Dimension>{indices...}});
     }
   }
-  bool empty() {
+
+  bool empty() const { return q.empty(); }
+
+  auto pop() {
+    assert(not q.empty());
+    auto result = q.top();
+    q.pop();
     while (not q.empty()
            and q.top().distance
                != std::apply(
@@ -60,11 +77,6 @@ template<typename DistanceArray> class dijkstra {
                    q.top().index)) {
       q.pop();
     }
-    return q.empty();
-  }
-  auto pop() {
-    auto result = q.top();
-    q.pop();
     return result.as_tuple();
   }
 };
