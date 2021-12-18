@@ -50,6 +50,10 @@ class grid {
     return 0 <= i and i < n and 0 <= j and j < m;
   }
 
+  std::pair<int, int> next(int r, int c, int dir) const {
+    return {r + dx[dir], c + dy[dir]};
+  }
+
   inline cell_neighbors neighbors(int r, int c) const {
     assert(cover(r, c));
     return cell_neighbors{this, r, c};
