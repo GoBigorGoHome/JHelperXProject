@@ -34,4 +34,42 @@ template<typename T> Poly<T>& operator*=(Poly<T>& a, const Poly<T>& b) {
   return a;
 }
 
+/// @tparam F type of field.
+/// @brief f is a polynomial of degree d on field F. Given f(0), f(1),
+/// ..., f(d), and x, compute f(x) in O(d) time using Lagrange interpolation.
+/// @param values list of values f(0), f(1), ..., f(d).
+/// @param x the evaluation point.
+template<typename F>
+F lagrange_interpolation(const std::vector<F>& values, F x) {
+  assert(values.size() > 0);
+  int n = (int) values.size();
+
+  std::vector<F> inv_factorial(n);
+  F factorial = 1;
+  for (int i = 2; i < n; i++)
+    factorial *= i;
+  inv_factorial[n - 1] = F(1) / factorial;
+  for (int i = n - 2; i >= 0; i--)
+    inv_factorial[i] = inv_factorial[i + 1] * (i + 1);
+
+  std::vector<F> r_prod(n);
+  F t = 1;
+  for (int i = n - 1; i >= 0; i--) {
+    r_prod[i] = t;
+    t *= x - i;
+  }
+  F l_prod = 1;
+  F ans = 0;
+  for (int i = 0; i < n; i++) {
+    if ((n - 1 - i) & 1)
+      ans -= values[i] * l_prod * r_prod[i] * inv_factorial[i]
+          * inv_factorial[n - 1 - i];
+    else
+      ans += values[i] * l_prod * r_prod[i] * inv_factorial[i]
+          * inv_factorial[n - 1 - i];
+    l_prod *= x - i;
+  }
+  return ans;
+}
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_POLY_HPP_
