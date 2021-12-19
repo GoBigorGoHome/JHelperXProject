@@ -4,6 +4,10 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_ORDERED_SET_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_ORDERED_SET_HPP_
+
+#include <cstddef>
+static_assert(__GLIBCXX__, "libstdc++ is required.");
+#ifdef __GLIBCXX__
 #include <ext/pb_ds/assoc_container.hpp>
 template<typename T>
 using ordered_set =
@@ -38,4 +42,6 @@ template<typename T> class ordered_multiset {
     return data.size();
   }
 };
+#endif
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ORDERED_SET_HPP_
