@@ -17,36 +17,36 @@ struct point {
 
 typedef std::vector<point> points;
 
-bool operator==(const point &a, const point &b) {
+bool operator==(const point& a, const point& b) {
   return a.x == b.x and a.y == b.y;
 }
 
-bool operator!=(const point &a, const point &b) {
+bool operator!=(const point& a, const point& b) {
   return not(a == b);
 }
 
-bool operator<(const point &a, const point &b) {
+bool operator<(const point& a, const point& b) {
   return a.x == b.x ? a.y < b.y : a.x < b.x;
 }
 
-bool operator>(const point &a, const point &b) {
+bool operator>(const point& a, const point& b) {
   return b < a;
 }
 
-bool operator<=(const point &a, const point &b) {
+bool operator<=(const point& a, const point& b) {
   return not(b < a);
 }
 
-bool operator>=(const point &a, const point &b) {
+bool operator>=(const point& a, const point& b) {
   return not(a < b);
 }
 
-std::istream &operator>>(std::istream &in, point &p) {
+std::istream& operator>>(std::istream& in, point& p) {
   in >> p.x >> p.y;
   return in;
 }
 
-std::ostream &operator<<(std::ostream &out, const point &p) {
+std::ostream& operator<<(std::ostream& out, const point& p) {
   out << "(" << p.x << ", " << p.y << ")";
   return out;
 }
@@ -65,7 +65,7 @@ vec operator+(vec a, vec b) {
   return {a.x + b.x, a.y + b.y};
 }
 
-vec &operator+=(vec &a, vec b) {
+vec& operator+=(vec& a, vec b) {
   a.x += b.x;
   a.y += b.y;
   return a;
@@ -75,7 +75,7 @@ vec operator-(vec a, vec b) {
   return {a.x - b.x, a.y - b.y};
 }
 
-vec &operator-=(vec &a, vec b) {
+vec& operator-=(vec& a, vec b) {
   a.x -= b.x;
   a.y -= b.y;
   return a;
@@ -89,7 +89,7 @@ vec operator*(vec v, ll a) {
   return a * v;
 }
 
-vec &operator*=(vec &a, ll b) {
+vec& operator*=(vec& a, ll b) {
   a.x *= b;
   a.y *= b;
   return a;
@@ -102,7 +102,7 @@ vec operator/(vec v, ll a) {
   return {v.x / a, v.y / a};
 }
 
-vec &operator/=(vec &v, ll a) {
+vec& operator/=(vec& v, ll a) {
   assert(a != 0);
   assert(v.x % a == 0);
   assert(v.y % a == 0);
@@ -142,13 +142,24 @@ vec get_y_intercept(point p, vec direction) {
 };
 
 int quadrant(const point& p) {
-  assert(p.x != 0 or p.y != 0);
+  if (p.x == 0 and p.y == 0)
+    return 0;
   if (p.x > 0 and p.y >= 0)
     return 1;
   if (p.y > 0 and p.x <= 0)
-    return 1;
+    return 2;
   if (p.x < 0 and p.y <= 0)
     return 3;
   return 4;
 }
+
+bool compare_polar_angle(const point& p1, const point& p2) {
+  int q1 = quadrant(p1);
+  int q2 = quadrant(p2);
+  if (q1 != q2)
+    return q1 < q2;
+  // FIXME: might overflow
+  return p1.x * p2.y > p2.x * p1.y;
+}
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IGEOMETRY_HPP_
