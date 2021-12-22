@@ -53,12 +53,6 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endif ()
 endif ()
 
-if (MSVC)
-    #    target_compile_options(testrunner PRIVATE -fsanitize=address /MT)
-    #    target_link_options(testrunner PRIVATE /libpath:D:\\LLVM\\lib\\clang\\10.0.0\\lib\\windows)
-    #    target_link_libraries(testrunner PRIVATE clang_rt.asan-x86_64.lib)
-endif ()
-
 include_directories(library)
 
 add_executable(exp exp.cpp)
