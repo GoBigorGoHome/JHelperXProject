@@ -85,7 +85,7 @@ template<typename T, std::size_t Dimension> class xor_basis {
     return result;
   }
 
-  /// @brief Returns when each of the componets of vector \p x were added to
+  /// @brief Returns when each of the components of vector \p x were added to
   /// basis. This method is not useful in general, it is for the problem abc223h
   /// XOR Query.
   std::vector<int> component_orders(T x) const {
@@ -110,7 +110,7 @@ template<typename T, std::size_t Dimension> class xor_basis {
   }
 
   // Returns whether a vector \p x is in the span of the basis.
-  bool is_in_span(T x) const {
+  bool contains(T x) const {
     for (std::size_t i = 0; i < Dimension; i++) {
       if (x >> i & 1) {
         if (std_basis_[i] == 0) {
