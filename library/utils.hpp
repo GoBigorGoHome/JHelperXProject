@@ -178,6 +178,11 @@ std::mt19937_64
 
 template<typename T> constexpr T INF = std::numeric_limits<T>::max() / 2;
 
+/// @brief Usage: acc\<type_of_sum\>(array)
+template<typename T, typename U> T acc(const U& array) {
+  return std::accumulate(std::begin(array), std::end(array), T(0));
+}
+
 #ifndef debug
 #define debug(...)
 #endif
