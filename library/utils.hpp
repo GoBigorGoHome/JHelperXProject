@@ -173,8 +173,6 @@ template<class F> struct y_combinator {
   }
 };
 template<class F> y_combinator(F) -> y_combinator<F>;
-std::mt19937_64
-    RNG(std::chrono::steady_clock::now().time_since_epoch().count());
 
 template<typename T> constexpr T INF = std::numeric_limits<T>::max() / 2;
 
