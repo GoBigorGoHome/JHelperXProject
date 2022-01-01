@@ -19,8 +19,9 @@ class lca_forest : public dfs_forest {
     for (h = 0; max_depth > 0; ++h)
       max_depth /= 2;
     a.assign(n, std::vector<int>(h));
-    for (int i = 0; i < n; ++i)
-      a[i][0] = pv[i];
+    if (h > 0)
+      for (int i = 0; i < n; ++i)
+        a[i][0] = pv[i];
     for (int j = 1; j < h; ++j)
       for (int i = 0; i < n; ++i)
         a[i][j] = a[i][j - 1] == -1 ? -1 : a[a[i][j - 1]][j - 1];
