@@ -50,6 +50,18 @@ template<int bit_width> class bitwise_trie_multiset {
     return pos;
   }
 
+  template<typename Array, typename Predicate>
+  int insert(const Array& array, Predicate is_zero) {
+    assert(std::size(array) >= bit_width);
+    int pos = 0;
+    count_[pos]++;
+    for (int i = bit_width - 1; i >= 0; i--) {
+      pos = next(pos, bool(is_zero(array[i])));
+      count_[pos]++;
+    }
+    return pos;
+  }
+
   /// @brief Find the minimum value of \p x XOR \em key over all keys in the
   /// trie.
   template<typename Int> Int min_xor(Int x) const {
