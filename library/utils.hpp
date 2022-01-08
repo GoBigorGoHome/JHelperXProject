@@ -181,6 +181,10 @@ template<typename T, typename U> T acc(const U& array) {
   return std::accumulate(std::begin(array), std::end(array), T(0));
 }
 
+template <typename T> T acc(const std::vector<T>& array) {
+  return std::accumulate(array.begin(), array.end(), T(0));
+}
+
 #ifndef debug
 #define debug(...)
 #endif
