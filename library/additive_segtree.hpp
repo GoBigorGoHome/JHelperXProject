@@ -1,22 +1,17 @@
 //
-// Created by zjsdu on 7/7/2021.
+// Created by zjsdu on 2022/1/10.
 //
 
-#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
-#define JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
+#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_ADDITIVE_SEGTREE_HPP_
+#define JHELPER_EXAMPLE_PROJECT_LIBRARY_ADDITIVE_SEGTREE_HPP_
 
 #include <vector>
 #include <cassert>
 #include <bit.hpp>
 
-/// @brief A monoid segment tree implemented as a complete binary tree.
-/// \tparam T Type of elements in the monoid.
-/// \tparam e Identity of the monoid.
-/// \tparam Op Binary operation of the monoid. Lambda expressions not allowed.
-/// See https://stackoverflow.com/q/5849059/6793559.
-template<typename T, T (*e)(), T (*Op)(T, T)> class segtree {
+template<typename T, T (*e)(), T (*Op)(T, T)> class additive_segtree {
  public:
-  explicit segtree(int n) : n_(n) {
+  explicit additive_segtree(int n) : n_(n) {
     log = ceil_log2(n_);
     size = 1 << log;
     data.assign(size * 2, e());
@@ -24,7 +19,7 @@ template<typename T, T (*e)(), T (*Op)(T, T)> class segtree {
   }
 
   template<typename U>
-  explicit segtree(const std::vector<U>& v) : segtree((int) v.size()) {
+  explicit additive_segtree(const std::vector<U>& v) : additive_segtree((int) v.size()) {
     for (int i = 0; i < n_; i++) {
       data[i + size] = v[i];
     }
@@ -47,6 +42,16 @@ template<typename T, T (*e)(), T (*Op)(T, T)> class segtree {
     for (int i = log; i >= 1; i--)
       push(position >> i);
     data[position] = value;
+    for (int i = 1; i <= log; i++)
+      update(position >> i);
+  }
+
+  void add(int position, T value) {
+    assert(0 <= position and position < n_);
+    position += size;
+    for (int i = log; i >= 1; i--)
+      push(position >> i);
+    data[position] = Op(data[position], value);
     for (int i = 1; i <= log; i++)
       update(position >> i);
   }
@@ -142,5 +147,4 @@ template<typename T, T (*e)(), T (*Op)(T, T)> class segtree {
     }
   }
 };
-
-#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SEGTREE_HPP_
+#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ADDITIVE_SEGTREE_HPP_

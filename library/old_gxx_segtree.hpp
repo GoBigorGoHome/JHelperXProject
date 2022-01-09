@@ -2,8 +2,8 @@
 // Created by zjsdu on 11/5/2020.
 //
 
-#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_GXX_SEGTREE_HPP_
-#define JHELPER_EXAMPLE_PROJECT_LIBRARY_GXX_SEGTREE_HPP_
+#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_OLD_GXX_SEGTREE_HPP_
+#define JHELPER_EXAMPLE_PROJECT_LIBRARY_OLD_GXX_SEGTREE_HPP_
 #include <functional>
 #include <vector>
 #include <cassert>
@@ -181,4 +181,4 @@ template<typename Value, typename Tag, typename Result> class SegTree {
 template<typename Result>
 using segtree_t = SegTree<struct Value, struct Tag, Result>;
 using segtree = segtree_t<struct Value>;
-#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_GXX_SEGTREE_HPP_
+#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_OLD_GXX_SEGTREE_HPP_

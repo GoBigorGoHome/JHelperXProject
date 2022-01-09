@@ -5,12 +5,12 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_STATIC_RMQ_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_STATIC_RMQ_HPP_
 
-#include <monoid_segtree.hpp>
+#include <segtree.hpp>
 #include <limits>
 
 template<typename T> class static_range_min {
   static T Min(T a, T b) { return std::min(a, b); }
-  monoid_segtree<T, std::numeric_limits<T>::max(), Min> tree;
+  segtree<T, std::numeric_limits<T>::max(), Min> tree;
   int n;
 
  public:
@@ -29,7 +29,7 @@ template<typename T> class static_range_min {
 
 template<typename T> class static_range_max {
   static T Max(T a, T b) { return std::max(a, b); }
-  monoid_segtree<T, std::numeric_limits<T>::min(), Max> tree;
+  segtree<T, std::numeric_limits<T>::min(), Max> tree;
   int n;
 
  public:
