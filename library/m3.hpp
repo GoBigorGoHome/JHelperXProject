@@ -27,4 +27,19 @@ mint C(int n, int m) {
   return factorial[n] * inv_factorial[m] * inv_factorial[n - m];
 };
 
+mint power(mint x, int n) {
+  return Power(x, n);
+}
+
+template<int N> struct Pow {
+  std::vector<mint> p{1};
+  mint operator()(int n) {
+    assert(n >= 0);
+    while (n + 1 > (int) p.size()) {
+      p.push_back(N * p.back());
+    }
+    return p[n];
+  }
+};
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_M3_HPP_
