@@ -19,6 +19,10 @@ class UnionFind {
 
   int size(int x) { return -parent_or_size[root(x)]; }
 
+  /// @brief Reset the size of the tree where x belongs to 1. This method is not
+  /// for general use.
+  void reset_size(int x) { parent_or_size[root(x)] = -1; }
+
   bool has_cycle(int x) { return has_cycle_[root(x)]; }
 
   int root(int x) {
