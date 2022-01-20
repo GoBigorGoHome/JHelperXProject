@@ -32,12 +32,23 @@ template<typename Container> Container dec(Container &&c) {
     --e;
   return std::forward<Container>(c);
 }
-template<typename A, typename B> inline bool chkmin(A &a, const B &b) {
-  return b < a ? a = b, true : false;
+
+template<typename A, typename B, typename... C>
+bool chkmin(A& a, const B& b, const C&... c) {
+  if (B res = std::min<B>({b, c...}); res < a) {
+    a = res;
+    return true;
+  }
+  return false;
 }
 
-template<typename A, typename B> inline bool chkmax(A &a, const B &b) {
-  return a < b ? a = b, true : false;
+template<typename A, typename B, typename... C>
+bool chkmax(A& a, const B& b, const C&... c) {
+  if (B res = std::max<B>({b, c...}); res > a) {
+    a = res;
+    return true;
+  }
+  return false;
 }
 
 template<typename Container> Container rev(Container &&c) {
