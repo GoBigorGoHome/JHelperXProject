@@ -17,15 +17,16 @@ template<typename T> std::vector<T> prime_divisors(T n) {
 }
 
 template<typename T> std::vector<T> divisors(T n) {
+  assert(n > 0);
   std::vector<T> res;
   T i = 1;
-  for (; (unsigned long long) i * i < n; ++i) {
+  for (; (unsigned long long) i * i < (unsigned long long) n; ++i) {
     if (n % i == 0) {
       res.push_back(i);
     }
   }
   int j = (int) res.size() - 1;
-  if ((unsigned long long) i * i == n)
+  if ((unsigned long long) i * i == (unsigned long long) n)
     res.push_back(i);
   while (j >= 0) {
     res.push_back(n / res[j]);
