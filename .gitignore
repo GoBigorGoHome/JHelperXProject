@@ -96,7 +96,6 @@ fabric.properties
 .idea/vcs.xml
 .idea/deployment.xml
 exp.cpp
-ac-library/
 TODO
 /checker/tests/
 /checker/my.cpp
