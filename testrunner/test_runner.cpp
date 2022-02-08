@@ -128,8 +128,8 @@ void test_runner(TestType testType) {
           return elapsed_seconds.count();
         });
         auto res = task.get_future();
-        std::thread task_tread(std::move(task));
-        task_tread.detach();
+        std::thread task_thread(std::move(task));
+        task_thread.detach();
         auto status = res.wait_for(time_limit);
         if (status == std::future_status::timeout) {
           print_test(real_cout, testID, "N/A");
@@ -177,8 +177,8 @@ void test_runner(TestType testType) {
             return elapsed_seconds.count();
           });
           auto res = task.get_future();
-          std::thread task_tread(std::move(task));
-          task_tread.detach();
+          std::thread task_thread(std::move(task));
+          task_thread.detach();
           auto status = res.wait_for(time_limit);
           if (status == std::future_status::timeout) {
             print_subtest(real_cout, testID, subtest_id, input_pos,
