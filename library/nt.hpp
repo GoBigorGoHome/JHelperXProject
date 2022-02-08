@@ -1,3 +1,6 @@
+#ifndef NT_HPP_
+#define NT_HPP_
+
 #include <vector>
 #include <cassert>
 
@@ -108,7 +111,7 @@ std::vector<int> get_mpf(int n) {
   return mpf;
 }
 
-long long gcd(long long a, long long b, long long &x, long long &y) {
+long long gcd(long long a, long long b, long long& x, long long& y) {
   if (b == 0) {
     x = 1;
     y = 0;
@@ -171,3 +174,33 @@ std::vector<int> get_mu(int n) {
   }
   return mu;
 }
+
+struct mpf_info {
+  int mpf = 0;
+  int mpf_cnt;
+  int next;
+};
+
+std::vector<mpf_info> get_mpf_info(int n) {
+  assert(n > 0);
+  std::vector<int> primes;
+  std::vector<mpf_info> res(n + 1);
+  for (int i = 2; i <= n; i++) {
+    if (res[i].mpf == 0) {
+      res[i] = {i, 1, 1};
+      primes.push_back(i);
+    }
+    int lim = n / i;
+    int max_prime = std::min(lim, res[i].mpf - 1);
+    for (int p : primes) {
+      if (p > max_prime)
+        break;
+      res[p * i] = {p, 1, i};
+    }
+    if (res[i].mpf <= lim)
+      res[res[i].mpf * i] = {res[i].mpf, res[i].mpf_cnt + 1, res[i].next};
+  }
+  return res;
+}
+
+#endif// NT_HPP_
