@@ -8,7 +8,6 @@
 #include "checker.h"
 #include <iostream>
 #include <sstream>
-#include <regex>
 #ifndef NOMINMAX
 #define NOMINMAX 1
 #endif
@@ -33,6 +32,15 @@ void signal_handler(int signal) {
 
 void solver_call();
 void solve();
+
+double run() {
+  auto start = std::chrono::steady_clock::now();
+  solver_call();
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double> elapsed_seconds = end - start;
+  return elapsed_seconds.count();
+}
+
 extern std::vector<jhelper::Test> tests;
 extern const bool show_all_failed_tests;
 std::ostringstream debug_stream;
@@ -89,6 +97,7 @@ void test_runner(TestType testType) {
   auto cin_buff = std::cin.rdbuf();
   std::ostream real_cout(cout_buff);
   // to show time in decimal format
+  real_cout.precision(3);
   real_cout << std::fixed;
   auto reset_streams = [&cout_buff, &cin_buff]() {
     std::cout.rdbuf(cout_buff);
@@ -120,24 +129,19 @@ void test_runner(TestType testType) {
       std::cout.rdbuf(task_out.rdbuf());
       if (testType == TestType::SINGLE or show_all_failed_tests
           or not test.has_output) {
-        std::packaged_task<double()> task([]() {
-          auto start = std::chrono::steady_clock::now();
-          solver_call();
-          auto end = std::chrono::steady_clock::now();
-          std::chrono::duration<double> elapsed_seconds = end - start;
-          return elapsed_seconds.count();
-        });
+        std::packaged_task<double()> task(run);
         auto res = task.get_future();
         std::thread task_thread(std::move(task));
-        task_thread.detach();
         auto status = res.wait_for(time_limit);
         if (status == std::future_status::timeout) {
           print_test(real_cout, testID, "N/A");
           real_cout << RED "TLE on test " << testID << "\n" RESET;
           real_cout.flush();
           reset_streams();
+          task_thread.detach();
           return;
         }
+        task_thread.join();
         maxTime = std::max(res.get(), maxTime);
         auto task_output = task_out.str();
         if (test.has_output) {
@@ -169,16 +173,9 @@ void test_runner(TestType testType) {
         double total_time = 0;
         int subtest_id = 0;
         while (std::cin.good() and subtest_id < n_subtest) {
-          std::packaged_task<double()> task([]() {
-            auto start = std::chrono::steady_clock::now();
-            solve();
-            auto end = std::chrono::steady_clock::now();
-            std::chrono::duration<double> elapsed_seconds = end - start;
-            return elapsed_seconds.count();
-          });
+          std::packaged_task<double()> task(run);
           auto res = task.get_future();
           std::thread task_thread(std::move(task));
-          task_thread.detach();
           auto status = res.wait_for(time_limit);
           if (status == std::future_status::timeout) {
             print_subtest(real_cout, testID, subtest_id, input_pos,
@@ -188,8 +185,10 @@ void test_runner(TestType testType) {
                       << "\n" RESET;
             real_cout.flush();
             reset_streams();
+            task_thread.detach();
             return;
           }
+          task_thread.join();
           std::string task_output = task_out.str();
           auto outputLines = normalize(task_output);
           if (outputLines.empty()) {
