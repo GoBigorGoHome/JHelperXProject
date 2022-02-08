@@ -55,9 +55,9 @@ template<typename Container> Container rev(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
   return std::forward<Container>(c);
 }
-//! \pre s must be sorted before passed to uniq.
+
 template<typename Sequence> Sequence uniq(Sequence &&s) {
-  assert(std::is_sorted(std::begin(s), std::end(s)));
+  std::sort(std::begin(s), std::end(s));
   s.erase(std::unique(std::begin(s), std::end(s)), std::end(s));
   return std::forward<Sequence>(s);
 }
