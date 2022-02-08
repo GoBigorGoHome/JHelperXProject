@@ -46,6 +46,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(testrunner PRIVATE -Wno-shift-op-parentheses)
     target_compile_options(testrunner PRIVATE -Wno-logical-op-parentheses)
     target_compile_options(testrunner PRIVATE -Wno-missing-braces)
+    target_compile_options(testrunner PRIVATE -Wno-implicit-int-float-conversion)
     if (NOT CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
         # fix linking error when using std::future with Clang
         # see https://stackoverflow.com/a/31639828/6793559 for detail
