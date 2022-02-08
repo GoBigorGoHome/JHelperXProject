@@ -13,10 +13,11 @@ add_executable(testrunner
         testrunner/checker.cpp
         testrunner/print_test.cpp
         testrunner/color.cpp)
+
 target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
-# use libstdc++ debug mode
-target_compile_definitions(testrunner PRIVATE _GLIBCXX_DEBUG LOCAL)
+target_compile_definitions(testrunner PRIVATE LOCAL)
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor /Zc:__cplusplus")
