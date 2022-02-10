@@ -19,11 +19,15 @@ add_executable(testrunner
 target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 
+if (DEFINED ENV{ASAN})
+    target_compile_options(testrunner PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
+    target_link_options(testrunner PRIVATE -fsanitize=address)
+endif()
+
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive- /Zc:preprocessor /Zc:__cplusplus")
 else ()
-    # set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=vla")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-backtrace-limit=0")
