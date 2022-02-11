@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_compile_definitions(LOCAL)
 
 add_executable(testrunner
+        testrunner/current_task.cpp
         testrunner/main.cpp
         testrunner/test_runner.cpp
         testrunner/compare_floats.cpp

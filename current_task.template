@@ -1,0 +1,7 @@
+#include "debug.hpp"
+extern std::ostringstream debug_stream;
+#define debug(...)                                                             \
+  debug_stream << "[" << #__VA_ARGS__ << "]:",                                 \
+      debug::debug_out(debug_stream, __VA_ARGS__)
+
+#include "%TaskFile%"
