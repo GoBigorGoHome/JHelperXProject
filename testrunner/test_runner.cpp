@@ -30,12 +30,11 @@ void signal_handler(int signal) {
 }
 #endif
 
-void solver_call();
 void solve();
 
 double run() {
   auto start = std::chrono::steady_clock::now();
-  solver_call();
+  solve();
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double> elapsed_seconds = end - start;
   return elapsed_seconds.count();
