@@ -51,9 +51,14 @@ bool chkmax(A& a, const B& b, const C&... c) {
   return false;
 }
 
-template<typename Container> Container rev(Container &&c) {
+template<typename Container> Container reverse(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
   return std::forward<Container>(c);
+}
+
+template<typename Sequence> Sequence rev(Sequence a) {
+  std::reverse(std::begin(a), std::end(a));
+  return a;
 }
 
 template<typename Sequence> Sequence uniq(Sequence &&s) {
@@ -134,7 +139,7 @@ template<typename T> auto end(reversion_wrapper<T> w) {
   using std::rend;
   return rend(w.iterable);
 }
-template<typename T> reversion_wrapper<T> reverse(T &&iterable) {
+template<typename T> reversion_wrapper<T> Reverse(T &&iterable) {
   return {std::forward<T>(iterable)};
 }
 
