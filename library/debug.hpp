@@ -1,3 +1,6 @@
+#ifndef DEBUG_HPP
+#define DEBUG_HPP
+
 #include <bitset>
 #include <ostream>
 #include <iterator>
@@ -59,3 +62,5 @@ void debug_out(std::ostream &out, const Args &...args) {
 #define show(...)                                                              \
   std::cerr << "[" << #__VA_ARGS__ << "]:",                                    \
       debug::debug_out(std::cerr, __VA_ARGS__)
+
+#endif
