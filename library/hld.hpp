@@ -29,15 +29,16 @@ int dfs(int u, int p, const std::vector<std::vector<int>>& adj) {
   return size;
 }
 
-void build(const std::vector<std::vector<int>>& adj) {
+void build(const std::vector<std::vector<int>>& adj, int root = 0) {
   int n = (int) adj.size();
   parent.assign(n, -1);
   heavy.assign(n, -1);
   head.assign(n, 0);
-  depth.assign(n, 0);
-  dfs(0, -1, adj);
+  depth.assign(n, -1);
+  depth[root] = 0;
+  dfs(root, -1, adj);
   for (int i = 0; i < n; i++)
-    if (i == 0 or heavy[parent[i]] != i)
+    if (parent[i] == -1 or heavy[parent[i]] != i)
       for (int j = i; j != -1; j = heavy[j])
         head[j] = i;
 }
