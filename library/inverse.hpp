@@ -4,7 +4,10 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_INVERSE_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_INVERSE_HPP_
+
 #include <cassert>
+#include <utility>// std::swap
+
 template<typename T> T inverse(T a, T m) {
   assert(a != 0);
   assert(m > 0);
@@ -19,4 +22,5 @@ template<typename T> T inverse(T a, T m) {
   assert(b == 1);
   return u < 0 ? u + m : u;
 }
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_INVERSE_HPP_
