@@ -8,6 +8,7 @@
 #include <sstream>
 #include <type_traits.hpp>
 
+#if __cplusplus >= 201703L
 namespace debug {
 template<typename... Args>
 std::ostream &operator<<(std::ostream &, std::tuple<Args...> const &);
@@ -62,5 +63,5 @@ void debug_out(std::ostream &out, const Args &...args) {
 #define show(...)                                                              \
   std::cerr << "[" << #__VA_ARGS__ << "]:",                                    \
       debug::debug_out(std::cerr, __VA_ARGS__)
-
+#endif
 #endif

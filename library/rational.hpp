@@ -279,9 +279,10 @@ constexpr rational<IntType> operator+(const rational<IntType> &a,
 }
 
 template<class Arg, class IntType>
-constexpr typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>,
-                                    rational<IntType>>
-operator+(const Arg &b, const rational<IntType> &a) {
+constexpr
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              rational<IntType>>
+    operator+(const Arg& b, const rational<IntType>& a) {
   rational<IntType> t(a);
   return t += b;
 }
@@ -294,9 +295,10 @@ constexpr rational<IntType> operator-(const rational<IntType> &a,
 }
 
 template<class Arg, class IntType>
-constexpr typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>,
-                                    rational<IntType>>
-operator-(const Arg &b, const rational<IntType> &a) {
+constexpr
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              rational<IntType>>
+    operator-(const Arg& b, const rational<IntType>& a) {
   rational<IntType> t(a);
   return -(t -= b);
 }
@@ -309,9 +311,10 @@ constexpr rational<IntType> operator*(const rational<IntType> &a,
 }
 
 template<class Arg, class IntType>
-constexpr typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>,
-                                    rational<IntType>>
-operator*(const Arg &b, const rational<IntType> &a) {
+constexpr
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              rational<IntType>>
+    operator*(const Arg& b, const rational<IntType>& a) {
   rational<IntType> t(a);
   return t *= b;
 }
@@ -324,9 +327,10 @@ constexpr rational<IntType> operator/(const rational<IntType> &a,
 }
 
 template<class Arg, class IntType>
-constexpr typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>,
-                                    rational<IntType>>
-operator/(const Arg &b, const rational<IntType> &a) {
+constexpr
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              rational<IntType>>
+    operator/(const Arg& b, const rational<IntType>& a) {
   rational<IntType> t(b);
   return t /= a;
 }
@@ -338,8 +342,9 @@ constexpr bool operator<=(const rational<IntType> &a, const Arg &b) {
 
 template<class Arg, class IntType>
 constexpr
-    typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>, bool>
-    operator<=(const Arg &b, const rational<IntType> &a) {
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              bool>
+    operator<=(const Arg& b, const rational<IntType>& a) {
   return a >= b;
 }
 
@@ -350,8 +355,9 @@ constexpr bool operator>=(const rational<IntType> &a, const Arg &b) {
 
 template<class Arg, class IntType>
 constexpr
-    typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>, bool>
-    operator>=(const Arg &b, const rational<IntType> &a) {
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              bool>
+    operator>=(const Arg& b, const rational<IntType>& a) {
   return a <= b;
 }
 
@@ -362,8 +368,9 @@ constexpr bool operator!=(const rational<IntType> &a, const Arg &b) {
 
 template<class Arg, class IntType>
 constexpr
-    typename std::enable_if_t<not std::is_same_v<rational<IntType>, Arg>, bool>
-    operator!=(const Arg &b, const rational<IntType> &a) {
+    typename std::enable_if_t<not std::is_same<rational<IntType>, Arg>::value,
+                              bool>
+    operator!=(const Arg& b, const rational<IntType>& a) {
   return !(b == a);
 }
 

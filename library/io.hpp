@@ -35,6 +35,7 @@ std::istream &operator>>(std::istream &stream, std::vector<T> &vec) {
   return stream;
 }
 
+#if __cplusplus >= 201703L
 template<typename... Ts>
 std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t) {
   std::apply([&in](auto &...args) { ((in >> args), ...); }, t);
@@ -76,6 +77,7 @@ std::ostream &operator<<(std::ostream &out, const std::tuple<Ts...> &theTuple) {
       theTuple);
   return out;
 }
+#endif
 
 template<typename T, typename U>
 std::ostream &operator<<(std::ostream &out, const std::pair<T, U> &p) {
@@ -97,6 +99,7 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
+#if __cplusplus >= 201703L
 template<typename... Args> void pt(Args &&...args) {
   ((std::cout << args << ' '), ...);
 }
@@ -111,5 +114,6 @@ void pl(const First &first, const Args &...args) {
 template<typename... Args> void pn(const Args &...args) {
   ((std::cout << args << '\n'), ...);
 }
+#endif
 }// namespace io
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_

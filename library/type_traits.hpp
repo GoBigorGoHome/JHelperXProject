@@ -8,7 +8,7 @@
 #include <string>
 template<typename T> T type();// no definition
 template<typename Container> auto value_type_of_() {
-  if constexpr (std::is_array_v<Container>)
+  if (std::is_array<Container>::value)
     return type<std::remove_extent_t<Container>>();
   else
     return type<typename Container::value_type>();
@@ -18,14 +18,16 @@ using value_type_of =
     decltype(value_type_of_<std::remove_reference_t<Container>>());
 // Source: https://foonathan.net/2020/10/iife-metaprogramming/
 
+#if __cplusplus >= 201703L
 namespace is_iterable_impl {
-using std::begin, std::end;
+using std::begin;
+using std::end;
 template<typename T>
 using check_specs = std::void_t<
     std::enable_if_t<
-        std::is_same_v<decltype(begin(std::declval<T &>())),// has begin()
+        std::is_same<decltype(begin(std::declval<T &>())),// has begin()
                        decltype(end(std::declval<T &>()))   // has end()
-                       >>,// ... begin() and end() are the same type ...
+                       >::value>,// ... begin() and end() are the same type ...
     decltype(*begin(std::declval<T &>()))>;// ... which can be dereferenced
 template<typename, typename = void> struct is_iterable : std::false_type {};
 // specialization
@@ -78,4 +80,5 @@ template<typename T>
 struct rank_<T, std::void_t<decltype(std::declval<T>()[0])>>
     : public std::integral_constant<
           std::size_t, rank_<decltype(std::declval<T>()[0])>::value + 1> {};
+#endif
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
