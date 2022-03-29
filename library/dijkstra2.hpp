@@ -13,6 +13,7 @@
 #include <limits>
 #include <ndarray.hpp>
 
+/// @pre DistanceType has operator<
 template<typename DistanceType, unsigned Dimension> class dijkstra {
 
   ndarray<Dimension, DistanceType> dis_array;
@@ -20,7 +21,7 @@ template<typename DistanceType, unsigned Dimension> class dijkstra {
   struct S {
     DistanceType distance;
     std::array<int, Dimension> index;
-    bool operator<(const S& other) const { return distance > other.distance; }
+    bool operator<(const S& other) const { return  other.distance < distance; }
 
     template<typename T> struct tuple_factory_;
 
@@ -59,17 +60,20 @@ template<typename DistanceType, unsigned Dimension> class dijkstra {
     static_assert(sizeof...(Ints) == Dimension);
   }
 
-  template<typename... Ints> void relax(DistanceType d, Ints... indices) {
+  template<typename... Ints> bool relax(DistanceType d, Ints... indices) {
     static_assert(sizeof...(Ints) == Dimension);
     DistanceType& dis = get_distance(indices...);
-    if (dis > d) {
+    if (d < dis) {
       dis = d;
       q.push({dis, std::array<int, Dimension>{indices...}});
+      return true;
     }
+    return false;
   }
 
   bool empty() const { return q.empty(); }
 
+  /// @returns a tuple (distance, indices...)
   auto pop() {
     assert(not q.empty());
     auto result = q.top();
