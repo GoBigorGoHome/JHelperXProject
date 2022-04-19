@@ -90,12 +90,10 @@ template<typename Array> int mini(const Array &a) {
 }
 
 template<typename Array, typename Value> auto lb(const Array &a, Value v) {
-  assert(a.size() > 0);
   return std::lower_bound(std::begin(a), std::end(a), v);
 }
 
 template<typename Array, typename Value> auto ub(const Array &a, Value v) {
-  assert(a.size() > 0);
   return std::upper_bound(std::begin(a), std::end(a), v);
 }
 
