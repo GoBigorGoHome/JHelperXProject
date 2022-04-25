@@ -107,7 +107,7 @@ template<typename Cap, typename Cost> class MinCostFlow {
   std::vector<Cost> slope(int s, int t) {
     Cost cost = 0;
     std::vector<Cost> ans{0};
-    while (dijkstra(s, t)) {
+    while (dijkstra(s, t) != INF_COST) {
       cur = head;
       Cap f = dfs(s, std::numeric_limits<Cap>::max(), t);
       for (Cap i = 0; i < f; i++) {
