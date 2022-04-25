@@ -27,7 +27,7 @@ mint C(int n, int m) {
   return factorial[n] * inv_factorial[m] * inv_factorial[n - m];
 };
 
-mint power(mint x, int n) {
+template<typename Int> mint power(mint x, Int n) {
   return Power(x, n);
 }
 
