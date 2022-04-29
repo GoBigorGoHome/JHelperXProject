@@ -6,9 +6,9 @@
 #include <iterator>
 #include <tuple>
 #include <sstream>
-#include <type_traits.hpp>
 
 #if __cplusplus >= 201703L
+#include <type_traits.hpp>
 namespace debug {
 template<typename... Args>
 std::ostream &operator<<(std::ostream &, std::tuple<Args...> const &);

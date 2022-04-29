@@ -5,7 +5,7 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_MCF_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_MCF_HPP_
 
-#include <numeric>
+#include <limits>
 #include <vector>
 #include <queue>
 #include <cassert>

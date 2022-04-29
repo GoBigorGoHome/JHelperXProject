@@ -58,7 +58,6 @@ template<typename Cap, typename Cost> class MinCostFlow {
       int v = e[i].to;
       if (not vis[v] and e[i].cap and d[v] == d[u] + e[i].cost) {
         if (Cap f = dfs(v, std::min(flow, e[i].cap), t)) {
-          debug(u, v);
           e[i].cap -= f;
           e[i ^ 1].cap += f;
           pushed += f;
