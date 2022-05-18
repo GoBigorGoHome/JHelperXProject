@@ -115,22 +115,22 @@ template<typename Array, typename Value> int ubi(const Array &a, Value v) {
   return int(ub(a, v) - std::begin(a));
 }
 
-#if __cplusplus >=201703L
 template<typename Container>
 Container iota(Container &&c, value_type_of<Container> v) {
   std::iota(std::begin(c), std::end(c), v);
   return std::forward<Container>(c);
 }
-#endif
 
+#if __cplusplus >=201703L
 template<typename Container, typename Compare = void *>
 Container sort(Container &&c, Compare comp = nullptr) {
-  if (std::is_same<Compare, void *>::value)
+  if constexpr (std::is_same_v<Compare, void *>)
     std::sort(std::begin(c), std::end(c));
   else
     std::sort(std::begin(c), std::end(c), comp);
   return std::forward<Container>(c);
 }
+#endif
 
 template<typename T> struct reversion_wrapper { T &iterable; };
 template<typename T> auto begin(reversion_wrapper<T> w) {

@@ -6,9 +6,11 @@
 #define JHELPER_EXAMPLE_PROJECT_TASKS_TYPE_TRAITS_HPP_
 #include <type_traits>
 #include <string>
+
+#if __cplusplus >= 201703L
 template<typename T> T type();// no definition
 template<typename Container> auto value_type_of_() {
-  if (std::is_array<Container>::value)
+  if constexpr (std::is_array_v<Container>)
     return type<std::remove_extent_t<Container>>();
   else
     return type<typename Container::value_type>();
@@ -16,6 +18,22 @@ template<typename Container> auto value_type_of_() {
 template<typename Container>
 using value_type_of =
     decltype(value_type_of_<std::remove_reference_t<Container>>());
+#else
+template <typename Container>
+struct value_type_of_impl // default, non-array
+{
+  using type = typename Container::value_type;
+};
+
+template <typename T, std::size_t N>
+struct value_type_of_impl<T[N]> // arrays
+{
+  using type = T;
+};
+
+template <typename Container>
+using value_type_of = typename value_type_of_impl<Container>::type;
+#endif
 // Source: https://foonathan.net/2020/10/iife-metaprogramming/
 
 #if __cplusplus >= 201703L
