@@ -11,7 +11,9 @@
 #ifndef NOMINMAX
 #define NOMINMAX 1
 #endif
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include <chrono>
 #include <future>
 #include <cassert>
@@ -46,6 +48,7 @@ std::ostringstream debug_stream;
 std::ostringstream diagnostic_stream;
 
 namespace jhelper {
+#ifdef _WIN32
 bool enable_virtual_terminal() {
   // Set output mode to handle virtual terminal sequences
   HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -68,13 +71,15 @@ bool enable_virtual_terminal() {
   }
   return true;
 }
-
+#endif
 void test_runner(TestType testType) {
+#ifdef _WIN32
   if (!IsDebuggerPresent()) {
     if (!enable_virtual_terminal()) {
       std::cerr << "Enable virtual terminal failed\n";
     }
   }
+#endif
 #ifdef _MSC_VER
   _CrtSetReportHook(MyReportHook);
   _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG | _CRTDBG_MODE_FILE);
@@ -161,7 +166,7 @@ void test_runner(TestType testType) {
           real_cout << YELLOW "End of test " << testID << "\n" RESET;
         }
       } else {
-        int n_subtest = INT_MAX;
+        int n_subtest = 1000000000;
         if (testType == TestType::MULTI_NUMBER)
           std::cin >> n_subtest;
         while (std::cin.good() and std::isspace(std::cin.peek()))

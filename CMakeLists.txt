@@ -20,10 +20,10 @@ add_executable(testrunner
 target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 
-if (DEFINED ENV{ASAN})
+if (NOT WIN32 OR DEFINED ENV{ASAN})
     target_compile_options(testrunner PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
     target_link_options(testrunner PRIVATE -fsanitize=address)
-endif()
+endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # specify standards conformance mode
@@ -32,10 +32,22 @@ else ()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror=vla")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ftemplate-backtrace-limit=0")
-    # use lld to speed up linking
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+    # Use mold on Linux or lld on Windows
+    if (EXISTS "/usr/bin/mold")
+        if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+            set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=mold")
+        elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -B/usr/lib/mold")
+        endif ()
+    else ()
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
+    endif ()
     # Set stack size to 256 MiB
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,268435456")
+    if (WIN32)
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,268435456")
+    else ()
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,--stack-size=268435456")
+    endif ()
     target_compile_options(testrunner PRIVATE -Werror)
     target_compile_options(testrunner PRIVATE -Werror=conversion)
     target_compile_options(testrunner PRIVATE -Wno-sign-conversion)
