@@ -24,6 +24,8 @@ using vii = std::vector<pii>;
 template<typename T>
 using pq = std::priority_queue<std::pair<T, int>,
                                std::vector<std::pair<T, int>>, std::greater<>>;
+template<typename T>
+using min_pq = std::priority_queue<T, std::vector<T>, std::greater<T>>;
 template<typename... Ts> using vt = std::vector<std::tuple<Ts...>>;
 template<typename T> using vv = ndarray<2, T>;
 template<typename T> struct range_tuple {
