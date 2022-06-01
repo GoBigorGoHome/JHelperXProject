@@ -121,6 +121,14 @@ Container iota(Container &&c, value_type_of<Container> v) {
   return std::forward<Container>(c);
 }
 
+template<typename T> std::vector<int> argsort(const std::vector<T>& array) {
+  std::vector<int> res(array.size());
+  std::iota(res.begin(), res.end(), 0);
+  std::sort(res.begin(), res.end(),
+            [&array](int i, int j) { return array[i] < array[j]; });
+  return res;
+}
+
 #if __cplusplus >=201703L
 template<typename Container, typename Compare = void *>
 Container sort(Container &&c, Compare comp = nullptr) {
