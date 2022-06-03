@@ -80,7 +80,7 @@ template<typename T, T (*e)(), T (*Op)(T, T)> class segtree {
 
   T all_product() const { return data[1]; }
 
-  /// Set S[l..r] to Indentity.
+  /// Set S[l..r] to Identity.
   void reset(int l, int r) {
     if (l > r)
       return;
