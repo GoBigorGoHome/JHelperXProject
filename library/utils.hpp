@@ -53,6 +53,19 @@ bool chkmax(A& a, const B& b, const C&... c) {
 }
 #endif
 
+template<typename T, typename U>
+void append(T &container1, const U &container2) {
+  container1.insert(container1.end(), container2.begin(), container2.end());
+}
+
+template<typename T> int argmin(const std::vector<T> &a) {
+  return (int) (std::min_element(a.begin(), a.end()) - a.begin());
+}
+
+template<typename T> int argmax(const std::vector<T> &a) {
+  return (int) (std::max_element(a.begin(), a.end()) - a.begin());
+}
+
 template<typename Container> Container reverse(Container &&c) {
   std::reverse(std::begin(c), std::end(c));
   return std::forward<Container>(c);
