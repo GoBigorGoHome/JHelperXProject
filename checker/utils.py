@@ -7,7 +7,7 @@ import concurrent.futures
 
 
 def random_seq(a, b, n):
-    return [randint(a, b) for i in range(n)]
+    return [randint(a, b) for _ in range(n)]
 
 
 def ri(f):
@@ -32,9 +32,12 @@ def rcmp(epsilon):
 
 
 def duipai(cnt, **kwargs):
-    build_all()
+    ret = build_all()
+    if ret:
+        print("Build failed!")
+        return
     spj = kwargs.get('spj', None)
-    for i in tqdm(range(cnt)):
+    for _ in tqdm(range(cnt)):
         gen_input()
         if os.system(run_both):
             print("Runtime Error!")

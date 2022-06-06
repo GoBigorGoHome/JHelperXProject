@@ -1,5 +1,6 @@
 import os
 import shutil
+import sys
 import time
 
 input_file_path = r"in.txt"
@@ -9,14 +10,18 @@ ac_output = r"ac_out.txt"
 source_tree = os.path.abspath("../")
 build_tree = os.path.abspath("build")
 
-my_exe = os.path.join(build_tree, "my.exe")
-ac_exe = os.path.join(build_tree, "ac.exe")
-
-run_my = my_exe + r" < " + input_file_path + r" > " + my_output + " 2> NUL"
-run_ac = ac_exe + r" <" + input_file_path + r" > " + ac_output + " 2> NUL"
+my_exe = os.path.join(build_tree, "my")
+ac_exe = os.path.join(build_tree, "ac")
+diff_cmd = "diff"
+nul = "/dev/null"
+if sys.platform == "win32":
+    nul = "NUL"
+    diff_cmd = "fc /A /N /W"
+run_my = my_exe + r" < " + input_file_path + r" > " + my_output + " 2> " + nul
+run_ac = ac_exe + r" <" + input_file_path + r" > " + ac_output + " 2> " + nul
 run_ac_ = ac_exe + r" <" + input_file_path
-diff = r"fc /A /N /W " + my_output + " " + ac_output
-diff_to_nul = diff + " > NUL 2> NUL"
+diff = diff_cmd + " " + my_output + " " + ac_output
+diff_to_nul = diff + " > " + nul + " 2> " + nul
 run_both = run_my + ' && ' + run_ac
 
 generator_mingw = "CodeBlocks - MinGW Makefiles"
@@ -31,7 +36,7 @@ def remove_build_tree():
 def generate(build_type):
     cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
           + " -G \"" + generator_ninja + "\"" \
-          + " -S " + source_tree + " -B " + build_tree + " > NUL"
+          + " -S " + source_tree + " -B " + build_tree + " > " + nul
     os.system(cmd)
 
 
@@ -41,8 +46,8 @@ def regenerate(build_type):
 
 
 def build_all():
-    build_cmd = "cmake --build " + build_tree + " --clean-first" + " --target my ac > NUL"
-    os.system(build_cmd)
+    build_cmd = "cmake --build " + build_tree + " --clean-first" + " --target my ac > " + nul
+    return os.system(build_cmd)
 
 
 def build_all_():
@@ -51,7 +56,7 @@ def build_all_():
 
 
 def build_my():
-    build_cmd = "cmake --build " + build_tree + " --clean-first" + " --target my > NUL"
+    build_cmd = "cmake --build " + build_tree + " --clean-first" + " --target my > " + nul
     os.system(build_cmd)
 
 
