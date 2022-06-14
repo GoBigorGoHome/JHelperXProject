@@ -226,6 +226,18 @@ template <typename T> T acc(const std::vector<T>& array) {
   return std::accumulate(array.begin(), array.end(), T(0));
 }
 
+// maps values of a into 0, 1, 2, ..., preserving order.
+template<typename T> std::vector<int> normalize(const std::vector<T> &a) {
+  assert(not a.empty());
+  int n = (int) a.size();
+  std::vector<int> I = argsort(a);
+  std::vector<int> b(a.size());
+  b[I[0]] = 0;
+  for (int i = 1; i < n; i++)
+    b[I[i]] = b[I[i - 1]] + (a[I[i - 1]] < a[I[i]]);
+  return b;
+}
+
 #ifndef debug
 #define debug(...)
 #endif
