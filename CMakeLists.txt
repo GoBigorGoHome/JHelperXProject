@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_compile_definitions(LOCAL)
 
 add_executable(testrunner
         testrunner/current_task.cpp
@@ -78,5 +77,6 @@ include_directories(library)
 add_executable(exp exp.cpp)
 
 add_executable(my checker/my.cpp)
+target_compile_definitions(my PRIVATE LOCAL)
 add_executable(ac checker/ac.cpp)
 include_directories(ac-library)
