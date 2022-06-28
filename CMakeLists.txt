@@ -16,6 +16,7 @@ add_executable(testrunner
         testrunner/print_test.cpp
         testrunner/color.cpp)
 
+target_compile_definitions(testrunner PRIVATE LOCAL)
 target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 
