@@ -13,7 +13,24 @@ typedef long long ll;
 
 struct point {
   ll x, y;
+  point(ll x, ll y) : x(x), y(y) {}
 };
+
+struct circle {
+  point c;
+  ll r;
+  circle(const point &center, ll radius) : c(center), r(radius) {}
+};
+
+ll dist2(point p1, point p2) {
+  return (p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y);
+}
+
+bool is_intersect(const circle& c1, const circle& c2) {
+  ll d1 = c1.r - c2.r, d2 = c1.r + c2.r;
+  ll d = dist2(c1.c, c2.c);
+  return d1 * d1 <= d and d <= d2 * d2;
+}
 
 typedef std::vector<point> points;
 
@@ -43,6 +60,11 @@ bool operator>=(const point& a, const point& b) {
 
 std::istream& operator>>(std::istream& in, point& p) {
   in >> p.x >> p.y;
+  return in;
+}
+
+std::istream& operator>>(std::istream& in, circle& c) {
+  in >> c.c >> c.r;
   return in;
 }
 
