@@ -28,11 +28,13 @@ template<int modulus> class modular_hash {
   modular_hash(const String &a, int radix, int offset = 0)
       : length((int) std::size(a)) {
     assert(length > 0);
+    assert(radix > 0);
     value.resize(length);
     power.resize(length);
     value_type sum = 0;
     for (int i = 0; i < length; i++) {
       assert(a[i] >= offset);
+      assert(a[i] - offset < radix);
       sum = sum * radix + (a[i] - offset);
       value[i] = sum;
     }
@@ -45,8 +47,10 @@ template<int modulus> class modular_hash {
   /// @param p position of the first character to include
   /// @param count length of the substring
   value_type operator()(int pos, int count) const {
-    assert(0 <= pos and pos < length);
-    assert(1 <= count and count <= length);
+    assert(count >= 0);
+    assert(0 <= pos and pos + count <= length);
+    if (count == 0)
+      return 0;
     return pos == 0 ? value[count - 1]
                     : value[pos + count - 1] - power[count] * value[pos - 1];
   }

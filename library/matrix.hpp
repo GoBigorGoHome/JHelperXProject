@@ -20,11 +20,11 @@ template<typename T> Mat<T> Id(int n) {
 
 template<typename T> Mat<T> operator*(const Mat<T>& a, const Mat<T>& b) {
   Mat<T> c(a.size(), Vec<T>(b[0].size()));
-  for (size_t i = 0; i < a.size(); i++) {
-    for (size_t j = 0; j < a[0].size(); j++) {
+  for (std::size_t i = 0; i < a.size(); i++) {
+    for (std::size_t j = 0; j < a[0].size(); j++) {
       // optimization for sparse matrix
       if (a[i][j] != 0) {
-        for (size_t k = 0; k < b[0].size(); k++) {
+        for (std::size_t k = 0; k < b[0].size(); k++) {
           c[i][k] += a[i][j] * b[j][k];
         }
       }
@@ -35,8 +35,8 @@ template<typename T> Mat<T> operator*(const Mat<T>& a, const Mat<T>& b) {
 
 template<typename T> Vec<T> operator*(const Mat<T>& a, const Vec<T>& b) {
   Vec<T> c(a.size());
-  for (size_t i = 0; i < a.size(); i++) {
-    for (size_t j = 0; j < a[0].size(); j++) {
+  for (std::size_t i = 0; i < a.size(); i++) {
+    for (std::size_t j = 0; j < a[0].size(); j++) {
       c[i] += a[i][j] * b[j];
     }
   }
@@ -45,8 +45,8 @@ template<typename T> Vec<T> operator*(const Mat<T>& a, const Vec<T>& b) {
 
 template<typename T> Mat<T> operator+(const Mat<T>& a, const Mat<T>& b) {
   Mat<T> c(a.size(), Vec<T>(a[0].size()));
-  for (size_t i = 0; i < a.size(); ++i)
-    for (size_t j = 0; j < a[i].size(); ++j) {
+  for (std::size_t i = 0; i < a.size(); ++i)
+    for (std::size_t j = 0; j < a[i].size(); ++j) {
       c[i][j] = a[i][j] + b[i][j];
     }
   return c;
@@ -55,7 +55,7 @@ template<typename T> Mat<T> operator+(const Mat<T>& a, const Mat<T>& b) {
 template<typename T> Mat<T> pow(Mat<T> a, long long n) {
   assert(n >= 0);
   Mat<T> res(a.size(), Vec<T>(a.size()));
-  for (size_t i = 0; i < a.size(); i++) {
+  for (std::size_t i = 0; i < a.size(); i++) {
     res[i][i] = 1;
   }
   while (n) {
