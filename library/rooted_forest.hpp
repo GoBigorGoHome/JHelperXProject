@@ -48,6 +48,9 @@ class rooted_forest {
   /// \return the d-th ancestor of vertex u.
   int ancestor(int u, int d) const {
     assert(0 <= u and u < n);
+    assert(d >= 0);
+    if (d >= n)
+      return -1;
     for (int i = 0; i <= log; i++)
       if ((d >> i) & 1) {
         u = anc[i][u];
