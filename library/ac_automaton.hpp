@@ -9,87 +9,75 @@
 #include <queue>
 #include <algorithm>
 #include <string>
+#include <cassert>
 // Aho-Corasick automaton
 template<unsigned sigma_size> class AC {
-  struct node {
-    std::array<int, sigma_size> pos{};
-    int flag = -1;
-    // termed "failure function" in [Aho-Corasick 75]
-    int suffix = 0;
-    // keyword suffix
-    int kw_suffix = -1;
-  };
-  std::vector<node> state;
+  std::vector<std::array<int, sigma_size>> pos;
+  std::vector<int> flag, kw_suffix;
   int kw_cnt = 0;
 
- public:
-  AC() {
-    state.emplace_back();
-    state[0].suffix = -1;
+  void make_new_node() {
+    pos.push_back({});
+    flag.push_back(-1);
+    kw_suffix.push_back(-1);
   }
+
+ public:
+  AC() { make_new_node(); }
   int size() const { return kw_cnt; }
   template<typename T> int insert(const T *s, int len, int offset = 0) {
-    int index = 0;
-    for (int i = 0; i < len; ++i) {
-      int j = s[i] - offset;
-      if (!state[index].pos[j]) {
-        state[index].pos[j] = (int) state.size();
-        state.emplace_back();
+    int i = 0;
+    for (int _ = 0; _ < len; ++_) {
+      int j = s[_] - offset;
+      if (!pos[i][j]) {
+        pos[i][j] = (int) pos.size();
+        make_new_node();
       }
-      index = state[index].pos[j];
+      i = pos[i][j];
     }
-    if (state[index].flag == -1)
-      state[index].flag = kw_cnt++;
-    return state[index].flag;
+    if (flag[i] == -1)
+      flag[i] = kw_cnt++;
+    return flag[i];
   }
+
   int insert(const std::string &s, int offset = 'a') {
     return insert(s.c_str(), (int) s.size(), offset);
   }
+
   void build() {
-    std::queue<int> que;
+    std::queue<std::pair<int, int>> que;// (node_id, suffix_link)
     for (int i = 0; i < sigma_size; ++i)
-      if (state[0].pos[i])
-        que.push(state[0].pos[i]);
+      if (pos[0][i])
+        que.emplace(pos[0][i], 0);
     while (!que.empty()) {
-      int u = que.front();
+      auto [u, suffix_u] = que.front();
       que.pop();
-      int fu = state[u].suffix;// failure function
       for (int c = 0; c < sigma_size; ++c) {
-        int &v = state[u].pos[c];
+        int &v = pos[u][c];
         if (v) {
-          que.push(v);
-          int fv = state[v].suffix = state[fu].pos[c];
-          state[v].kw_suffix = state[fv].flag == -1 ? state[fv].kw_suffix : fv;
+          int suffix_v = pos[suffix_u][c];
+          que.emplace(v, suffix_v);
+          if (flag[suffix_v] != -1)
+            kw_suffix[v] = suffix_v;
+          else
+            kw_suffix[v] = kw_suffix[suffix_v];
         } else {
           // 把不存在的边补上
-          v = state[fu].pos[c];
+          v = pos[suffix_u][c];
         }
       }
     }
   }
-  // The following methods must be called after calling build().
-  auto get_kw_links() const {
-    std::vector<int> par(kw_cnt, -1);
-    for (const node &s : state)
-      if (s.flag != -1 and s.kw_suffix != -1)
-        par[s.flag] = state[s.kw_suffix].flag;
-    return par;
+
+  int go(int i, int j) const {
+    assert(0 <= i && i < pos.size());
+    assert(0 <= j && j < sigma_size);
+    return pos[i][j];
   }
-  template<typename T>
-  auto search_substr(const T *s, int len, int offset = 0) const {
-    std::vector<int> ret;
-    for (int i = 0, index = 0; i < len; ++i) {
-      index = state[index].pos[s[i] - offset];
-      if (state[index].flag != -1)
-        ret.push_back(state[index].flag);
-      else if (state[index].kw_suffix != -1)
-        ret.push_back(state[state[index].kw_suffix].flag);
-    }
-    return ret;
-  }
-  auto search_substr(const std::string &s, int offset = 'a') const {
-    return search_substr(s.c_str(), (int) s.size(), offset);
+
+  bool is_keyword(int i) const {
+    assert(0 <= i && i < pos.size());
+    return flag[i] != -1 || kw_suffix[i] != -1;
   }
 };
-
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_AC_AUTOMATON_HPP_
