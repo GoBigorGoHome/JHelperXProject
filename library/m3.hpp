@@ -39,6 +39,24 @@ mint C(int n, int m) {
   return fact(n) * inv_fact(m) * inv_fact(n - m);
 };
 
+// Number of combinations with repetition.
+mint C_rep(int n, int m) {
+  if (n < 0 || m < 0)
+    return 0;
+  if (n == 0)
+    return m == 0;
+  return C(n + m - 1, m);
+}
+
+// Number of ways to distribute N indistinguishable balls into M bins.
+mint distribute(int N, int M) {
+  if (N < 0 || M < 0)
+    return 0;
+  if (M == 0)
+    return N == 0;
+  return C(N + M - 1, M - 1);
+}
+
 template<typename Int> mint power(mint x, Int n) {
   return Power(x, n);
 }
