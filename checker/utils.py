@@ -1,7 +1,14 @@
 from tqdm import tqdm
 import concurrent.futures
-from gen import *
-from build_run import *
+from gen import gen_input
+from build_run import ac_output, my_output
+from build_run import build_all, build_my
+from build_run import build_all_, build_my_
+from build_run import run_my, run_both, run_ac_
+from build_run import diff, diff_to_nul
+from build_run import generate, regenerate_
+import os
+import time
 
 
 def ri(f):
@@ -56,10 +63,19 @@ def stress_compare():
             print("OK")
 
 
+def compare():
+    build_all_()
+    os.system(run_both)
+    # if os.system(run_both):
+    #     print("Runtime error!")
+    #     return
+    os.system(diff)
+
+
 def stress_my(**kwargs):
     spj = kwargs.get('spj', None)
-    generate("Debug")
-    build_my()
+    regenerate_("Debug")
+    build_my_()
     while True:
         gen_input()
         ret = os.system(run_my)

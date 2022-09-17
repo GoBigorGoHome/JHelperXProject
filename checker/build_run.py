@@ -27,6 +27,9 @@ run_both = run_my + ' && ' + run_ac
 generator_mingw = "CodeBlocks - MinGW Makefiles"
 generator_ninja = "Ninja"
 
+cxx = "D:/msys64/mingw64/bin/g++.exe"
+cc = "D:/msys64/mingw64/bin/gcc.exe"
+
 
 def remove_build_tree():
     if os.path.exists(build_tree):
@@ -35,9 +38,26 @@ def remove_build_tree():
 
 def generate(build_type):
     cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
+          + " -DCMAKE_CXX_COMPILER=" + cxx \
+          + " -DCMAKE_C_COMPILER=" + cc \
           + " -G \"" + generator_ninja + "\"" \
           + " -S " + source_tree + " -B " + build_tree + " > " + nul
     os.system(cmd)
+
+
+def generate_(build_type):
+    cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
+          + " -DCMAKE_C_COMPILER=" + cc \
+          + " -DCMAKE_CXX_COMPILER=" + cxx \
+          + " -G " + generator_ninja \
+          + " -S " + source_tree + " -B " + build_tree
+    print(cmd)
+    os.system(cmd)
+
+
+def regenerate_(build_type):
+    remove_build_tree()
+    generate_(build_type)
 
 
 def regenerate(build_type):
@@ -62,7 +82,8 @@ def build_my():
 
 def build_my_():
     build_cmd = "cmake --build " + build_tree + " --clean-first" + " --target my"
-    os.system(build_cmd)
+    ret = os.system(build_cmd)
+    return ret
 
 
 def compare():
