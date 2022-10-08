@@ -14,13 +14,16 @@
       <w>cerr</w>
       <w>chkmax</w>
       <w>chkmin</w>
+      <w>coeff</w>
       <w>compatibity</w>
       <w>corasick</w>
       <w>cout</w>
       <w>cpeditor</w>
+      <w>cuiaoxiang</w>
       <w>cyaron</w>
       <w>declval</w>
       <w>dereferenced</w>
+      <w>dinic</w>
       <w>divl</w>
       <w>duipai</w>
       <w>elems</w>
@@ -31,6 +34,8 @@
       <w>iostream</w>
       <w>jhelper</w>
       <w>joaquín</w>
+      <w>lazysegtree</w>
+      <w>lmin</w>
       <w>lowbit</w>
       <w>lópez</w>
       <w>mcmf</w>
@@ -40,6 +45,7 @@
       <w>muñoz</w>
       <w>mylib</w>
       <w>ndarray</w>
+      <w>ndvector</w>
       <w>nolicense</w>
       <w>nominmax</w>
       <w>noncommutative</w>
@@ -54,6 +60,7 @@
       <w>reroot</w>
       <w>rerooting</w>
       <w>resetter</w>
+      <w>rmax</w>
       <w>segtree</w>
       <w>setw</w>
       <w>showbase</w>

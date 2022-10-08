@@ -3,11 +3,16 @@
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
+      <file path="$PROJECT_DIR$/ac-library" />
       <file path="$PROJECT_DIR$/checker" />
       <file path="$PROJECT_DIR$/library" />
       <file path="$PROJECT_DIR$/tasks" />
     </sourceRoots>
     <excludeRoots>
+      <file path="$PROJECT_DIR$/checker/build" />
+      <file path="$PROJECT_DIR$/checker/tests" />
+      <file path="$PROJECT_DIR$/cmake-build-cl" />
+      <file path="$PROJECT_DIR$/eigen-3.3.9" />
       <file path="$PROJECT_DIR$/spcppl" />
     </excludeRoots>
   </component>
@@ -30,5 +35,4 @@
       </profile>
     </annotationProcessing>
   </component>
-  <component name="CopyrightManager" default="" />
 </project>

@@ -4,9 +4,23 @@
     <inspection_tool class="ARCIssues" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AccessorsWereOverridden" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="Annotator" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="ArgumentSelectionDefects" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ArgumentSelectionDefects" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="clangTidyCheckOptions">
+        <list>
+          <ClangTidyCheckOption>
+            <option name="optionName" value="clion-argument-selection-defects.ShortParametersNames" />
+            <option name="optionValue" value="1" />
+          </ClangTidyCheckOption>
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="ArrayIssues" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="AssociatedTypeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="BibtexDuplicateBibliography" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="BibtexDuplicateBibliographystyle" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="BibtexDuplicateId" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="BibtexMissingBibliographystyle" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="BibtexUnusedEntry" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="BridgeCastIssues" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="BuildoutUnresolvedPartInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CallDealloc" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -18,23 +32,37 @@
     <inspection_tool class="CheckTagEmptyBody" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="CheckValidXmlInScriptTagBody" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="CheckXmlFileWithXercesValidator" enabled="true" level="ERROR" enabled_by_default="true" />
-    <inspection_tool class="ClangTidy" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="clangTidyChecks" value="-*,-android-*,-bugprone-bool-pointer-implicit-conversion,-bugprone-exception-escape,-bugprone-signed-char-misuse,-cert-dcl50-cpp,-cert-env33-c,-cert-mem57-cpp,-cert-oop57-cpp,-cert-oop58-cpp,-clang-analyzer-*,-clang-diagnostic-*,-cppcoreguidelines-avoid-goto,-cppcoreguidelines-init-variables,-cppcoreguidelines-macro-usage,-cppcoreguidelines-no-malloc,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-const-cast,-cppcoreguidelines-pro-type-cstyle-cast,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-type-union-access,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-special-member-functions,-darwin-*,-fuchsia-*,-google-*,-hicpp-avoid-goto,-hicpp-no-assembler,-linuxkernel-*,-llvm-*,-misc-bool-pointer-implicit-conversion,-misc-definitions-in-headers,-misc-non-private-member-variables-in-classes,-misc-unused-alias-decls,-misc-unused-parameters,-misc-unused-using-decls,-modernize-avoid-c-arrays,-modernize-use-default-member-init,-modernize-use-trailing-return-type,-modernize-use-using,-objc-*,-openmp-exception-escape,-readability-braces-around-statements,-readability-else-after-return,-readability-function-size,-readability-identifier-naming,-readability-implicit-bool-conversion,-readability-isolate-declaration,-readability-magic-numbers,-readability-named-parameter,-readability-qualified-auto,-readability-redundant-access-specifiers,-readability-redundant-member-init,-readability-redundant-preprocessor,-readability-simplify-boolean-expr,-readability-uppercase-literal-suffix,-zircon-*,-bugprone-narrowing-conversions,-cert-dcl03-c,-cert-dcl16-c,-cert-dcl37-c,-cert-dcl51-cpp,-cert-dcl54-cpp,-cert-dcl59-cpp,-cert-err09-cpp,-cert-err61-cpp,-cert-fio38-c,-cert-msc30-c,-cert-msc32-c,-cert-oop11-cpp,-cert-oop54-cpp,-cert-pos44-c,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-c-copy-assignment-signature,-cppcoreguidelines-explicit-virtual-functions,-cppcoreguidelines-non-private-member-variables-in-classes,-fuchsia-header-anon-namespaces,-google-readability-braces-around-statements,-google-readability-function-size,-google-readability-namespace-comments,-hicpp-avoid-c-arrays,-hicpp-braces-around-statements,-hicpp-deprecated-headers,-hicpp-explicit-conversions,-hicpp-function-size,-hicpp-invalid-access-moved,-hicpp-member-init,-hicpp-move-const-arg,-hicpp-named-parameter,-hicpp-new-delete-operators,-hicpp-no-array-decay,-hicpp-no-malloc,-hicpp-noexcept-move,-hicpp-special-member-functions,-hicpp-static-assert,-hicpp-undelegated-constructor,-hicpp-uppercase-literal-suffix,-hicpp-use-auto,-hicpp-use-emplace,-hicpp-use-equals-default,-hicpp-use-equals-delete,-hicpp-use-noexcept,-hicpp-use-nullptr,-hicpp-use-override,-hicpp-vararg,-google-default-arguments,-google-explicit-constructor,-google-runtime-operator" />
+    <inspection_tool class="ClangTidy" enabled="false" level="WARNING" enabled_by_default="false">
+      <option name="clangTidyChecks" value="-*,-android-*,-bugprone-bool-pointer-implicit-conversion,-bugprone-exception-escape,-bugprone-signed-char-misuse,-cert-dcl50-cpp,-cert-env33-c,-cert-mem57-cpp,-cert-oop57-cpp,-cert-oop58-cpp,-clang-analyzer-*,-clang-diagnostic-*,-cppcoreguidelines-avoid-goto,-cppcoreguidelines-init-variables,-cppcoreguidelines-macro-usage,-cppcoreguidelines-no-malloc,-cppcoreguidelines-owning-memory,-cppcoreguidelines-pro-bounds-array-to-pointer-decay,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-pro-bounds-pointer-arithmetic,-cppcoreguidelines-pro-type-const-cast,-cppcoreguidelines-pro-type-cstyle-cast,-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-type-union-access,-cppcoreguidelines-pro-type-vararg,-cppcoreguidelines-special-member-functions,-darwin-*,-fuchsia-*,-google-*,-hicpp-avoid-goto,-hicpp-no-assembler,-linuxkernel-*,-llvm-*,-misc-bool-pointer-implicit-conversion,-misc-definitions-in-headers,-misc-non-private-member-variables-in-classes,-misc-unused-alias-decls,-misc-unused-parameters,-misc-unused-using-decls,-modernize-avoid-c-arrays,-modernize-use-default-member-init,-modernize-use-trailing-return-type,-modernize-use-using,-objc-*,-openmp-exception-escape,-readability-braces-around-statements,-readability-else-after-return,-readability-function-size,-readability-identifier-naming,-readability-implicit-bool-conversion,-readability-isolate-declaration,-readability-magic-numbers,-readability-named-parameter,-readability-qualified-auto,-readability-redundant-access-specifiers,-readability-redundant-member-init,-readability-redundant-preprocessor,-readability-simplify-boolean-expr,-readability-uppercase-literal-suffix,-zircon-*,-bugprone-narrowing-conversions,-cert-dcl03-c,-cert-dcl16-c,-cert-dcl37-c,-cert-dcl51-cpp,-cert-dcl54-cpp,-cert-dcl59-cpp,-cert-err09-cpp,-cert-err61-cpp,-cert-fio38-c,-cert-msc30-c,-cert-msc32-c,-cert-oop11-cpp,-cert-oop54-cpp,-cert-pos44-c,-cppcoreguidelines-avoid-c-arrays,-cppcoreguidelines-avoid-magic-numbers,-cppcoreguidelines-c-copy-assignment-signature,-cppcoreguidelines-explicit-virtual-functions,-cppcoreguidelines-non-private-member-variables-in-classes,-fuchsia-header-anon-namespaces,-google-readability-braces-around-statements,-google-readability-function-size,-google-readability-namespace-comments,-hicpp-avoid-c-arrays,-hicpp-braces-around-statements,-hicpp-deprecated-headers,-hicpp-explicit-conversions,-hicpp-function-size,-hicpp-invalid-access-moved,-hicpp-member-init,-hicpp-move-const-arg,-hicpp-named-parameter,-hicpp-new-delete-operators,-hicpp-no-array-decay,-hicpp-no-malloc,-hicpp-noexcept-move,-hicpp-special-member-functions,-hicpp-static-assert,-hicpp-undelegated-constructor,-hicpp-uppercase-literal-suffix,-hicpp-use-auto,-hicpp-use-emplace,-hicpp-use-equals-default,-hicpp-use-equals-delete,-hicpp-use-noexcept,-hicpp-use-nullptr,-hicpp-use-override,-hicpp-vararg,-google-default-arguments,-google-explicit-constructor,-google-runtime-operator,cppcoreguidelines-virtual-class-destructor" />
     </inspection_tool>
+    <inspection_tool class="ClangdErrorsAndWarnings" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="Clazy" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="CommandLineInspection" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="ComposeMissingKeys" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="ComposeUnknownKeys" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="ComposeUnknownValues" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="ComposeUnquotedPorts" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="ConstExpressionRequired" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ConstantConditions" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ConstantConditionsOC" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstantFunctionResult" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="ConstantParameter" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ConstrainFunctionResult" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ConstructionIsNotAllowed" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="DanglingPointer" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="DanglingPointers" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="DeprecatedApi" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DerivedFunctionsReturnTypeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="DockerFileAddOrCopySemantic" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="DockerFileArgumentCount" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="DockerFileAssignments" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="DockerFileRunCommandMissingContinuation" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="DuplicateAttribute" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateDeclarations" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicateSwitchCase" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="EmptyDeclOrStmt" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="EmptyDirectory" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="EndlessLoop" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="EqualityInConditionalOperator" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="EqualityInConditionalOperatorWithSelf" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -42,6 +70,7 @@
     <inspection_tool class="FormatSpecifiers" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FunctionImplicitDeclaration" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="FunctionParameterCountMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="GrazieInspection" enabled="false" level="TYPO" enabled_by_default="false" />
     <inspection_tool class="HardwiredNamespacePrefix" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HidesClassScope" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="HidesUpperScope" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -84,7 +113,10 @@
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
     <inspection_tool class="HtmlUnknownTarget" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="HttpClientUnresolvedVariable" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HttpRequestContentLengthIsIgnored" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="HttpRequestPlaceholder" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HttpUrlsUsage" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="IgnoreFileDuplicateEntry" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ImplementationHasNoInterface" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ImplicitDeclarationOfIvar" enabled="false" level="WARNING" enabled_by_default="false" />
@@ -100,6 +132,8 @@
     <inspection_tool class="IncompatiblePointers" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="IncompatibleTypes" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InconsistentLineSeparators" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="IncorrectFormatting" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="IncorrectHttpHeaderInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="IndexZeroUsage" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InfiniteRecursion" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="InitializationIssue" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -109,23 +143,95 @@
     <inspection_tool class="InterfaceHasNoImplementation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="Json5StandardCompliance" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="JsonDuplicatePropertyKeys" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="JsonPathEvaluateUnknownKey" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JsonPathUnknownFunction" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JsonPathUnknownOperator" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JsonSchemaCompliance" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JsonSchemaDeprecation" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="JsonSchemaRefReference" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="JsonStandardCompliance" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="KRUnspecifiedParameters" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="KeyValueCoding" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="LanguageDetectionInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LastArgumentMustBeNull" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="LatexAbsolutePath" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexAvoidEqnarray" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexBibinputsRelativePath" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexCdot" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexCiteBeforePeriod" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexCollapseCite" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexCommandAlreadyDefined" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexDiacriticIJ" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexDiscouragedUseOfDef" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexDocumentclassNotInRoot" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexDuplicateDefinition" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexDuplicateLabel" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexEllipsis" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexEnDash" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexEncloseWithLeftRight" enabled="false" level="WEAK WARNING" enabled_by_default="false" texify.inspection.latex.Latexnull.textArea="" />
+    <inspection_tool class="LatexEquationReference" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexEscapeAmpersand" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexEscapeHashOutsideCommand" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexEscapeUnderscore" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexExtremeInequality" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexFigureNotReferenced" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexFileNotFound" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexGatherEquations" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexGroupedSubSupScript" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexInclusionLoop" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexIncorrectSectionNesting" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexLabelBeforeCaption" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexLabelConvention" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexLineBreak" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexMakeatletter" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexMathFunctionText" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexMathOperatorEscape" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexMightBreakTexify" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexMissingDocumentEnvironment" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexMissingDocumentclass" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexMissingImport" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexMissingLabel" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexMultipleGraphicsPath" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexMultipleIncludes" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexNestedIncludes" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexNoExtension" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexNonBreakingSpace" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexNonMatchingEnvironment" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexNonMatchingIf" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexOverInsteadOfFrac" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPackageCouldNotBeFound" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPackageNameDoesNotMatchFileName" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPackageNotInstalled" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPackageSubdirectory" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPrimitiveEquation" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexPrimitiveStyle" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexQedHere" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexRedundantEscape" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexRedundantPar" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexRequiredExtension" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexSentenceEndWithCapital" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexSpaceAfterAbbreviation" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexTooLargeSection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexTrimWhitespace" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexUndefinedCommand" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexUnicode" enabled="false" level="ERROR" enabled_by_default="false" />
+    <inspection_tool class="LatexUnresolvedReference" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexUsePackageInPackage" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexVerticallyCenteredColon" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="LatexXInsteadOfTimes" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="LocalValueEscapesScope" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="LongLine" enabled="true" level="WARNING" enabled_by_default="false">
-      <scope name="Project Source Files" level="WARNING" enabled="true" />
+    <inspection_tool class="LongLine" enabled="false" level="WARNING" enabled_by_default="false">
+      <scope name="Project Source Files" level="WARNING" enabled="false" />
     </inspection_tool>
     <inspection_tool class="LoopDoesntUseConditionVariable" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="LossyEncoding" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="MarkdownIncorrectTableFormatting" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="MarkdownNoTableBorders" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="MarkdownUnresolvedFileReference" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MemberVisibility" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MethodIsLaterInTheScope" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MethodParameterCountMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="Misra" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="MissingReturn" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="MissingSwitchCase" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NoAttributeForProperty" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -142,6 +248,7 @@
     <inspection_tool class="NotReleasedValue" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NotSuperclass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="NotVisibleClass" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="NullDereference" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="NullDereferences" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCDFA" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCGlobalUnused" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -154,7 +261,7 @@
     <inspection_tool class="OCUnusedClass" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedConcept" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedGlobalDeclaration" enabled="false" level="WARNING" enabled_by_default="false" />
-    <inspection_tool class="OCUnusedIncludeDirective" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="OCUnusedIncludeDirective" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedInstanceVariable" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OCUnusedMacro" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="OCUnusedMethod" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -166,7 +273,9 @@
     <inspection_tool class="OtherObjC" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OverriddenAttributeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="OverriddenTypeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PoetryPackageVersionsInspection" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PointerTypeRequired" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PreprocessorComment" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PrivateCategoryShouldBeNearImplementation" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="ProblematicWhitespace" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="PropertyAndIvarTypeMismatch" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -242,6 +351,7 @@
     <inspection_tool class="PyProtocolInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PyRedeclarationInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PyRedundantParenthesesInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyRelativeImportInspection" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="PyReturnFromInitInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PySetFunctionToLiteralInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
@@ -280,8 +390,11 @@
     <inspection_tool class="RegExpRedundantEscape" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpRedundantNestedCharacterClass" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpRepeatedSpace" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RegExpSimplifiable" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpSingleCharAlternation" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RegExpSuspiciousBackref" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="RegExpUnexpectedAnchor" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="RegExpUnnecessaryNonCapturingGroup" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ReleasingOfAssignProperties" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="RequiredAttributes" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="myAdditionalRequiredHtmlAttributes" value="" />
@@ -296,8 +409,8 @@
     <inspection_tool class="Simplify" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="SpellCheckingInspection" enabled="true" level="TYPO" enabled_by_default="false">
       <scope name="Project Files" level="TYPO" enabled="true">
-        <option name="processCode" value="true" />
-        <option name="processLiterals" value="true" />
+        <option name="processCode" value="false" />
+        <option name="processLiterals" value="false" />
         <option name="processComments" value="true" />
       </scope>
       <option name="processCode" value="true" />
@@ -309,8 +422,11 @@
     <inspection_tool class="SyntaxError" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="TemplateArgumentsIssues" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="TodoComment" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="TomlUnresolvedReference" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnavailableInDeploymentTarget" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnreachableCode" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UnconstrainedVariableType" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnreachableCallsOfFunction" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="UnreachableCode" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnresolvedCollectionMessage" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnresolvedMessage" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" />
@@ -326,7 +442,7 @@
     <inspection_tool class="UnusedLocalization" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedMacro" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedMethod" enabled="true" level="WARNING" enabled_by_default="true" />
-    <inspection_tool class="UnusedParameter" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="UnusedParameter" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="UnusedProperty" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedStruct" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="UnusedTemplateParameter" enabled="true" level="WARNING" enabled_by_default="true" />
