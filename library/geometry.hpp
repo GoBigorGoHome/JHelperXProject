@@ -34,6 +34,19 @@ struct point {
 };
 
 using points = std::vector<point>;
+using vec = point;
+
+double dot(vec a, vec b) {
+  return a.x * b.x + a.y * b.y;
+};
+
+double cross(vec a, vec b) {
+  return a.x * b.y - a.y * b.x;
+}
+
+double triangle_area(point a, point b, point c) {
+  return abs(cross(a, b) + cross(b, c) + cross(c, a)) / 2;
+}
 
 std::istream &operator>>(std::istream &in, point &p) {
   in >> p.x >> p.y;
@@ -65,6 +78,15 @@ point operator*(double a, point p) {
   return {a * p.x, a * p.y};
 }
 
+point operator*(point p, double a) {
+  return {a * p.x, a * p.y};
+}
+
+point operator/(point p, double a) {
+  assert(a != 0);
+  return {p.x / a, p.y / a};
+}
+
 bool operator==(point a, point b) {
   return fequal(a.x, b.x) and fequal(a.y, b.y);
 }
@@ -90,6 +112,12 @@ point lerp(point a, point b, double t) {
   return a + t * (b - a);
 }
 
+/// @return 向量a方向上的单位向量
+vec normalize(vec a) {
+  assert(a.x != 0 or a.y != 0);
+  return a / len(a);
+}
+
 struct circle {
   point c;
   double r;
@@ -110,6 +138,24 @@ points circle_intersection(const circle &c1, const circle &c2) {
   if (p == q)
     return {p};
   return {p, q};
+}
+
+// 点 p 到直线 p1, p2 的距离
+double distance(point p, point p1, point p2) {
+  vec b = p2 - p1;
+  vec a = p - p1;
+  double ab = dot(a, b);
+  return sqrt(dot(b, b) - ab * ab / (dot(a, a)));
+}
+
+// 两向量的角平分线
+/// @pre 向量 a, b 不共线
+vec bisector(vec a, vec b) {
+  return normalize(len(b) * a + len(a) * b);
+}
+
+double sin(vec a, vec b) {
+  return abs(dot(a, b)) / (len(a) * len(b));
 }
 
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_GEOMETRY_HPP_
