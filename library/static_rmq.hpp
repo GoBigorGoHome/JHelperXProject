@@ -10,14 +10,14 @@
 
 template<typename T> class static_range_min {
   static T Min(T a, T b) { return std::min(a, b); }
-  segtree<T, std::numeric_limits<T>::max(), Min> tree;
+  segtree<T, std::numeric_limits<T>::max, Min> tree;
   int n;
 
  public:
   explicit static_range_min(const std::vector<T>& array)
       : tree(array), n(static_cast<int>(array.size())) {}
 
-  T get(int l, int r) const {
+  T get(int l, int r) {
     if (l > r)
       return std::numeric_limits<T>::max();
     assert(0 <= l and r < n);
