@@ -78,7 +78,7 @@ template<typename Graph> class SCC {
     dfs(start);
     return scc_g;
   }
-
+  /// scc_id 越大，拓扑序越小。
   int scc_id(int u) const {
     assert(0 <= u and u < n);
     return scc_id_[u];

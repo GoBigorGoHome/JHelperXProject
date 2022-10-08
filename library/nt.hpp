@@ -39,8 +39,9 @@ template<typename T> std::vector<T> divisors(T n) {
 }
 
 template<typename T> std::vector<std::pair<T, int>> factorize_p(T n) {
+  assert(n > 0);
   std::vector<std::pair<T, int>> res;
-  for (T i = 2; (unsigned long long) i * i <= n; ++i) {
+  for (unsigned long long i = 2; i * i <= (unsigned long long) n; ++i) {
     int cnt = 0;
     while (n % i == 0) {
       n /= i;
