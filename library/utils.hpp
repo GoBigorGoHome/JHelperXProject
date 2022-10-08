@@ -71,7 +71,7 @@ template<typename Container> Container reverse(Container &&c) {
   return std::forward<Container>(c);
 }
 
-template<typename Sequence> Sequence rev(Sequence a) {
+template<typename Sequence> Sequence rev_copy(Sequence a) {
   std::reverse(std::begin(a), std::end(a));
   return a;
 }
@@ -163,7 +163,7 @@ template<typename T> auto end(reversion_wrapper<T> w) {
   using std::rend;
   return rend(w.iterable);
 }
-template<typename T> reversion_wrapper<T> Reverse(T &&iterable) {
+template<typename T> reversion_wrapper<T> rev_view(T &&iterable) {
   return {std::forward<T>(iterable)};
 }
 
