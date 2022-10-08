@@ -137,8 +137,9 @@ Container iota(Container &&c, value_type_of<Container> v) {
 template<typename T> std::vector<int> argsort(const std::vector<T>& array) {
   std::vector<int> res(array.size());
   std::iota(res.begin(), res.end(), 0);
-  std::sort(res.begin(), res.end(),
-            [&array](int i, int j) { return array[i] < array[j]; });
+  std::sort(res.begin(), res.end(), [&array](int i, int j) {
+    return array[i] < array[j] || (array[i] == array[j] && i < j);
+  });
   return res;
 }
 
