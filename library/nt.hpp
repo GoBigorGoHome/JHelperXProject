@@ -2,7 +2,11 @@
 #define NT_HPP_
 
 #include <vector>
+#include <numeric>
 #include <cassert>
+#include <cmath>
+#include <unordered_map>
+#include <inverse.hpp>
 
 template<typename T> std::vector<T> prime_divisors(T n) {
   std::vector<T> res;
@@ -202,6 +206,90 @@ std::vector<mpf_info> get_mpf_info(int n) {
       res[res[i].mpf * i] = {res[i].mpf, res[i].mpf_cnt + 1, res[i].next};
   }
   return res;
+}
+
+int mod_pow(long long a, long long n, int mod) {
+  assert(n >= 0);
+  assert(mod > 0);
+  a %= mod;
+  if (a < 0)
+    a+= mod;
+  long long ans = 1;
+  while (n > 0) {
+    if (n & 1)
+      ans = a * ans % mod;
+    a = a * a % mod;
+    n >>= 1;
+  }
+  return (int) ans;
+}
+
+int discrete_log(int a, int b, int mod) {
+  assert(mod > 1);
+  assert(std::gcd(a, mod) == 1);
+
+  if (std::gcd(b, mod) != 1)
+    return -1;
+
+  a %= mod;
+  b %= mod;
+  if (a < 0)
+    a += mod;
+  if (b < 0)
+    b += mod;
+
+  int n = phi(mod);
+  int m = std::sqrt(n);
+  if (m * m < n)
+    m++;
+  std::unordered_map<int, int> J;
+  long long t = 1;
+  for (int j = 0; j < m; j++) {
+    J.insert({(int) t, j});
+    t = t * a % mod;
+  }
+  int k = mod_pow(inverse(a, mod), m, mod);
+  t = b;
+  for (int i = 0; i < m; i++) {
+    auto it = J.find((int) t);
+    if (it != J.end())
+      return i * m + it->second;
+    t = t * k % mod;
+  }
+  return -1;
+}
+
+int discrete_log_mod_p(int a, int b, int p) {
+  assert(p > 1);
+  assert(std::gcd(a, p) == 1);
+
+  if (std::gcd(b, p) != 1)
+    return -1;
+
+  a %= p;
+  b %= p;
+  if (a < 0)
+    a += p;
+  if (b < 0)
+    b += p;
+  int m = std::sqrt(p - 1);
+  if (m * m < p - 1)
+    m++;
+  std::unordered_map<int, int> J;
+  long long t = 1;
+  for (int j = 0; j < m; j++) {
+    J.insert({(int) t, j});
+    t = t * a % p;
+  }
+  int k = mod_pow(inverse(a, p), m, p);
+  t = b;
+  for (int i = 0; i < m; i++) {
+    auto it = J.find((int) t);
+    if (it != J.end())
+      return i * m + it->second;
+    t = t * k % p;
+  }
+  return -1;
 }
 
 #endif// NT_HPP_
