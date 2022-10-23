@@ -143,6 +143,18 @@ template<typename T> std::vector<int> argsort(const std::vector<T>& array) {
   return res;
 }
 
+template<typename T> std::vector<int> order(const std::vector<T>& array) {
+  int n = (int) array.size();
+  std::vector<int> I(n);
+  std::iota(I.begin(), I.end(), 0);
+  std::sort(I.begin(), I.end(),
+            [&array](int i, int j) { return array[i] < array[j]; });
+  std::vector<int> order(n);
+  for (int i = 1; i < n; i++)
+    order[I[i]] = order[I[i - 1]] + (array[I[i - 1]] < array[I[i]]);
+  return order;
+}
+
 #if __cplusplus >=201703L
 template<typename Container, typename Compare = void *>
 Container sort(Container &&c, Compare comp = nullptr) {
