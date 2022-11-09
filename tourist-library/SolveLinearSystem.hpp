@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <cassert>
+#include "GaussianElimination.hpp"
 
 template<typename T>
 std::vector<T> SolveLinearSystem(std::vector<std::vector<T>> a,

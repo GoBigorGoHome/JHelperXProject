@@ -87,6 +87,7 @@ add_executable(my checker/my.cpp)
 target_compile_definitions(my PRIVATE LOCAL)
 add_executable(ac checker/ac.cpp)
 include_directories(ac-library)
+include_directories(tourist-library)
 
 if (DEFINED ENV{ASAN})
     target_compile_options(exp PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
