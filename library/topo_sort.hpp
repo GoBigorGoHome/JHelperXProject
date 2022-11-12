@@ -6,28 +6,25 @@
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_TOPO_SORT_HPP_
 #include <vector>
 #include <algorithm>
-template<typename G> std::vector<int> topo_sort(const G &g) {
+std::vector<int> topo_sort(const std::vector<std::vector<int>> &g) {
   std::vector<int> order;
   order.reserve(g.size());
   std::vector<int> vis(g.size());
-  auto dfs = [&](int u) {
-    auto dfs_impl = [&](int u, const auto &dfs) -> bool {
-      vis[u] = -1;
-      for (int v : g[u])
-        if (not vis[v]) {
-          bool ret = dfs(v, dfs);
-          if (not ret)
-            return false;
-        } else if (vis[v] == -1)
-          return false;
-      vis[u] = 1;
-      order.push_back(u);
-      return true;
-    };
-    return dfs_impl(u, dfs_impl);
+  auto dfs = [&](int u, const auto &self) {
+    if (vis[u] == -1)
+      return 0;
+    if (vis[u] == 1)
+      return 1;
+    vis[u] = -1;
+    for (int v : g[u])
+      if (!self(v, self))
+        return 0;
+    vis[u] = 1;
+    order.push_back(u);
+    return 1;
   };
   for (int i = 0; i < (int) g.size(); ++i)
-    if (not vis[i] and not dfs(i))
+    if (!dfs(i, dfs))
       return {};
   std::reverse(order.begin(), order.end());
   return order;
