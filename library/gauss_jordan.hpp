@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <cassert>
+#include <bitset>
 
 template<typename F>
 /// @param n_eq number of equations
@@ -48,6 +49,37 @@ std::vector<int> gauss_jordan(std::vector<std::vector<F>>& a, int n_var) {
       for (int j : nonzero_cols)
         a[r][j] += coeff * a[rank][j];
     }
+    rank++;
+  }
+  // 至此已化成行最简形。
+  return leading_cols;
+}
+
+template<std::size_t N>
+std::vector<int> gauss_jordan(std::vector<std::bitset<N>>& a, int n_var) {
+  assert(n_var > 0);
+  int n_eq = static_cast<int>(a.size());
+  assert(n_eq > 0);
+  assert(n_var <= (int) N);
+  int rank = 0;
+  std::vector<int> leading_cols;
+
+  for (int c = 0; c < n_var; c++) {
+    // select a pivoting row
+    int pivot = rank;
+    while (pivot < n_eq && a[pivot][c] == 0)
+      ++pivot;
+    if (pivot == n_eq)
+      continue;
+
+    std::swap(a[rank], a[pivot]);
+
+    leading_cols.push_back(c);
+
+    for (int r = 0; r < n_eq; r++)
+      if (r != rank && a[r][c])
+        a[r] ^= a[rank];
+
     rank++;
   }
   // 至此已化成行最简形。
