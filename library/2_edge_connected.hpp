@@ -17,7 +17,7 @@ std::pair<std::vector<int>, std::vector<std::tuple<int, int, int>>>
 two_edge_connected_components(
     const std::vector<std::vector<std::pair<int, int>>> &g,
     bool keep_bridge_ends = false) {
-  size_t n = g.size();
+  std::size_t n = g.size();
   std::vector<int> component_id(n);
   // low[u]: the minimum depth that can be reached from u by travelling down
   // some (possibly zero) tree edges and then a back edge.
