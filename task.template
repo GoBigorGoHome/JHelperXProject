@@ -3,9 +3,3 @@ extern const bool compare_real_numbers = false;
 #include <utils.hpp>
 
 void solve() {}
-/*
- * Make sure that your laptop is plugged in or the build may be slow.
- *
- * Don't settle for a solution if it feels too clunky, take a moment and see if
- * you can make it simpler.
- */
