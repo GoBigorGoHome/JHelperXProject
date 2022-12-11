@@ -52,7 +52,7 @@ template<typename T> Mat<T> operator+(const Mat<T>& a, const Mat<T>& b) {
   return c;
 }
 
-template<typename T> Mat<T> pow(Mat<T> a, long long n) {
+template<typename T> Mat<T> power(Mat<T> a, long long n) {
   assert(n >= 0);
   Mat<T> res(a.size(), Vec<T>(a.size()));
   for (std::size_t i = 0; i < a.size(); i++) {
