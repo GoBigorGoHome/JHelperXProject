@@ -1,5 +1,6 @@
 extern const bool show_all_failed_tests = false;
 extern const bool compare_real_numbers = false;
+//#define INTERACTIVE_MODE //对于交互题，取消此行注释。
 #include <utils.hpp>
 
 void solve() {}

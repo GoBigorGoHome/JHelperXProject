@@ -7,7 +7,9 @@
 
 struct fast_ios {
   fast_ios() {
+#ifndef INTERACTIVE_MODE
     std::cin.tie(nullptr);
+#endif
     std::ios::sync_with_stdio(false);
     std::cout.precision(10);
     std::cout << std::fixed;
