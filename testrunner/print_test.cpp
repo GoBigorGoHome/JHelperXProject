@@ -27,7 +27,7 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output) {
     os << YELLOW "TRUNCATED DEBUG INFO\n" RESET;
 
   auto &test = tests[test_id];
-  os << "Test #" << test_id << '\n';
+  os << "Test #" << test_id + 1 << '\n';
   os << "Input: \n"
      << (line_cnt(test.input) > 100 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
                                     : test.input)
@@ -63,7 +63,7 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id,
     os << YELLOW "TRUNCATED DEBUG INFO\n" RESET;
 
   auto &test = tests[test_id];
-  os << "Subtest #" << test_id << "." << subtest_id << '\n';
+  os << "Subtest #" << test_id + 1 << "." << subtest_id + 1 << '\n';
   os << "Input: \n";
   auto cur_input_pos = std::cin.tellg();
   if (cur_input_pos == -1) {

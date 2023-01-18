@@ -131,15 +131,14 @@ void test_runner(TestType testType) {
       std::ostringstream task_out;
       std::cin.rdbuf(in.rdbuf());
       std::cout.rdbuf(task_out.rdbuf());
-      if (testType == TestType::SINGLE or show_all_failed_tests
-          or not test.has_output) {
+      if (testType == TestType::SINGLE) {
         std::packaged_task<double()> task(run);
         auto res = task.get_future();
         std::thread task_thread(std::move(task));
         auto status = res.wait_for(time_limit);
         if (status == std::future_status::timeout) {
           print_test(real_cout, testID, "N/A");
-          real_cout << RED "TLE on test " << testID << "\n" RESET;
+          real_cout << RED "TLE on test " << testID + 1 << "\n" RESET;
           real_cout.flush();
           reset_streams();
           task_thread.detach();
@@ -152,7 +151,7 @@ void test_runner(TestType testType) {
           if (not jhelper::check(test.output, task_output)) {
             print_test(real_cout, testID, task_output);
             if (not show_all_failed_tests) {
-              real_cout << RED "WA on test " << testID << "\n" RESET;
+              real_cout << RED "WA on test " << testID + 1 << "\n" RESET;
               real_cout << BRIGHT_BLACK "Maximal time: " << maxTime
                         << "s.\n" RESET;
               real_cout.flush();
@@ -163,7 +162,7 @@ void test_runner(TestType testType) {
           }
         } else {
           print_test(real_cout, testID, task_output);
-          real_cout << YELLOW "End of test " << testID << "\n" RESET;
+          real_cout << YELLOW "End of test " << testID + 1 << "\n" RESET;
         }
       } else {
         int n_subtest = 1000000000;
@@ -182,11 +181,13 @@ void test_runner(TestType testType) {
           std::thread task_thread(std::move(task));
           auto status = res.wait_for(time_limit);
           if (status == std::future_status::timeout) {
-            print_subtest(real_cout, testID, subtest_id, input_pos,
-                          answer_lines.cbegin() + n_matched_lines,
-                          answer_lines.end(), "N/A");
-            real_cout << RED "TLE on subtest " << testID << '.' << subtest_id
-                      << "\n" RESET;
+            print_subtest(
+                real_cout, testID, subtest_id, input_pos,
+                answer_lines.cbegin() + n_matched_lines,
+                answer_lines.end(),// 超时的情况下输出剩余的全部expected output。
+                "N/A");
+            real_cout << RED "TLE on subtest " << testID + 1 << '.'
+                      << subtest_id + 1 << "\n" RESET;
             real_cout.flush();
             reset_streams();
             task_thread.detach();
@@ -199,8 +200,8 @@ void test_runner(TestType testType) {
             print_subtest(real_cout, testID, subtest_id, input_pos,
                           answer_lines.cbegin() + n_matched_lines,
                           answer_lines.cend(), task_output);
-            real_cout << RED "No output on subtest " << testID << '.'
-                      << subtest_id << "\n" RESET;
+            real_cout << RED "No output on subtest " << testID + 1 << '.'
+                      << subtest_id + 1 << "\n" RESET;
             real_cout.flush();
             reset_streams();
             return;
@@ -216,8 +217,8 @@ void test_runner(TestType testType) {
                             answer_lines.cbegin() + n_matched_lines
                                 + outputLines.size(),
                             task_output);
-            real_cout << RED "WA on subtest " << testID << '.' << subtest_id
-                      << "\n" RESET;
+            real_cout << RED "WA on subtest " << testID + 1 << '.'
+                      << subtest_id + 1 << "\n" RESET;
             real_cout.flush();
             reset_streams();
             return;
