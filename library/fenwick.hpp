@@ -1,8 +1,7 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
-template<typename T>
-class BIT {
+template<typename T> class BIT {
   // 0-indexed
   std::vector<T> a;
   int size, pow2;
@@ -14,17 +13,26 @@ class BIT {
     size = n;
     // round down to power of 2
     pow2 = 1;
-    while (pow2 <= n / 2) { pow2 *= 2; }
+    while (pow2 <= n / 2) {
+      pow2 *= 2;
+    }
   }
 
   T sum(int x) const {
     T res = 0;
-    x = std::min((int)a.size() - 1, x);
+    x = std::min((int) a.size() - 1, x);
     while (x >= 0) {
       res += a[x];
       x = (x & (x + 1)) - 1;
     }
     return res;
+  }
+
+  T sum(int l, int r) const {
+    if (r < l)
+      return 0;
+    assert(0 <= l && r < size);
+    return sum(r) - sum(l - 1);
   }
 
   void add(int x, T v) {
