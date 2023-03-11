@@ -6,6 +6,7 @@
 #include <cmath>
 #include <cstring>
 #include <map>
+#include <unordered_map>
 #include <numeric>
 #include <set>
 #include <random>
