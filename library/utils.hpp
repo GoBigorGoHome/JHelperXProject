@@ -252,6 +252,17 @@ template<typename T> std::vector<int> normalize(const std::vector<T> &a) {
   return b;
 }
 
+template<typename F, typename Int>
+Int binary_search(F check, Int ok, Int ng, bool check_ok = true) {
+  if (check_ok)
+    assert(check(ok));
+  while (std::abs(ok - ng) > 1) {
+    Int x = ng + (ok - ng) / 2;
+    (check(x) ? ok : ng) = x;
+  }
+  return ok;
+}
+
 #ifndef debug
 #define debug(...)
 #endif
