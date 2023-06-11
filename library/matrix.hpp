@@ -8,18 +8,25 @@
 #include <vector>
 #include <cassert>
 
-template<typename T> using Vec = std::vector<T>;// Vec是列向量。
-template<typename T> using Mat = std::vector<Vec<T>>;
+template<typename T> using vec = std::vector<T>;
 
-template<typename T> Mat<T> Id(int n) {
-  Mat<T> res(n, Vec<T>(n));
-  for (int i = 0; i < n; i++)
+template<typename T> class mat : public std::vector<std::vector<T>> {
+ public:
+  template<typename Int>
+  mat(Int n, Int m) : std::vector<std::vector<T>>(n, std::vector<T>(m)) {}
+  template<typename Int> mat(Int n) : mat(n, n) {}
+};
+
+template<typename T, typename Int> mat<T> ID(Int n) {
+  mat<T> res(n);
+  for (Int i = 0; i < n; i++)
     res[i][i] = 1;
   return res;
 }
 
-template<typename T> Mat<T> operator*(const Mat<T>& a, const Mat<T>& b) {
-  Mat<T> c(a.size(), Vec<T>(b[0].size()));
+template<typename T> mat<T> operator*(const mat<T> &a, const mat<T> &b) {
+  assert(b.size() > 0);
+  mat<T> c(a.size(), b[0].size());
   for (std::size_t i = 0; i < a.size(); i++) {
     for (std::size_t j = 0; j < a[0].size(); j++) {
       // optimization for sparse matrix
@@ -33,8 +40,8 @@ template<typename T> Mat<T> operator*(const Mat<T>& a, const Mat<T>& b) {
   return c;
 }
 
-template<typename T> Vec<T> operator*(const Mat<T>& a, const Vec<T>& b) {
-  Vec<T> c(a.size());
+template<typename T> vec<T> operator*(const mat<T> &a, const vec<T> &b) {
+  vec<T> c(a.size());
   for (std::size_t i = 0; i < a.size(); i++) {
     for (std::size_t j = 0; j < a[0].size(); j++) {
       c[i] += a[i][j] * b[j];
@@ -43,8 +50,9 @@ template<typename T> Vec<T> operator*(const Mat<T>& a, const Vec<T>& b) {
   return c;
 }
 
-template<typename T> Mat<T> operator+(const Mat<T>& a, const Mat<T>& b) {
-  Mat<T> c(a.size(), Vec<T>(a[0].size()));
+template<typename T> mat<T> operator+(const mat<T> &a, const mat<T> &b) {
+  assert(a.size() > 0);
+  mat<T> c(a.size(), a[0].size());
   for (std::size_t i = 0; i < a.size(); ++i)
     for (std::size_t j = 0; j < a[i].size(); ++j) {
       c[i][j] = a[i][j] + b[i][j];
@@ -52,12 +60,9 @@ template<typename T> Mat<T> operator+(const Mat<T>& a, const Mat<T>& b) {
   return c;
 }
 
-template<typename T> Mat<T> power(Mat<T> a, long long n) {
+template<typename T> mat<T> power(mat<T> a, long long n) {
   assert(n >= 0);
-  Mat<T> res(a.size(), Vec<T>(a.size()));
-  for (std::size_t i = 0; i < a.size(); i++) {
-    res[i][i] = 1;
-  }
+  mat<T> res = ID<T>(a.size());
   while (n) {
     if (n & 1) {
       res = res * a;
