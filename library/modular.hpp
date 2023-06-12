@@ -195,7 +195,8 @@ Modular<T> operator/(U lhs, const Modular<T> &rhs) {
 
 template<typename T, typename U>
 Modular<T> Power(const Modular<T> &a, const U &b) {
-  assert(b >= 0);
+  if (b < 0)
+    return 0;
   Modular<T> x = a, res = 1;
   U p = b;
   while (p > 0) {
