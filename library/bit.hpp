@@ -4,6 +4,7 @@
 #include <macros.h>
 #include <cassert>
 #include <limits>
+#include <type_traits>
 
 template<typename int_t> inline int_t lowbit(int_t x) {
   return x & -x;
@@ -45,15 +46,9 @@ template<typename T> T bit_ceil(T x) {
   return T(1) << bit_width(static_cast<unsigned long long>(x - 1));
 }
 
-template<typename T> inline int bit(T a, int i) {
-  return a >> i & 1;
-}
-
 inline bool is_subset(long long sub, long long s) {
   return (sub & s) == sub;
 }
-
-#define popcnt(x) __builtin_popcountll((x))
 
 template<typename T> struct subset_tuple {
   explicit subset_tuple(T u) : s(u), u(u) {}

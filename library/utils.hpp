@@ -263,6 +263,18 @@ Int binary_search(F check, Int ok, Int ng, bool check_ok = true) {
   return ok;
 }
 
+template<typename T, typename Int> int bit(T a, Int i) {
+  return a >> i & 1;
+}
+
+#define popcnt(x) __builtin_popcountll((x))
+
+// sign used in principle of inclusion-exclusion
+int pie_sign(int s) {
+  assert(s >= 0);
+  return popcnt(s) & 1 ? -1 : 1;
+}
+
 #ifndef debug
 #define debug(...)
 #endif
