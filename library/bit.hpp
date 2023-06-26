@@ -24,6 +24,10 @@ int bit_width(unsigned long long x) {
   return std::numeric_limits<unsigned long long>::digits - countl_zero(x);
 }
 
+int topbit(unsigned long long x) {
+  return bit_width(x) - 1;
+}
+
 template<typename T> int ceil_log2(T x) {
   if (x <= 1)
     return 0;
