@@ -7,55 +7,50 @@
 
 #include <dfs_forest.hpp>
 class lca_forest : public dfs_forest {
-
-  std::vector<std::vector<int>> a;
-  int h;
+  std::vector<int> head;
+  bool ready = false;
 
  public:
-  lca_forest(int n) : dfs_forest(n) {}
-  void build_lca() {
+  lca_forest(int n) : dfs_forest(n), head(n) {}
+  void build() {
+    if (ready)
+      return;
     dfs_all();
-    int max_depth = *max_element(depth_.begin(), depth_.end());
-    for (h = 0; max_depth > 0; ++h)
-      max_depth /= 2;
-    a.assign(n, std::vector<int>(h));
-    if (h > 0)
-      for (int i = 0; i < n; ++i)
-        a[i][0] = pv[i];
-    for (int j = 1; j < h; ++j)
-      for (int i = 0; i < n; ++i)
-        a[i][j] = a[i][j - 1] == -1 ? -1 : a[a[i][j - 1]][j - 1];
-  }
-
-  int ancestor(int u, int d) const {
-    assert(0 <= u and u < n);
-    assert(d >= 0);
-    assert(not a.empty());
-    if (d > depth_[u])
-      return -1;
-    for (int i = 0; i < h; ++i) {
-      if (d >> i & 1) {
-        u = a[u][i];
-      }
+    for (int u : pre_order) {
+      if (pv[u] == -1 || sz[u] * 2 < sz[pv[u]])
+        head[u] = u;
+      else
+        head[u] = head[pv[u]];
     }
-    return u;
+    ready = true;
   }
 
   int lca(int u, int v) const {
-    assert(not a.empty());
-    if (depth_[u] < depth_[v])
-      std::swap(u, v);
-    u = ancestor(u, depth_[u] - depth_[v]);
-    if (u == v)
-      return u;
-    for (int i = h - 1; i >= 0; i--)
-      if (a[u][i] != a[v][i])
-        u = a[u][i], v = a[v][i];
-    return a[u][0];
+    assert(ready);
+    if (root(u) != root(v))
+      return -1;
+    while (head[u] != head[v]) {
+      if (depth_[head[u]] > depth_[head[v]])
+        u = pv[head[u]];
+      else
+        v = pv[head[v]];
+    }
+    return depth_[u] < depth_[v] ? u : v;
   }
 
+  int dist(int u, int v) {
+    assert(ready);
+    return depth_[u] + depth_[v] - 2 * depth_[lca(u, v)];
+  }
+
+  int rooted_lca(int a, int b, int c) {
+    assert(ready);
+    return lca(a, b) ^ lca(b, c) ^ lca(c, a);
+  }
+
+  // sequence of edges on the from-to path
   std::vector<int> path(int from, int to) {
-    assert(not a.empty());
+    assert(ready);
     assert(root(from) == root(to));
     int anc = lca(from, to);
     std::vector<int> p1, p2;
