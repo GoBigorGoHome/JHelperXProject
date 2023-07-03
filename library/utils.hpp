@@ -135,12 +135,21 @@ Container iota(Container &&c, value_type_of<Container> v) {
   return std::forward<Container>(c);
 }
 
+template<typename T, typename Comp>
+std::vector<int> argsort(const std::vector<T> &array, Comp comp) {
+  std::vector<int> res(array.size());
+  std::iota(res.begin(), res.end(), 0);
+  std::stable_sort(res.begin(), res.end(), [&array, comp](int i, int j) {
+    return comp(array[i], array[j]);
+  });
+  return res;
+}
+
 template<typename T> std::vector<int> argsort(const std::vector<T>& array) {
   std::vector<int> res(array.size());
   std::iota(res.begin(), res.end(), 0);
-  std::sort(res.begin(), res.end(), [&array](int i, int j) {
-    return array[i] < array[j] || (array[i] == array[j] && i < j);
-  });
+  std::stable_sort(res.begin(), res.end(),
+                   [&array](int i, int j) { return array[i] < array[j]; });
   return res;
 }
 
