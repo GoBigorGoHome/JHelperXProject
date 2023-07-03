@@ -101,6 +101,16 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
+std::ostream &operator<<(std::ostream &os, __int128 n) {
+  if (n < 0) {
+    n = -n;
+    os << '-';
+  }
+  if (n > 9)
+    return os << n % 10;
+  return os << char(n + '0');
+}
+
 #if __cplusplus >= 201703L
 template<typename... Args> void pt(Args &&...args) {
   ((std::cout << args << ' '), ...);

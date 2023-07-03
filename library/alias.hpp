@@ -12,6 +12,7 @@
 #include <macros.h>
 using ll = long long;
 using ull = unsigned long long;
+using i128 = __int128;
 using vl = std::vector<ll>;
 using vb = std::vector<bool>;
 using vi = std::vector<int>;
