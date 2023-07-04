@@ -7,253 +7,245 @@
 #include "print_test.h"
 #include "checker.h"
 #include <iostream>
-#include <sstream>
-#ifndef NOMINMAX
-#define NOMINMAX 1
-#endif
-#ifdef _WIN32
-#include <windows.h>
-#endif
-#include <chrono>
-#include <future>
+#include <cstdio>
+#include <fstream>
+#include <cstdlib>
+#include <cstring>
+#include <algorithm>
 #include <cassert>
-#ifdef _MSC_VER
-int MyReportHook(int reportType, char *message, int *returnValue) {
-  if (reportType == _CRT_ASSERT) {
-    std::cerr << message << '\n';
-    std::_Exit(EXIT_FAILURE);
-  }
-  return FALSE;
-}
-#else
-#include <csignal>
-void signal_handler(int signal) {
-  std::_Exit(EXIT_FAILURE);
-}
-#endif
-
-void solve();
-
-double run() {
-  auto start = std::chrono::steady_clock::now();
-  solve();
-  auto end = std::chrono::steady_clock::now();
-  std::chrono::duration<double> elapsed_seconds = end - start;
-  return elapsed_seconds.count();
-}
+#include <filesystem>
+namespace fs = std::filesystem;
 
 extern std::vector<jhelper::Test> tests;
 extern const bool show_all_failed_tests;
-std::ostringstream debug_stream;
-std::ostringstream diagnostic_stream;
 
-namespace jhelper {
-#ifdef _WIN32
-bool enable_virtual_terminal() {
-  // Set output mode to handle virtual terminal sequences
-  HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-  if (hOut == INVALID_HANDLE_VALUE) {
-    std::cerr << "invalid handle value\n";
-    return false;
+#define TIME_CMD                                                               \
+  " /usr/bin/time --format=%e --output=solution/time.txt --append "
+
+const char *solution_output_file = "solution/output.txt";
+double max_exec_time = 0;
+
+std::string get_file_contents(const char *filename) {
+  std::FILE *fp = std::fopen(filename, "rb");
+  if (fp) {
+    std::string contents;
+    std::fseek(fp, 0, SEEK_END);
+    contents.resize(std::ftell(fp));
+    std::rewind(fp);
+    std::fread(&contents[0], 1, contents.size(), fp);
+    std::fclose(fp);
+    return contents;
   }
-  DWORD dwOriginalOutMode = 0;
-  if (!GetConsoleMode(hOut, &dwOriginalOutMode)) {
-    std::cerr << "failed GetConsoleMode\n";
-    return false;
-  }
-  if ((dwOriginalOutMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == 0) {
-    DWORD dwOutMode = dwOriginalOutMode | ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-    if (SetConsoleMode(hOut, dwOutMode) == 0) {
-      std::cerr << "failed SetConsoleMode\n";
+  throw(errno);
+}
+
+bool is_empty(const char *s) {
+  while (*s) {
+    if (!std::isspace(*s))
       return false;
-    }
-    return true;
+    s++;
   }
   return true;
 }
-#endif
-void test_runner(TestType testType) {
-#ifdef _WIN32
-  if (!IsDebuggerPresent()) {
-    if (!enable_virtual_terminal()) {
-      std::cerr << "Enable virtual terminal failed\n";
-    }
-  }
-#endif
-#ifdef _MSC_VER
-  _CrtSetReportHook(MyReportHook);
-  _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG | _CRTDBG_MODE_FILE);
-  _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
-  _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_DEBUG);
-#else
-  auto previous_handler = std::signal(SIGABRT, signal_handler);
-  if (previous_handler == SIG_ERR) {
-    std::cerr << "Setup failed\n";
-    std::_Exit(EXIT_FAILURE);
-  }
-#endif
-  //  set format for output streams
-  debug_stream.precision(10);
-  debug_stream << std::fixed << std::boolalpha;
-  std::cerr.precision(10);
-  std::cerr << std::fixed << std::boolalpha;
-  auto cout_buff = std::cout.rdbuf();
-  auto cin_buff = std::cin.rdbuf();
-  std::ostream real_cout(cout_buff);
-  // to show time in decimal format
-  real_cout.precision(3);
-  real_cout << std::fixed;
-  auto reset_streams = [&cout_buff, &cin_buff]() {
-    std::cout.rdbuf(cout_buff);
-    std::cin.rdbuf(cin_buff);
-  };
-  //////////////////////////////////
-  constexpr std::chrono::seconds time_limit(3);
-  int testID = 0;
-  double maxTime = 0.0;
-  int n_active_tests = 0;
-  int n_failed_tests = 0;
-  for (const jhelper::Test &test : tests) {
-    if (test.active) {
-      ++n_active_tests;
-      std::stringstream in(test.input);
-      while (in.good() and isspace(in.peek())) {
-        in.get();
-      }
-      if (not in.good()) {
-        real_cout << RED "No input found on test " << testID << ".\n" RESET;
-        real_cout.flush();
-        reset_streams();
-        return;
-      }
-      debug_stream.str("");
-      diagnostic_stream.str("");
-      std::ostringstream task_out;
-      std::cin.rdbuf(in.rdbuf());
-      std::cout.rdbuf(task_out.rdbuf());
-      if (testType == TestType::SINGLE) {
-        std::packaged_task<double()> task(run);
-        auto res = task.get_future();
-        std::thread task_thread(std::move(task));
-        auto status = res.wait_for(time_limit);
-        if (status == std::future_status::timeout) {
-          print_test(real_cout, testID, "N/A");
-          real_cout << RED "TLE on test " << testID + 1 << "\n" RESET;
-          real_cout.flush();
-          reset_streams();
-          task_thread.detach();
-          return;
-        }
-        task_thread.join();
-        maxTime = std::max(res.get(), maxTime);
-        auto task_output = task_out.str();
-        if (test.has_output) {
-          if (not jhelper::check(test.output, task_output)) {
-            print_test(real_cout, testID, task_output);
-            if (not show_all_failed_tests) {
-              real_cout << RED "WA on test " << testID + 1 << "\n" RESET;
-              real_cout << BRIGHT_BLACK "Maximal time: " << maxTime
-                        << "s.\n" RESET;
-              real_cout.flush();
-              reset_streams();
-              return;
-            }
-            ++n_failed_tests;
-          }
-        } else {
-          print_test(real_cout, testID, task_output);
-          real_cout << YELLOW "End of test " << testID + 1 << "\n" RESET;
-        }
-      } else {
-        int n_subtest = 1000000000;
-        if (testType == TestType::MULTI_NUMBER)
-          std::cin >> n_subtest;
-        while (std::cin.good() and std::isspace(std::cin.peek()))
-          std::cin.get();
-        auto input_pos = std::cin.tellg();
-        auto answer_lines = normalize(test.output);
-        int n_matched_lines = 0;
-        double total_time = 0;
-        int subtest_id = 0;
-        while (std::cin.good() and subtest_id < n_subtest) {
-          std::packaged_task<double()> task(run);
-          auto res = task.get_future();
-          std::thread task_thread(std::move(task));
-          auto status = res.wait_for(time_limit);
-          if (status == std::future_status::timeout) {
-            print_subtest(
-                real_cout, testID, subtest_id, input_pos,
-                answer_lines.cbegin() + n_matched_lines,
-                answer_lines.end(),// 超时的情况下输出剩余的全部expected output。
-                "N/A");
-            real_cout << RED "TLE on subtest " << testID + 1 << '.'
-                      << subtest_id + 1 << "\n" RESET;
-            real_cout.flush();
-            reset_streams();
-            task_thread.detach();
-            return;
-          }
-          task_thread.join();
-          std::string task_output = task_out.str();
-          auto outputLines = normalize(task_output);
-          if (outputLines.empty()) {
-            print_subtest(real_cout, testID, subtest_id, input_pos,
-                          answer_lines.cbegin() + n_matched_lines,
-                          answer_lines.cend(), task_output);
-            real_cout << RED "No output on subtest " << testID + 1 << '.'
-                      << subtest_id + 1 << "\n" RESET;
-            real_cout.flush();
-            reset_streams();
-            return;
-          }
-          if (not checkLines(outputLines, answer_lines, n_matched_lines)) {
-            if (n_matched_lines + outputLines.size() > answer_lines.size())
-              print_subtest(real_cout, testID, subtest_id, input_pos,
-                            answer_lines.cbegin() + n_matched_lines,
-                            answer_lines.cend(), task_output);
-            else
-              print_subtest(real_cout, testID, subtest_id, input_pos,
-                            answer_lines.cbegin() + n_matched_lines,
-                            answer_lines.cbegin() + n_matched_lines
-                                + outputLines.size(),
-                            task_output);
-            real_cout << RED "WA on subtest " << testID + 1 << '.'
-                      << subtest_id + 1 << "\n" RESET;
-            real_cout.flush();
-            reset_streams();
-            return;
-          } else {
-            n_matched_lines += (int) outputLines.size();
-            total_time += res.get();
-            ++subtest_id;
-            debug_stream.str("");
-            diagnostic_stream.str("");
-            task_out.str("");
-            while (std::cin.good() and std::isspace(std::cin.peek()))
-              std::cin.get();
-            input_pos = std::cin.tellg();
-          }
-        }
-        if (testType == TestType::MULTI_NUMBER)
-          assert(subtest_id == n_subtest);
-        maxTime = std::max(maxTime, total_time);
-      }
-    }
-    ++testID;
+
+double get_max_exec_time() {
+  std::ifstream in("solution/time.txt");
+  double res = 0;
+  double t;
+  while (in >> t)
+    if (t > res)
+      res = t;
+  in.close();
+  std::system(": > solution/time.txt");
+  return res;
+}
+
+double get_total_exec_time() {
+  std::ifstream in("solution/time.txt");
+  double sum = 0;
+  double t;
+  while (in >> t)
+    sum += t;
+  in.close();
+  std::system(": > solution/time.txt");
+  return sum;
+}
+
+std::string make_command(double time_limit, int stdin_position) {
+  return "timeout " + std::to_string(time_limit)
+      + "s " TIME_CMD SOLUTION_EXE " " + std::to_string(stdin_position)
+      + " < solution/input.txt > solution/output.txt";
+}
+
+void write_to_file(const char *s, const char *file) {
+  std::ofstream f(file);
+  f << s;
+}
+
+int get_tellg() {
+  std::ifstream f("solution/tellg.txt");
+  int x;
+  f >> x;
+  return x;
+}
+
+namespace jhelper {
+
+int run_single_test(int testID, const jhelper::Test &test) {
+  const char *command = "timeout 3s" TIME_CMD SOLUTION_EXE
+                        " < solution/input.txt > solution/output.txt";
+  int status = std::system(command);
+  int exit_code = WEXITSTATUS(status);
+  if (exit_code == 124) {
+    std::cerr << "TLE on test #" << testID << '\n';
   }
 
-  if (n_active_tests == 0) {
-    real_cout << YELLOW "No active test\n" RESET;
-  } else {
-    if (n_failed_tests == 0) {
-      real_cout << BRIGHT_GREEN "All OK\n" RESET;
-    } else {
-      real_cout << RED "Failed " << n_failed_tests << '/' << n_active_tests
-                << " test(s)\n" RESET;
+  std::string solution_output = get_file_contents(solution_output_file);
+
+  if (test.has_output) {
+    if (not check(test.output, solution_output)) {
+      print_test(std::cerr, testID, solution_output);
+      if (not show_all_failed_tests) {
+        std::cerr << RED "WA on test " << testID << "\n" RESET;
+        return -1;
+      }
+      return 1;
     }
-    real_cout << BRIGHT_BLACK "Maximal time: " << maxTime << "s.\n" RESET;
+    return 0;
+  } else {
+    print_test(std::cerr, testID, solution_output);
+    std::cerr << YELLOW "No output found on Test #" << testID << "\n" RESET;
+    return -1;
   }
-  real_cout.flush();
-  reset_streams();
+}
+
+/*
+ * 一个输入文件里有多个 case 的情形：
+ * 把输入文件已经到哪里了这个信息写到一个文件里，每次启动子进程时，从这个位置开始读。
+ * 也可以把读操作已经到达的位置传给子进程的main函数。
+ */
+
+int run_multi_subtests(int testID, const Test &test, TestType type) {
+  int n_subtest = 1000000000;
+  int n_read = 0;
+
+  if (type == TestType::MULTI_NUMBER)
+    std::sscanf(test.input, "%d%n", &n_subtest, &n_read);
+
+  int len = (int) std::strlen(test.input);
+
+  auto answer_lines = normalize(test.output);
+
+  int n_matched_lines = 0;
+  int subtest_id = 1;
+
+  while (n_read < len and subtest_id <= n_subtest) {
+    std::string command = make_command(3, n_read);
+    int status = std::system(command.c_str());
+    int exit_code = WEXITSTATUS(status);
+    if (exit_code == 124) {
+      std::cerr << RED "TLE on subtest #" << testID << '.' << subtest_id
+                << "\n" RESET;
+      return -1;
+    }
+
+    if (exit_code != 0) {
+      std::cerr << RED "RE on subtest #" << testID << '.' << subtest_id
+                << ", exit code " << exit_code << "\n" RESET;
+      return -1;
+    }
+
+    int nn_read = get_tellg();
+
+    auto file_size = fs::file_size(solution_output_file);
+    if (file_size > 512000) {
+      std::cerr << "Maybe OLE, output " << file_size << " B\n";
+      return -1;
+    }
+
+    std::string solution_output = get_file_contents(solution_output_file);
+    auto outputLines = normalize(solution_output);
+
+    if (outputLines.empty()) {
+      std::cerr << RED "No output on subtest " << testID << '.' << subtest_id
+                << "\n" RESET;
+      return 1;
+    }
+
+    if (not checkLines(outputLines, answer_lines, n_matched_lines)) {
+      auto beg = answer_lines.begin() + n_matched_lines;
+      auto end = beg
+          + std::min<unsigned long>(answer_lines.size() - n_matched_lines,
+                                    outputLines.size());
+      print_subtest(std::cerr, testID, subtest_id, n_read, nn_read, beg, end,
+                    outputLines);
+
+      std::cerr << RED "WA on subtest " << testID << '.' << subtest_id
+                << "\n" RESET;
+      return 1;
+    } else {
+      n_matched_lines += (int) outputLines.size();
+      ++subtest_id;
+      n_read = nn_read;
+    }
+  }
+
+  max_exec_time = std::max(max_exec_time, get_total_exec_time());
+
+  if (type == TestType::MULTI_NUMBER)
+    assert(subtest_id == n_subtest);
+
+  return 0;
+}
+
+void run_all_tests(TestType test_type) {
+  std::system("> solution/time.txt");// clear time.txt
+  int n_active_tests = 0;
+  int n_failed_tests = 0;
+
+  for (int i = 0; i < tests.size(); i++)
+    if (tests[i].active) {
+      ++n_active_tests;
+      if (is_empty(tests[i].input)) {
+        std::cerr << RED "No input found on test " << i + 1 << ".\n" RESET;
+        return;
+      }
+      // 把 test.input 写到输入文件
+      write_to_file(tests[i].input, "solution/input.txt");
+
+      /*
+       设想：
+      通过管道，把子进程的 stdout 重定向到父进程的 stdin。
+             而不是先把子进程的输出写到文件，然后父进程读这个文件。
+
+      忧虑：子进程是不是要等到父进程把它的 stdout 的内容读完才结束？
+      */
+      int ret = 0;
+      if (test_type == TestType::SINGLE)
+        ret = run_single_test(i + 1, tests[i]);
+      else
+        ret = run_multi_subtests(i + 1, tests[i], test_type);
+
+      if (ret == -1)
+        return;
+      if (ret == 1)
+        n_failed_tests += 1;
+    }
+
+  if (test_type == TestType::SINGLE)
+    max_exec_time = get_max_exec_time();
+
+  if (n_active_tests == 0) {
+    std::cerr << YELLOW "No active test\n" RESET;
+  } else {
+    if (n_failed_tests == 0)
+      std::cerr << BRIGHT_GREEN "All OK\n" RESET;
+    else
+      std::cerr << RED "Failed " << n_failed_tests << '/' << n_active_tests
+                << " test(s)\n" RESET;
+
+    std::cerr << BRIGHT_BLACK "Max exec time: " << max_exec_time
+              << "s.\n" RESET;
+  }
 }
 }// namespace jhelper

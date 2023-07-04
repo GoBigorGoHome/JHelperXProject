@@ -9,10 +9,9 @@
 #include <vector>
 namespace jhelper {
 void print_test(std::ostream &os, int test_id, const std::string &task_output);
-void print_subtest(std::ostream &os, int test_id, int subtest_id,
-                   long long input_pos,
-                   std::vector<std::string>::const_iterator b,
+void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
+                   int new_tellg, std::vector<std::string>::const_iterator b,
                    std::vector<std::string>::const_iterator e,
-                   const std::string &task_output);
+                   const std::vector<std::string> &output_lines);
 }// namespace jhelper
 #endif// JHELPER_EXAMPLE_PROJECT_TESTRUNNER_PRINT_TEST_H_

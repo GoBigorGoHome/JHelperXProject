@@ -4,6 +4,10 @@
 std::vector<jhelper::Test> tests{%Tests%};
 
 int main() {
-  jhelper::test_runner(jhelper::TestType::%TestType%);
+#ifndef SOLUTION_EXE
+  std::cerr << "SOLUTION EXE PATH NOT DEFINED!";
+  return 0;
+#endif
+  jhelper::run_all_tests(jhelper::TestType::%TestType%);
   return 0;
 }

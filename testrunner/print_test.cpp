@@ -3,31 +3,17 @@
 //
 #include "print_test.h"
 #include "color.h"
-#include <algorithm>
 #include <iostream>
-#include <sstream>
 #include "test.h"
 #include "string_utils.h"
+#include <cstring>
 
-extern std::ostringstream debug_stream;
-extern std::ostringstream diagnostic_stream;
 extern std::vector<jhelper::Test> tests;
 
 namespace jhelper {
 void print_test(std::ostream &os, int test_id, const std::string &task_output) {
-  std::string debug_info = debug_stream.str();
-  int n_line = 0;
-  auto end =
-      std::find_if(debug_info.begin(), debug_info.end(),
-                   [&n_line](char x) { return x == '\n' && ++n_line == 80; });
-
-  os << BRIGHT_BLACK << debug_info.substr(0, end - debug_info.begin()) << RESET
-     << '\n';
-  if (end != debug_info.end())
-    os << YELLOW "TRUNCATED DEBUG INFO\n" RESET;
-
-  auto &test = tests[test_id];
-  os << "Test #" << test_id + 1 << '\n';
+  auto &test = tests[test_id - 1];
+  os << "Test #" << test_id << '\n';
   os << "Input: \n"
      << (line_cnt(test.input) > 100 ? BRIGHT_BLACK "TOO LONG, SKIPPED" RESET
                                     : test.input)
@@ -41,40 +27,30 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output) {
      << BRIGHT_WHITE
      << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
      << RESET << '\n';
-  os << YELLOW << diagnostic_stream.str() << RESET;
+  //    os << YELLOW << diagnostic_stream.str() << RESET;
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
 
-void print_subtest(std::ostream &os, int test_id, int subtest_id,
-                   long long input_pos,
-                   std::vector<std::string>::const_iterator b,
+void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
+                   int new_tellg, std::vector<std::string>::const_iterator b,
                    std::vector<std::string>::const_iterator e,
-                   const std::string &task_output) {
-  std::string debug_info = debug_stream.str();
-  int n_line = 0;
-  auto end =
-      std::find_if(debug_info.begin(), debug_info.end(),
-                   [&n_line](char x) { return x == '\n' && ++n_line == 80; });
+                   const std::vector<std::string> &output_lines) {
 
-  os << BRIGHT_BLACK << debug_info.substr(0, end - debug_info.begin()) << RESET
-     << '\n';
-  if (end != debug_info.end())
-    os << YELLOW "TRUNCATED DEBUG INFO\n" RESET;
-
-  auto &test = tests[test_id];
-  os << "Subtest #" << test_id + 1 << "." << subtest_id + 1 << '\n';
+  os << "Subtest #" << test_id << "." << subtest_id << '\n';
   os << "Input: \n";
-  auto cur_input_pos = std::cin.tellg();
-  if (cur_input_pos == -1) {
-    os << test.input + input_pos << '\n';
-  } else {
-    while (input_pos < cur_input_pos) {
-      os << test.input[input_pos];
-      ++input_pos;
-    }
-    os << '\n';
-  }
+  // trim input
+  const char *s = tests[test_id - 1].input;
+  int l = old_tellg;
+  int r = new_tellg == -1 ? (int) strlen(s) : new_tellg;
+  while (l < r && std::isspace(s[l]))
+    l++;
+  while (l < r && std::isspace(s[r - 1]))
+    r--;
+  for (int i = l; i < r; i++)
+    os << s[i];
+  os << '\n';
+
   os << '\n';
   os << "Expected output: \n";
   while (b != e) {
@@ -82,11 +58,13 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id,
     ++b;
   }
   os << '\n';
-  os << "Actual output: \n"
-     << BRIGHT_WHITE
-     << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
-     << RESET << '\n';
-  os << YELLOW << diagnostic_stream.str() << RESET;
+  os << "Actual output: \n" << BRIGHT_WHITE;
+  if (output_lines.size() > 2000)
+    os << "TOO LONG, SKIPPED.";
+  else
+    for (auto &line : output_lines)
+      os << line << '\n';
+  os << RESET << '\n';
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
