@@ -100,3 +100,5 @@ TODO
 /checker/tests/
 /checker/my.cpp
 input.txt
+output.txt
+solution/*.txt

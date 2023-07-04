@@ -4,7 +4,11 @@ project(jhelper-example-project)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
+add_executable(solution
+        testrunner/current_task.cpp
+        solution/main.cpp)
 
 add_executable(testrunner
         testrunner/current_task.cpp
@@ -16,11 +20,16 @@ add_executable(testrunner
         testrunner/print_test.cpp
         testrunner/color.cpp)
 
+add_dependencies(testrunner solution)
 target_compile_definitions(testrunner PRIVATE LOCAL)
+# 不能没有引号
+target_compile_definitions(testrunner PRIVATE SOLUTION_EXE="${CMAKE_BINARY_DIR}/solution")
 target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 
 if (NOT WIN32 OR DEFINED ENV{ASAN})
+    target_compile_options(solution PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
+    target_link_options(solution PRIVATE -fsanitize=address)
     target_compile_options(testrunner PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
     target_link_options(testrunner PRIVATE -fsanitize=address)
 endif ()
@@ -87,4 +96,11 @@ include_directories(tourist-library)
 if (DEFINED ENV{ASAN})
     target_compile_options(exp PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
     target_link_options(exp PRIVATE -fsanitize=address)
-endif()
+endif ()
+
+# 打印CMake的变量
+#get_cmake_property(_variableNames VARIABLES)
+#list(SORT _variableNames)
+#foreach (_variableName ${_variableNames})
+#    message(STATUS "${_variableName}=${${_variableName}}")
+#endforeach ()
