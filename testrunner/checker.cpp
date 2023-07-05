@@ -41,7 +41,7 @@ bool checkIgnoreTrailingSpaces(const std::string &output,
 bool checkLines(const std::vector<std::string> &outputLines,
                 const std::vector<std::string> &answerLines, int beg) {
   if (beg + outputLines.size() > answerLines.size()) {
-    std::cerr << YELLOW "number of output lines differ:\n" YELLOW;
+    std::cerr << YELLOW "number of output lines differ:\n" RESET;
     std::cerr << "ACTUAL: " << outputLines.size() << "\n";
     std::cerr << "ANSWER: " << answerLines.size() - beg << "\n";
     return false;

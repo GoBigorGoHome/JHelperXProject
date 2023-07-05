@@ -96,25 +96,23 @@ int run_single_test(int testID, const jhelper::Test &test) {
                         " < solution/input.txt > solution/output.txt";
   int status = std::system(command);
   int exit_code = WEXITSTATUS(status);
-  if (exit_code == 124) {
-    std::cerr << "TLE on test #" << testID << '\n';
-  }
 
   std::string solution_output = get_file_contents(solution_output_file);
+
+  if (exit_code == 124) {
+    std::cerr << RED "TLE\n" RESET;
+    print_test(std::cerr, testID, solution_output);
+    return -1;
+  }
 
   if (test.has_output) {
     if (not check(test.output, solution_output)) {
       print_test(std::cerr, testID, solution_output);
-      if (not show_all_failed_tests) {
-        std::cerr << RED "WA on test " << testID << "\n" RESET;
-        return -1;
-      }
       return 1;
     }
     return 0;
   } else {
     print_test(std::cerr, testID, solution_output);
-    std::cerr << YELLOW "No output found on Test #" << testID << "\n" RESET;
     return -1;
   }
 }
@@ -132,12 +130,12 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
   if (type == TestType::MULTI_NUMBER)
     std::sscanf(test.input, "%d%n", &n_subtest, &n_read);
 
-  int len = (int) std::strlen(test.input);
-
   auto answer_lines = normalize(test.output);
 
   int n_matched_lines = 0;
   int subtest_id = 1;
+
+  int len = (int) std::strlen(test.input);
 
   while (n_read < len and subtest_id <= n_subtest) {
     std::string command = make_command(3, n_read);
@@ -166,12 +164,6 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
     std::string solution_output = get_file_contents(solution_output_file);
     auto outputLines = normalize(solution_output);
 
-    if (outputLines.empty()) {
-      std::cerr << RED "No output on subtest " << testID << '.' << subtest_id
-                << "\n" RESET;
-      return 1;
-    }
-
     if (not checkLines(outputLines, answer_lines, n_matched_lines)) {
       auto beg = answer_lines.begin() + n_matched_lines;
       auto end = beg
@@ -179,9 +171,6 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
                                     outputLines.size());
       print_subtest(std::cerr, testID, subtest_id, n_read, nn_read, beg, end,
                     outputLines);
-
-      std::cerr << RED "WA on subtest " << testID << '.' << subtest_id
-                << "\n" RESET;
       return 1;
     } else {
       n_matched_lines += (int) outputLines.size();
@@ -228,8 +217,11 @@ void run_all_tests(TestType test_type) {
 
       if (ret == -1)
         return;
-      if (ret == 1)
+      if (ret == 1) {
         n_failed_tests += 1;
+        if (!show_all_failed_tests)
+          break;
+      }
     }
 
   if (test_type == TestType::SINGLE)
@@ -240,9 +232,9 @@ void run_all_tests(TestType test_type) {
   } else {
     if (n_failed_tests == 0)
       std::cerr << BRIGHT_GREEN "All OK\n" RESET;
-    else
+    else if (show_all_failed_tests)
       std::cerr << RED "Failed " << n_failed_tests << '/' << n_active_tests
-                << " test(s)\n" RESET;
+                << " tests\n" RESET;
 
     std::cerr << BRIGHT_BLACK "Max exec time: " << max_exec_time
               << "s.\n" RESET;
