@@ -23,11 +23,9 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output) {
   else
     os << "Expected output: \nN/A\n";
 
-  os << "Actual output: \n"
-     << BRIGHT_WHITE
+  os << "Actual output:\n"
      << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
-     << RESET << '\n';
-  //    os << YELLOW << diagnostic_stream.str() << RESET;
+     << '\n';
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
@@ -38,7 +36,7 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
                    const std::vector<std::string> &output_lines) {
 
   os << "Subtest #" << test_id << "." << subtest_id << '\n';
-  os << "Input: \n";
+  os << "Input:\n";
   // trim input
   const char *s = tests[test_id - 1].input;
   int l = old_tellg;
@@ -58,13 +56,12 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
     ++b;
   }
   os << '\n';
-  os << "Actual output: \n" << BRIGHT_WHITE;
+  os << "Actual output: \n";
   if (output_lines.size() > 2000)
     os << "TOO LONG, SKIPPED.";
   else
     for (auto &line : output_lines)
       os << line << '\n';
-  os << RESET << '\n';
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
