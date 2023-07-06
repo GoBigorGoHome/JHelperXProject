@@ -7,19 +7,19 @@ void solve();
 #include <exception>
 #include <iostream>
 #include <fstream>
+#include <csignal>
 
 void write_tellg() {
   std::ofstream f("solution/tellg.txt");
   f << std::cin.tellg();
 }
 
-void write_tellg_abort() {
+void write_tellg_sigterm(int sig) {
   write_tellg();
-  std::abort();
 }
 
 int main(int argc, char **argv) {
-  std::set_terminate(write_tellg_abort);
+  std::signal(SIGTERM, write_tellg_sigterm);
   std::atexit(write_tellg);
   if (argc > 1)
     std::cin.seekg(std::stoi(argv[1]));
