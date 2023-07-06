@@ -4,7 +4,6 @@ project(jhelper-example-project)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 add_executable(solution
         testrunner/current_task.cpp
@@ -24,7 +23,6 @@ add_dependencies(testrunner solution)
 target_compile_definitions(testrunner PRIVATE LOCAL)
 # 不能没有引号
 target_compile_definitions(testrunner PRIVATE SOLUTION_EXE="${CMAKE_BINARY_DIR}/solution")
-target_link_libraries(testrunner PRIVATE pthread)
 target_include_directories(testrunner PRIVATE library)
 
 if (NOT WIN32 OR DEFINED ENV{ASAN})
