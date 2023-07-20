@@ -28,8 +28,6 @@ target_include_directories(testrunner PRIVATE library)
 if (NOT WIN32 OR DEFINED ENV{ASAN})
     target_compile_options(solution PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
     target_link_options(solution PRIVATE -fsanitize=address)
-    target_compile_options(testrunner PRIVATE -O1 -fsanitize=address -fno-omit-frame-pointer)
-    target_link_options(testrunner PRIVATE -fsanitize=address)
 endif ()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
