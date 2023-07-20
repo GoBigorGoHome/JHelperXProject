@@ -34,6 +34,24 @@ template<typename Container> Container dec(Container &&c) {
   return std::forward<Container>(c);
 }
 
+template<typename A, typename B>
+bool chkmin(A& a, const B& b) {
+  if (b < a) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
+template<typename A, typename B>
+bool chkmax(A& a, const B& b) {
+  if (a < b) {
+    a = b;
+    return true;
+  }
+  return false;
+}
+
 #if __cplusplus >= 201703L
 template<typename A, typename B, typename... C>
 bool chkmin(A& a, const B& b, const C&... c) {
@@ -109,6 +127,16 @@ template<typename Array, typename Value> auto lb(const Array &a, Value v) {
 
 template<typename Array, typename Value> auto ub(const Array &a, Value v) {
   return std::upper_bound(std::begin(a), std::end(a), v);
+}
+
+template<typename Array, typename Value, typename Compare>
+auto lb(const Array &a, Value v, Compare compare) {
+  return std::lower_bound(std::begin(a), std::end(a), v, compare);
+}
+
+template<typename Array, typename Value, typename Compare>
+auto ub(const Array &a, Value v, Compare compare) {
+  return std::upper_bound(std::begin(a), std::end(a), v, compare);
 }
 
 template<typename Array, typename Value> int lbi(const Array &a, Value v) {
