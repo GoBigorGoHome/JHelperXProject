@@ -27,8 +27,6 @@ run_both = run_my + ' && ' + run_ac
 generator_mingw = "CodeBlocks - MinGW Makefiles"
 generator_ninja = "Ninja"
 
-cxx = "D:/msys64/mingw64/bin/g++.exe"
-cc = "D:/msys64/mingw64/bin/gcc.exe"
 
 
 def remove_build_tree():
@@ -38,8 +36,6 @@ def remove_build_tree():
 
 def generate(build_type):
     cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
-          + " -DCMAKE_CXX_COMPILER=" + cxx \
-          + " -DCMAKE_C_COMPILER=" + cc \
           + " -G \"" + generator_ninja + "\"" \
           + " -S " + source_tree + " -B " + build_tree + " > " + nul
     os.system(cmd)
@@ -47,8 +43,6 @@ def generate(build_type):
 
 def generate_(build_type):
     cmd = "cmake --no-warn-unused-cli " + "-DCMAKE_BUILD_TYPE=" + build_type \
-          + " -DCMAKE_C_COMPILER=" + cc \
-          + " -DCMAKE_CXX_COMPILER=" + cxx \
           + " -G " + generator_ninja \
           + " -S " + source_tree + " -B " + build_tree
     print(cmd)
