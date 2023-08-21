@@ -28,7 +28,6 @@ generator_mingw = "CodeBlocks - MinGW Makefiles"
 generator_ninja = "Ninja"
 
 
-
 def remove_build_tree():
     if os.path.exists(build_tree):
         shutil.rmtree(build_tree)

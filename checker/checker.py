@@ -1,11 +1,12 @@
+from build_run import input_file_path
 from utils import *
 
 
 def special_judge():
-    with open(input_file_path, "r") as input:
-        n, = ri(input)
+    with open(input_file_path, "r") as f:
+        n, = ri(f)
         print(n)
-        a = list(ri(input))
+        a = list(ri(f))
         print(a)
 
     with open(my_output, "r") as my_out:

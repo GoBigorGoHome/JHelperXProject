@@ -55,6 +55,7 @@ def gen_uoj_tests(prefix, n, time_limit, gen_test):
             print(k, v, file=f)
     shutil.make_archive(tests_dir, 'zip', tests_dir)
 
+
 def gen_tests(prefix, n, gen_test):
     cwd = os.getcwdb()
     print("Current Working Directory:", cwd)
