@@ -56,7 +56,7 @@ double get_max_exec_time() {
     if (t > res)
       res = t;
   in.close();
-  std::system(": > solution/time.txt");
+  std::system(": > solution/time.txt");// clear time.txt
   return res;
 }
 
@@ -92,27 +92,29 @@ int get_tellg() {
 namespace jhelper {
 
 int run_single_test(int testID, const jhelper::Test &test) {
-  const char *command = "timeout 3s" TIME_CMD SOLUTION_EXE
-                        " < solution/input.txt > solution/output.txt";
+  // 2和>之间不能有空格。若有空格，2就会被当成SOLUTION_EXE的参数。
+  const char *command =
+      "timeout 3s" TIME_CMD SOLUTION_EXE
+      " < solution/input.txt > solution/output.txt 2> solution/debug.txt";
   int status = std::system(command);
   int exit_code = WEXITSTATUS(status);
 
   std::string solution_output = get_file_contents(solution_output_file);
 
   if (exit_code == 124) {
-    std::cerr << RED "TLE\n" RESET;
-    print_test(std::cerr, testID, solution_output);
+    print_test(std::cerr, testID, solution_output, "TLE\n");
     return -1;
   }
 
   if (test.has_output) {
-    if (not check(test.output, solution_output)) {
-      print_test(std::cerr, testID, solution_output);
+    std::string s = check(test.output, solution_output);
+    if (s.size()) {
+      print_test(std::cerr, testID, solution_output, s);
       return 1;
     }
     return 0;
   } else {
-    print_test(std::cerr, testID, solution_output);
+    print_test(std::cerr, testID, solution_output, "No sample output.\n");
     return -1;
   }
 }

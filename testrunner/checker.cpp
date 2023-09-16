@@ -5,7 +5,7 @@
 #include "checker.h"
 #include "string_utils.h"
 #include "compare_floats.h"
-//#include <sstream>
+#include <sstream>
 #include <iostream>
 
 //extern std::ostringstream diagnostic_stream;
@@ -13,29 +13,31 @@ extern const bool compare_real_numbers;
 
 namespace jhelper {
 // copy from cpeditor
-bool checkIgnoreTrailingSpaces(const std::string &output,
+// 返回比较的结果。若返回值是空串，表示没有异常。
+std::string checkIgnoreTrailingSpaces(const std::string &output,
                                const std::string &expected) {
   auto outputLines = normalize(output);
   auto answerLines = normalize(expected);
 
   // if they are considered the same, they must have the same number of lines
+  std::ostringstream res;
   if (outputLines.size() != answerLines.size()) {
-    std::cerr << "number of output lines differ:\n";
-    std::cerr << "ACTUAL: " << outputLines.size() << "\n";
-    std::cerr << "ANSWER: " << answerLines.size() << "\n";
-    return false;
+    res << "number of output lines differ:\n";
+    res << "ACTUAL: " << outputLines.size() << "\n";
+    res << "ANSWER: " << answerLines.size() << "\n";
+    return res.str();
   }
 
   for (int i = 0; i < outputLines.size(); ++i) {
     // if they are considered the same, the current line should be exactly the
     // same after normalization
     if (outputLines[i] != answerLines[i]) {
-      std::cerr << "the " << i + 1 << "th line differ.\n";
-      return false;
+      res << "the " << i + 1 << "th line differ.\n";
+      return res.str();
     }
   }
 
-  return true;
+  return "";
 }
 
 bool checkLines(const std::vector<std::string> &outputLines,
@@ -64,9 +66,9 @@ bool checkLines(const std::vector<std::string> &outputLines,
   return true;
 }
 
-bool check(std::string expected, std::string actual) {
+std::string check(std::string expected, std::string actual) {
   if (compare_real_numbers)
-    return compare_floats(actual, expected);
+    return compare_floats(actual, expected) ? "" : "Floating-point check failed.";
   return checkIgnoreTrailingSpaces(actual, expected);
 }
 }// namespace jhelper

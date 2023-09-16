@@ -8,7 +8,8 @@
 #include <string>
 #include <vector>
 namespace jhelper {
-void print_test(std::ostream &os, int test_id, const std::string &task_output);
+void print_test(std::ostream &os, int test_id, const std::string &task_output,
+                const std::string &diagnostic);
 void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
                    int new_tellg, std::vector<std::string>::const_iterator b,
                    std::vector<std::string>::const_iterator e,

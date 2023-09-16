@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 namespace jhelper {
-bool check(std::string expected, std::string actual);
+std::string check(std::string expected, std::string actual);
 bool checkLines(const std::vector<std::string> &outputLines,
                 const std::vector<std::string> &answerLines, int beg);
 }// namespace jhelper

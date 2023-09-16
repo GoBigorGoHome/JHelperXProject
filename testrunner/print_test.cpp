@@ -7,11 +7,23 @@
 #include "test.h"
 #include "string_utils.h"
 #include <cstring>
+#include <fstream>
 
 extern std::vector<jhelper::Test> tests;
 
 namespace jhelper {
-void print_test(std::ostream &os, int test_id, const std::string &task_output) {
+void print_test(std::ostream &os, int test_id, const std::string &task_output,
+                const std::string &diagnostic) {
+  std::ifstream debug("solution/debug.txt");
+  if (debug.is_open()) {
+    // basic_ostream& operator<<( std::basic_streambuf<CharT, Traits>* sb );
+    // 文档：https://en.cppreference.com/w/cpp/io/basic_ostream/operator_ltlt
+    // 注意事项：If no characters were inserted, executes setstate(failbit).
+    // 所以在 os << debug.rdbuf(); 之后要加上 os.clear();
+    os << debug.rdbuf();
+    debug.close();
+    os.clear();
+  }
   auto &test = tests[test_id - 1];
   os << "Test #" << test_id << '\n';
   os << "Input: \n"
@@ -26,6 +38,8 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output) {
   os << "Actual output:\n"
      << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
      << '\n';
+
+  os << diagnostic;
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
