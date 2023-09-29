@@ -21,7 +21,7 @@ template<typename T> int countl_zero(T n) {
 /// @brief Finds the smallest number of bits needed to represent the given
 /// value.
 int bit_width(unsigned long long x) {
-  return std::numeric_limits<unsigned long long>::digits - countl_zero(x);
+  return std::numeric_limits<unsigned long long>::digits - ::countl_zero(x);
 }
 
 int topbit(unsigned long long x) {

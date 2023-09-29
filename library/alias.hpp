@@ -71,7 +71,7 @@ template<typename T> struct range_tuple {
 #define ALL(x) std::begin(x), std::end(x)
 // hat off to 300iq
 #define RALL(x) std::rbegin(x), std::rend(x)
-#define pb emplace_back
+#define pb push_back
 #define eb emplace_back
 #define MP make_pair
 #define ep emplace

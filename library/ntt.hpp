@@ -34,9 +34,9 @@ template<typename T> class NTT {
       max_base++;
     }
     root = 2;
-    //　Search for an element of order 2^max_base in the cyclic group
-    // {1, 2, ..., md - 1} where md is a prime. To do this, it is not necessary
-    // to find a generator first (a.k.a a primitive root modulo md).
+    // 　Search for an element of order 2^max_base in the cyclic group
+    //  {1, 2, ..., md - 1} where md is a prime. To do this, it is not necessary
+    //  to find a generator first (a.k.a a primitive root modulo md).
     while (power(root, (md - 1) >> 1) == 1) {
       root++;
     }
@@ -137,7 +137,7 @@ template<typename T>
 std::vector<Modular<T>> inverse(const std::vector<Modular<T>> &a) {
   assert(!a.empty());
   int n = (int) a.size();
-  std::vector<Modular<T>> b = {1 / a[0]};
+    std::vector<Modular<T>> b = {1 / a[0]};
   while ((int) b.size() < n) {
     std::vector<Modular<T>> x(a.begin(),
                               a.begin() + min(a.size(), b.size() << 1));
@@ -219,4 +219,16 @@ std::vector<Modular<T>> &operator*=(std::vector<Modular<T>> &a,
                                     const std::vector<Modular<T>> &b) {
   return a = a * b;
 }
+
+template<typename T>
+std::vector<Modular<T>> operator+(const std::vector<Modular<T>> &a,
+                                  const std::vector<Modular<T>> &b) {
+  vector<Modular<T>> c(max(a.size(), b.size()));
+  for (int i = 0; i < (int) a.size(); i++)
+    c[i] = a[i];
+  for (int i = 0; i < (int) b.size(); i++)
+    c[i] += b[i];
+  return c;
+}
+
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_NTT_HPP_
