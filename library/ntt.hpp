@@ -136,6 +136,7 @@ template<typename T> std::vector<int> NTT<T>::rev;
 template<typename T>
 std::vector<Modular<T>> inverse(const std::vector<Modular<T>> &a) {
   assert(!a.empty());
+  assert(a[0] != 0);
   int n = (int) a.size();
     std::vector<Modular<T>> b = {1 / a[0]};
   while ((int) b.size() < n) {
@@ -223,7 +224,7 @@ std::vector<Modular<T>> &operator*=(std::vector<Modular<T>> &a,
 template<typename T>
 std::vector<Modular<T>> operator+(const std::vector<Modular<T>> &a,
                                   const std::vector<Modular<T>> &b) {
-  vector<Modular<T>> c(max(a.size(), b.size()));
+  std::vector<Modular<T>> c(max(a.size(), b.size()));
   for (int i = 0; i < (int) a.size(); i++)
     c[i] = a[i];
   for (int i = 0; i < (int) b.size(); i++)
