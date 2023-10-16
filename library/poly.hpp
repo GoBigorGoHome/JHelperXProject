@@ -40,7 +40,7 @@ template<typename T> Poly<T>& operator*=(Poly<T>& a, const Poly<T>& b) {
 /// @param values list of values f(0), f(1), ..., f(d).
 /// @param x the evaluation point.
 template<typename F>
-F lagrange_interpolation(const std::vector<F>& values, F x) {
+F lagrange_interpolation(const std::vector<F>& values, long long x) {
   assert(values.size() > 0);
   int n = (int) values.size();
 
