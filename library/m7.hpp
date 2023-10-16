@@ -13,23 +13,23 @@ mint operator""_m(unsigned long long v) {
   return mint(static_cast<int>(v));
 }
 
-std::vector<mint> factorial(1, 1);
-std::vector<mint> inv_factorial(1, 1);
+std::vector<mint> factorial_(1, 1);
+std::vector<mint> inv_factorial_(1, 1);
 
 mint fact(int n) {
   assert(n >= 0);
-  while (n + 1 > (int) factorial.size()) {
-    factorial.push_back(factorial.back() * (int) factorial.size());
+  while (n + 1 > (int) factorial_.size()) {
+    factorial_.push_back(factorial_.back() * (int) factorial_.size());
   }
-  return factorial[n];
+  return factorial_[n];
 }
 
 mint inv_fact(int n) {
   assert(n >= 0);
-  while (n + 1 > (int) inv_factorial.size()) {
-    inv_factorial.push_back(inv_factorial.back() / (int) inv_factorial.size());
+  while (n + 1 > (int) inv_factorial_.size()) {
+    inv_factorial_.push_back(inv_factorial_.back() / (int) inv_factorial_.size());
   }
-  return inv_factorial[n];
+  return inv_factorial_[n];
 }
 
 mint C(int n, int m) {// combination
