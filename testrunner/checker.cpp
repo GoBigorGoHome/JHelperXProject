@@ -8,14 +8,14 @@
 #include <sstream>
 #include <iostream>
 
-//extern std::ostringstream diagnostic_stream;
+// extern std::ostringstream diagnostic_stream;
 extern const bool compare_real_numbers;
 
 namespace jhelper {
 // copy from cpeditor
 // 返回比较的结果。若返回值是空串，表示没有异常。
 std::string checkIgnoreTrailingSpaces(const std::string &output,
-                               const std::string &expected) {
+                                      const std::string &expected) {
   auto outputLines = normalize(output);
   auto answerLines = normalize(expected);
 
@@ -40,24 +40,31 @@ std::string checkIgnoreTrailingSpaces(const std::string &output,
   return "";
 }
 
-bool checkLines(const std::vector<std::string> &outputLines,
-                const std::vector<std::string> &answerLines, int beg) {
-  if (beg + outputLines.size() > answerLines.size()) {
+bool check_subtest(const std::vector<std::string> &outputLines,
+                   const std::vector<std::string> &answerLines,
+                   int n_matched_lines) {
+  if (outputLines.empty()) {
+    std::cerr << YELLOW "No output found, is your solution complete?\n" RESET;
+    return false;
+  }
+
+  if (n_matched_lines + outputLines.size() > answerLines.size()) {
     std::cerr << YELLOW "number of output lines differ:\n" RESET;
     std::cerr << "ACTUAL: " << outputLines.size() << "\n";
-    std::cerr << "ANSWER: " << answerLines.size() - beg << "\n";
+    std::cerr << "ANSWER: " << answerLines.size() - n_matched_lines << "\n";
     return false;
   }
   if (compare_real_numbers) {
     for (int i = 0; i < outputLines.size(); ++i) {
-      if (not compare_floats(outputLines[i], answerLines[i + beg])) {
+      if (not compare_floats(outputLines[i],
+                             answerLines[i + n_matched_lines])) {
         std::cerr << YELLOW "the " << i + 1 << "th line differ.\n" RESET;
         return false;
       }
     }
   } else {
     for (int i = 0; i < outputLines.size(); ++i) {
-      if (outputLines[i] != answerLines[i + beg]) {
+      if (outputLines[i] != answerLines[i + n_matched_lines]) {
         std::cerr << YELLOW "the " << i + 1 << "th line differ.\n" RESET;
         return false;
       }
@@ -68,7 +75,8 @@ bool checkLines(const std::vector<std::string> &outputLines,
 
 std::string check(std::string expected, std::string actual) {
   if (compare_real_numbers)
-    return compare_floats(actual, expected) ? "" : "Floating-point check failed.";
+    return compare_floats(actual, expected) ? ""
+                                            : "Floating-point check failed.";
   return checkIgnoreTrailingSpaces(actual, expected);
 }
 }// namespace jhelper

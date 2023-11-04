@@ -19,7 +19,7 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output,
     // basic_ostream& operator<<( std::basic_streambuf<CharT, Traits>* sb );
     // 文档：https://en.cppreference.com/w/cpp/io/basic_ostream/operator_ltlt
     // 注意事项：If no characters were inserted, executes setstate(failbit).
-    // 所以在 os << debug.rdbuf(); 之后要加上 os.clear();
+    // e所以在 os << debug.rdbuf(); 之后要调用 os.clear();
     os << debug.rdbuf();
     debug.close();
     os.clear();
@@ -45,8 +45,8 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output,
 }
 
 void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
-                   int new_tellg, std::vector<std::string>::const_iterator b,
-                   std::vector<std::string>::const_iterator e,
+                   int new_tellg, const std::vector<std::string> &answer_lines,
+                   int n_matched_lines,
                    const std::vector<std::string> &output_lines) {
 
   os << "Subtest #" << test_id << "." << subtest_id << '\n';
@@ -65,9 +65,16 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
 
   os << '\n';
   os << "Expected output: \n";
-  while (b != e) {
-    os << *b << '\n';
-    ++b;
+  if (output_lines.empty()) {
+    os << YELLOW "All dumped\n" RESET;
+    for (int i = n_matched_lines; i < (int) answer_lines.size(); i++)
+      os << answer_lines[i] << '\n';
+  } else {
+    int end = std::min((int) answer_lines.size(),
+                       n_matched_lines + (int) output_lines.size());
+
+    for (int i = n_matched_lines; i < end; i++)
+      os << answer_lines[i] << '\n';
   }
   os << '\n';
   os << "Actual output: \n";
@@ -76,6 +83,9 @@ void print_subtest(std::ostream &os, int test_id, int subtest_id, int old_tellg,
   else
     for (auto &line : output_lines)
       os << line << '\n';
+  if (output_lines.empty()) {
+    os << YELLOW "NULL\n" RESET;
+  }
   os << BLUE "====================================\n" RESET;
   os.flush();
 }

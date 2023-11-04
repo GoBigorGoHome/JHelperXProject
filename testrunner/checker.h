@@ -8,7 +8,7 @@
 #include <vector>
 namespace jhelper {
 std::string check(std::string expected, std::string actual);
-bool checkLines(const std::vector<std::string> &outputLines,
+bool check_subtest(const std::vector<std::string> &outputLines,
                 const std::vector<std::string> &answerLines, int beg);
 }// namespace jhelper
 #endif// JHELPER_EXAMPLE_PROJECT_TESTRUNNER_CHECKER_H_

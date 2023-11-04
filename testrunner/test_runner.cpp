@@ -135,14 +135,16 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
   auto answer_lines = normalize(test.output);
 
   int n_matched_lines = 0;
-  int subtest_id = 1;
+  int subtest_id = 0;
 
   int len = (int) std::strlen(test.input);
 
-  while (n_read < len and subtest_id <= n_subtest) {
+  while (n_read < len and subtest_id < n_subtest) {
     std::string command = make_command(3, n_read);
     int status = std::system(command.c_str());
     int exit_code = WEXITSTATUS(status);
+    ++subtest_id;
+
     if (exit_code == 124) {
       std::cerr << RED "TLE on subtest #" << testID << '.' << subtest_id
                 << "\n" RESET;
@@ -165,18 +167,12 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
 
     std::string solution_output = get_file_contents(solution_output_file);
     auto outputLines = normalize(solution_output);
-
-    if (not checkLines(outputLines, answer_lines, n_matched_lines)) {
-      auto beg = answer_lines.begin() + n_matched_lines;
-      auto end = beg
-          + std::min<unsigned long>(answer_lines.size() - n_matched_lines,
-                                    outputLines.size());
-      print_subtest(std::cerr, testID, subtest_id, n_read, nn_read, beg, end,
-                    outputLines);
+    if (not check_subtest(outputLines, answer_lines, n_matched_lines)) {
+      print_subtest(std::cerr, testID, subtest_id, n_read, nn_read,
+                    answer_lines, n_matched_lines, outputLines);
       return 1;
     } else {
       n_matched_lines += (int) outputLines.size();
-      ++subtest_id;
       n_read = nn_read;
     }
   }
