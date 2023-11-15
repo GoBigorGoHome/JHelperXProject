@@ -1,3 +1,6 @@
 [submodule "ac-library"]
 	path = ac-library
 	url = https://github.com/atcoder/ac-library
+[submodule "maspy"]
+	path = maspy
+	url = https://github.com/maspypy/library.git
