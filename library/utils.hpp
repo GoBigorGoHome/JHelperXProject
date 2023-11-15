@@ -231,6 +231,12 @@ template<typename T, typename U> T qfloor(T x, U y) {
   return q - (q * y > x);
 }
 
+template<typename T, typename U> std::pair<T, U> divmod(T x, U y) {
+  assert(y > 0);
+  T q = qfloor(x, y);
+  return {q, x - q * y};
+};
+
 /// @return nearest multiple of y not less than x.
 template<typename T, typename U> T mceil(T x, U y) {
   assert(y > 0);
