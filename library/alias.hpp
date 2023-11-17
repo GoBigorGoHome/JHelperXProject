@@ -84,16 +84,16 @@ template<typename T> struct range_tuple {
   for (auto JOIN(_n_, __LINE__) = n; i > JOIN(_n_, __LINE__); --i)
 #define INT(...)                                                               \
   int __VA_ARGS__;                                                             \
-  scan(__VA_ARGS__)
+  io::scan(__VA_ARGS__)
 #define LL(...)                                                                \
   long long __VA_ARGS__;                                                       \
-  scan(__VA_ARGS__)
+  io::scan(__VA_ARGS__)
 #define STR(...)                                                               \
   std::string __VA_ARGS__;                                                     \
-  scan(__VA_ARGS__)
+  io::scan(__VA_ARGS__)
 #define CHAR(...)                                                              \
   char __VA_ARGS__;                                                            \
-  scan(__VA_ARGS__)
+  io::scan(__VA_ARGS__)
 #define NL                                                                     \
   [] {                                                                         \
     std::cout << '\n';                                                         \
@@ -106,18 +106,18 @@ template<typename T> struct range_tuple {
   })()
 #define READ_VI(NAME, LEN)                                                     \
   std::vector<int> NAME(LEN);                                                  \
-  scan(NAME);
+  io::scan(NAME);
 #define VI(...) FOR_EACH_2(READ_VI, __VA_ARGS__)
 #define READ_VII(NAME, LEN)                                                    \
   std::vector<std::pair<int, int>> NAME(LEN);                                  \
-  scan(NAME);
+  io::scan(NAME);
 #define VII(...) FOR_EACH_2(READ_VII, __VA_ARGS__)
 #define READ_VL(NAME, LEN)                                                     \
   std::vector<long long> NAME(LEN);                                            \
-  scan(NAME);
+  io::scan(NAME);
 #define VL(...) FOR_EACH_2(READ_VL, __VA_ARGS__)
 #define READ_VS(NAME, LEN)                                                     \
   std::vector<std::string> NAME(LEN);                                          \
-  scan(NAME);
+  io::scan(NAME);
 #define VS(...) FOR_EACH_2(READ_VS, __VA_ARGS__)
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_ALIAS_HPP_

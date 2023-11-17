@@ -11,7 +11,8 @@
 #include <set>
 #include <random>
 #include <chrono>
-#include <alias.hpp>
+#include <iostream>
+#include <cassert>
 #include <type_traits.hpp>
 
 inline void Yn(bool p) {
@@ -318,12 +319,4 @@ int pie_sign(int s) {
   return popcnt(s) & 1 ? -1 : 1;
 }
 
-#ifndef debug
-#define debug(...)
-#endif
-#ifndef show
-#define show(...)
-#endif
-using namespace io;
-using namespace std;
 #endif// CP_UTILS
