@@ -56,18 +56,20 @@ def gen_uoj_tests(prefix, n, time_limit, gen_test):
     shutil.make_archive(tests_dir, 'zip', tests_dir)
 
 
-def gen_tests(prefix, n, gen_test):
+def gen_tests(zip_name, file_name_prefix, n, gen_test):
     cwd = os.getcwdb()
     print("Current Working Directory:", cwd)
     generate("Release")
     if build_my_():
         print("Build Failed")
         return
-    tests_dir = os.path.join("tests", prefix)
-    os.makedirs(tests_dir, exist_ok=True)
+    tests_dir = os.path.join("tests", zip_name)
+    if os.path.exists(tests_dir):
+        shutil.rmtree(tests_dir)
+    os.makedirs(tests_dir)
     for i in tqdm(range(1, n + 1)):
-        in_file = os.path.abspath(os.path.join(tests_dir, prefix + str(i) + '.in'))
-        out_file = os.path.abspath(os.path.join(tests_dir, prefix + str(i) + '.out'))
+        in_file = os.path.abspath(os.path.join(tests_dir, file_name_prefix + str(i) + '.in'))
+        out_file = os.path.abspath(os.path.join(tests_dir, file_name_prefix + str(i) + '.out'))
         gen_test(in_file, i)
         cmd = my_exe + ' < ' + in_file + ' > ' + out_file
         if os.system(cmd):
