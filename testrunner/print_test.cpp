@@ -38,8 +38,9 @@ void print_test(std::ostream &os, int test_id, const std::string &task_output,
   os << "Actual output:\n"
      << (line_cnt(task_output) > 2000 ? "TOO LONG, SKIPPED" : task_output)
      << '\n';
-
-  os << diagnostic;
+  if (!diagnostic.empty()) {
+    os << diagnostic << '\n';
+  }
   os << BLUE "====================================\n" RESET;
   os.flush();
 }
