@@ -11,7 +11,7 @@ struct fast_ios {
     std::cin.tie(nullptr);
 #endif
     std::ios::sync_with_stdio(false);
-    std::cout.precision(10);
+    std::cout.precision(15);
     std::cout << std::fixed;
   };
 } const fast_ios_;
