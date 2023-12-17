@@ -6,12 +6,20 @@
 #include <iterator>
 #include <tuple>
 #include <sstream>
+#include <io.hpp>
 
 #if __cplusplus >= 201703L
 #include <type_traits.hpp>
 namespace debug {
+// forward declaration
 template<typename... Args>
 std::ostream &operator<<(std::ostream &, std::tuple<Args...> const &);
+
+std::ostream &operator<<(std::ostream &out, __int128 n) {
+  using io::operator<<;
+  return out << n;
+}
+
 std::ostream &operator<<(std::ostream &out, const std::string &s) {
   using std::operator<<;
   return out << '"' << s << '"';

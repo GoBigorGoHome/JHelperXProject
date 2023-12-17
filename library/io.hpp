@@ -106,9 +106,14 @@ std::ostream &operator<<(std::ostream &os, __int128 n) {
     n = -n;
     os << '-';
   }
-  if (n > 9)
-    return os << n % 10;
-  return os << char(n + '0');
+  std::string s;
+  while (n > 0) {
+    s += char('0' + n % 10);
+    n /= 10;
+  }
+  for (int i = (int) s.size() - 1; i >= 0; i--)
+    os << s[i];
+  return os;
 }
 
 #if __cplusplus >= 201703L
