@@ -33,7 +33,7 @@ def rcmp(epsilon):
 
 
 def duipai(cnt, **kwargs):
-    ret = build_all()
+    ret = build_all_()
     if ret:
         print("Build failed!")
         return
@@ -74,7 +74,7 @@ def compare():
 
 def stress_my(**kwargs):
     spj = kwargs.get('spj', None)
-    regenerate_("Debug")
+    regenerate_("Release")
     build_my_()
     while True:
         gen_input()

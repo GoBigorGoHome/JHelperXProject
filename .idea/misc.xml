@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="Black">
+    <option name="sdkName" value="Python 3.10 (cp)" />
+  </component>
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
-      <file path="$PROJECT_DIR$/ac-library" />
       <file path="$PROJECT_DIR$/checker" />
       <file path="$PROJECT_DIR$/library" />
+      <file path="$PROJECT_DIR$/maspy" />
       <file path="$PROJECT_DIR$/tasks" />
     </sourceRoots>
+    <libraryRoots>
+      <file path="$PROJECT_DIR$/ac-library" />
+    </libraryRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/checker/build" />
       <file path="$PROJECT_DIR$/checker/tests" />

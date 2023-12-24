@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(jhelper-example-project)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -83,6 +83,8 @@ include_directories(library)
 
 add_executable(exp exp.cpp)
 target_compile_definitions(exp PRIVATE LOCAL)
+
+add_executable(chk chk.cpp)
 
 add_executable(my checker/my.cpp)
 target_compile_definitions(my PRIVATE LOCAL)

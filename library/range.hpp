@@ -7,18 +7,25 @@
 #include <cassert>
 #include <utility>
 #include <algorithm>
-template<typename iterator> struct range {
+template<typename iterator> struct Range {
   iterator beg_, end_;
   iterator begin() const { return beg_; }
   iterator end() const { return end_; }
   //! @brief Make a range from a pair of iterators.
-  range(iterator beg, iterator end) : beg_(beg), end_(end) {}
+  Range(iterator beg, iterator end) : beg_(beg), end_(end) {}
 };
 
+template<typename T> Range<typename T::iterator> range(T &a, int i) {
+  assert(i >= 0);
+  if (i < (int) a.size())
+    return Range(a.begin() + i, a.end());
+  return Range(a.end(), a.end());
+}
+
 template<typename Sequence>
-struct slice : public range<decltype(std::begin(std::declval<Sequence &>()))> {
+struct slice : public Range<decltype(std::begin(std::declval<Sequence &>()))> {
   slice(Sequence &s, std::size_t l, std::size_t r)
-      : range<decltype(std::begin(std::declval<Sequence &>()))>(
+      : Range<decltype(std::begin(std::declval<Sequence &>()))>(
           std::begin(s) + std::min(l, std::size(s)),
           std::begin(s) + std::min(r, std::size(s))) {
     assert(l <= r);

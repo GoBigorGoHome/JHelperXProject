@@ -149,6 +149,11 @@ class dfs_forest : public graph {
     return pv[v];
   }
 
+  int parent_edge(int v) const {
+    assert(ready);
+    return pe[v];
+  }
+
   int number(int u) const {
     assert(ready);
     return in[u];
