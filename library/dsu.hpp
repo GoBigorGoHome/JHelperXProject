@@ -1,13 +1,13 @@
 #include <vector>
 #include <algorithm>
 
-class UnionFind {
+class dsu {
   std::vector<int> parent_or_size;
   int nTree;
   std::vector<bool> has_cycle_;
 
  public:
-  explicit UnionFind(int n)
+  explicit dsu(int n)
       : parent_or_size(n, -1), nTree(n), has_cycle_(n) {// 0-indexed
   }
 

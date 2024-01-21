@@ -1,13 +1,13 @@
 #include <algorithm>
 #include <cassert>
 #include <vector>
-template<typename T> class BIT {
+template<typename T> class fenwick {
   // 0-indexed
   std::vector<T> a;
   int size, pow2;
 
  public:
-  explicit BIT(int n) {
+  explicit fenwick(int n) {
     assert(n > 0);
     a.assign(n, 0);
     size = n;
