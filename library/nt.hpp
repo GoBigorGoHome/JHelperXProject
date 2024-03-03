@@ -42,6 +42,23 @@ template<typename T> std::vector<T> divisors(T n) {
   return res;
 }
 
+// 把n分解为素数的乘积。
+std::vector<long long> factorize(long long n) {
+  assert(n > 0);
+  std::vector<long long> p;
+  unsigned long long N = n;
+  for (unsigned long long i = 2; i * i <= N; ++i) {
+    while (N % i == 0) {
+      p.push_back(i);
+      N /= i;
+    }
+  }
+  if (N > 1) {
+    p.push_back(N);
+  }
+  return p;
+}
+
 template<typename T> std::vector<std::pair<T, int>> factorize_p(T n) {
   assert(n > 0);
   std::vector<std::pair<T, int>> res;
@@ -117,13 +134,18 @@ std::vector<int> get_mpf(int n) {
   return mpf;
 }
 
-long long gcd(long long a, long long b, long long& x, long long& y) {
+long long exgcd(long long a, long long b, long long &x, long long &y) {
   if (b == 0) {
+    if (a < 0) {
+      x = -1;
+      y = 0;
+      return -a;
+    }
     x = 1;
     y = 0;
     return a;
   }
-  long long t = gcd(b, a % b, y, x);
+  long long t = exgcd(b, a % b, y, x);
   // y * b + x * (a % b) == gcd(a, b)
   // y * b + x * (a - (a / b) * b) == gcd(a, b)
   // (y - x * (a / b)) * b + x * a == gcd(a, b)
@@ -214,7 +236,7 @@ int mod_pow(long long a, long long n, int mod) {
   assert(mod > 0);
   a %= mod;
   if (a < 0)
-    a+= mod;
+    a += mod;
   long long ans = 1;
   while (n > 0) {
     if (n & 1)
