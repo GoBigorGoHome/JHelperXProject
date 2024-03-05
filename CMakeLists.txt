@@ -5,12 +5,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+add_library(task STATIC testrunner/current_task.cpp)
+
 add_executable(solution
-        testrunner/current_task.cpp
         solution/main.cpp)
 
+target_link_libraries(solution task)
+
 add_executable(testrunner
-        testrunner/current_task.cpp
         testrunner/main.cpp
         testrunner/test_runner.cpp
         testrunner/compare_floats.cpp
@@ -18,6 +20,8 @@ add_executable(testrunner
         testrunner/checker.cpp
         testrunner/print_test.cpp
         testrunner/color.cpp)
+
+target_link_libraries(testrunner task)
 
 add_dependencies(testrunner solution)
 target_compile_definitions(testrunner PRIVATE LOCAL)
