@@ -10,7 +10,8 @@
 #include <algorithm>
 // A simple implementation of the prefix doubling algorithm for suffix array
 // construction.
-template<typename T> std::vector<int> suffix_array(const T &s, int n) {
+template<typename T>
+std::vector<int> suffix_array(const T &s, int n) {
   assert(n > 0);
   std::vector<int> suf(n);
   std::iota(suf.begin(), suf.end(), 0);
@@ -55,7 +56,8 @@ template<typename T> std::vector<int> suffix_array(const T &s, int n) {
   return suf;
 }
 
-template<typename T> std::vector<int> suffix_array(const T &s) {
+template<typename T>
+std::vector<int> suffix_array(const T &s) {
   return suffix_array(s, (int) std::size(s));
 }
 #endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_SUFFIX_ARRAY_2_HPP_

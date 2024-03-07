@@ -7,29 +7,26 @@
 #include <vector>
 #include <cassert>
 // Given a string s of length n and its suffix array sa, lcp_array(s, sa)
-// returns an array lcp of length n-1, lcp[i] being the length of the longest
-// common prefix of suffix s[i..] and suffix s[i+1..].
+// returns an array lcp of length n, lcp[i] being the length of the longest
+// common prefix of suffix s[i..] and suffix s[i-1..], and lcp[0] is 0.
 template<typename T>
 std::vector<int> lcp_array(const T &s, const std::vector<int> &sa) {
   int n = (int) sa.size();
-  assert(n >= 1);
-  std::vector<int> rank(n);
+  std::vector<int> pos(n);// pos[i]：后缀i在sa里哪个位置。
   for (int i = 0; i < n; i++) {
-    rank[sa[i]] = i;
+    pos[sa[i]] = i;
   }
-  std::vector<int> lcp(n - 1);
+  std::vector<int> lcp(n);
   int h = 0;
   for (int i = 0; i < n; i++) {
-    if (h > 0)
-      h--;
-    if (rank[i] == 0)
+    if (pos[i] == 0)
       continue;
-    int j = sa[rank[i] - 1];
-    for (; j + h < n and i + h < n; h++) {
-      if (s[j + h] != s[i + h])
-        break;
+    int j = sa[pos[i] - 1];
+    h = std::max(0, h - 1);
+    while (j + h < n && i + h < n && s[j + h] == s[i + h]) {
+      h++;
     }
-    lcp[rank[i] - 1] = h;
+    lcp[pos[i]] = h;
   }
   return lcp;
 }
