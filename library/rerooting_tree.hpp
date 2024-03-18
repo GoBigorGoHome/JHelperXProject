@@ -4,18 +4,22 @@
 
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_REROOTING_TREE_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_REROOTING_TREE_HPP_
-#include <Graph.hpp>
-template<typename Contrib, typename Node, Contrib (*get_contrib)(Node),
-         void (*add_child)(Node &, Contrib),
-         Contrib (*remove_child)(Node, Node)>
-class rerooting_tree : public Graph {
+
+#include <vector>
+
+// Node：表示子树的信息的类型。
+template<typename Node, Node (*add_child)(Node, Node),
+         Node (*remove_child)(Node, Node)>
+class rerooting_tree {
+  std::vector<std::vector<int>> adj;
   std::vector<Node> node;
+
   void dfs(int u, int p) {
     for (int v : adj[u]) {
       if (v == p)
         continue;
       dfs(v, u);
-      add_child(node[u], get_contrib(node[v]));
+      node[u] = add_child(node[u], node[v]);
     }
   }
 
@@ -23,13 +27,17 @@ class rerooting_tree : public Graph {
     for (int v : adj[u]) {
       if (v == p)
         continue;
-      add_child(node[v], remove_child(node[u], node[v]));
+      node[v] = add_child(node[v], remove_child(node[u], node[v]));
       do_reroot(v, u);
     }
   }
 
  public:
-  rerooting_tree(int n) : Graph(n), node(n) {}
+  rerooting_tree(int n) : adj(n), node(n) {}
+  void add_edge(int u, int v) {
+    adj[u].push_back(v);
+    adj[v].push_back(u);
+  }
   std::vector<Node> work() {
     dfs(0, -1);
     do_reroot(0, -1);
