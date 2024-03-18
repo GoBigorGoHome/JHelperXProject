@@ -68,7 +68,7 @@ void debug_out(std::ostream &out, const Args &...args) {
   out << '\n';
 }
 }// namespace debug
-#define show(...)                                                              \
+#define debug(...)                                                             \
   std::cerr << "[" << #__VA_ARGS__ << "]:",                                    \
       debug::debug_out(std::cerr, __VA_ARGS__)
 #endif

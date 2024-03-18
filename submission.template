@@ -1,8 +1,9 @@
 #if not defined LOCAL and not defined NDEBUG
 #define NDEBUG
 #endif
+#if not defined LOCAL
 #define debug(...)
-#define show(...)
+#endif
 %Code%
 #include <iostream>
 
