@@ -1,6 +1,7 @@
 #ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
 #define JHELPER_EXAMPLE_PROJECT_LIBRARY_IO_HPP_
 #include <iostream>
+#include <iomanip>
 #include <vector>
 #include <tuple>
 #include <type_traits.hpp>
@@ -44,7 +45,8 @@ std::istream &operator>>(std::istream &in, std::tuple<Ts...> &t) {
   return in;
 }
 
-template<class... Args> void scan(Args &...args) {
+template<class... Args>
+void scan(Args &...args) {
   ((std::cin >> args), ...);
 }
 
@@ -101,23 +103,28 @@ std::ostream &operator<<(std::ostream &out,
   return out;
 }
 
+std::ostream &operator<<(std::ostream &os, unsigned __int128 n) {
+  using u64 = unsigned long long;
+  static const u64 B = 1e19;
+  if (n < B)
+    os << (u64) n;
+  else
+    os << n / B << std::setfill('0') << std::setw(19) << n % B;
+  return os;
+}
+
 std::ostream &operator<<(std::ostream &os, __int128 n) {
   if (n < 0) {
-    n = -n;
-    os << '-';
+    os << '-' << (unsigned __int128) -n;
+  } else {
+    os << (unsigned __int128) n;
   }
-  std::string s;
-  while (n > 0) {
-    s += char('0' + n % 10);
-    n /= 10;
-  }
-  for (int i = (int) s.size() - 1; i >= 0; i--)
-    os << s[i];
   return os;
 }
 
 #if __cplusplus >= 201703L
-template<typename... Args> void pt(Args &&...args) {
+template<typename... Args>
+void pt(Args &&...args) {
   ((std::cout << args << ' '), ...);
 }
 
@@ -128,7 +135,8 @@ void pl(const First &first, const Args &...args) {
   std::cout << '\n';
 }
 
-template<typename... Args> void pn(const Args &...args) {
+template<typename... Args>
+void pn(const Args &...args) {
   ((std::cout << args << '\n'), ...);
 }
 #endif
