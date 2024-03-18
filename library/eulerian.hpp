@@ -40,7 +40,7 @@ std::optional<std::vector<int>> find_eulerian_path_from(int u,
     }
   }
   if (write_ptr != -1)
-    return nullopt;
+    return std::nullopt;
   return res;
 }
 /// \brief Try to find an Eulerian path or cycle on an UNDIRECTED graph g.
@@ -57,7 +57,7 @@ std::optional<std::vector<int>> find_eulerian_path(const undigraph &g) {
     }
   }
   if (odd > 2)
-    return nullopt;
+    return std::nullopt;
   return find_eulerian_path_from(first_odd == -1 ? 0 : first_odd, g);
 }
 #endif// JHELPER_EXAMPLE_PROJECT_TASKS_EULERIAN_HPP_
