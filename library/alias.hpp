@@ -36,8 +36,7 @@ template<typename T> struct range_tuple {
 };
 #define rng4(i, a, b, c)                                                       \
   for (auto &&[i, JOIN(iter_, __LINE__), JOIN(end_, __LINE__)] =               \
-           range_tuple<std::common_type<decltype(a), decltype(b)>::type>(a,    \
-                                                                         b);   \
+           range_tuple<std::common_type_t<decltype(a), decltype(b)>>(a, b);    \
        i < JOIN(end_, __LINE__); JOIN(iter_, __LINE__) += c)
 #define rng3(i, a, b) rng4(i, a, b, 1)
 #define rng2(i, n) rng3(i, 0, n)
@@ -48,8 +47,7 @@ template<typename T> struct range_tuple {
 #define up(...) GET4(__VA_ARGS__, up4, up3, NO_IMPL)(__VA_ARGS__)
 #define down4(i, b, a, c)                                                      \
   for (auto &&[i, JOIN(iter_, __LINE__), JOIN(end_, __LINE__)] =               \
-           range_tuple<std::common_type<decltype(a), decltype(b)>::type>(b,    \
-                                                                         a);   \
+           range_tuple<std::common_type_t<decltype(a), decltype(b)>>(b, a);    \
        i >= JOIN(end_, __LINE__); JOIN(iter_, __LINE__) -= c)
 #define down3(i, b, a) down4(i, b, a, 1)
 #define down(...) GET4(__VA_ARGS__, down4, down3, NO_IMPL)(__VA_ARGS__)
