@@ -194,7 +194,7 @@ template<typename T> std::vector<int> order(const std::vector<T>& array) {
   return order;
 }
 
-#if __cplusplus >=201703L
+#if __cplusplus >= 201703L
 template<typename Container, typename Compare = void *>
 Container sort(Container &&c, Compare comp = nullptr) {
   if constexpr (std::is_same_v<Compare, void *>)
@@ -250,24 +250,12 @@ template<typename T, typename U> T mfloor(T x, U y) {
   return qfloor(x, y) * y;
 }
 
+// recursive lambda: https://stackoverflow.com/a/40873657/6793559
 #if __cplusplus >= 201703L
-template<class...> struct typelist {};
-
-template<class T, class... Ts>
-constexpr bool any_same = (std::is_same<T, Ts>::value || ...);
-
 template<class F> struct y_combinator {
-  template<class... TLs> struct ref {
-    y_combinator &self;
-    template<class... Args> decltype(auto) operator()(Args &&...args) const {
-      using G = std::conditional_t<any_same<typelist<Args...>, TLs...>,
-                                   ref<TLs...>, ref<TLs..., typelist<Args...>>>;
-      return self.f(G{self}, std::forward<Args>(args)...);
-    }
-  };
   F f;
   template<class... Args> decltype(auto) operator()(Args &&...args) {
-    return ref<>{*this}(std::forward<Args>(args)...);
+    return f(*this, std::forward<Args>(args)...);
   }
 };
 template<class F> y_combinator(F) -> y_combinator<F>;
