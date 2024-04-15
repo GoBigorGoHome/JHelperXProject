@@ -112,16 +112,6 @@ template<typename Container> auto min(const Container &c) {
   return *std::min_element(std::begin(c), std::end(c));
 }
 
-template<typename Array> int maxi(const Array &a) {
-  assert(a.size() > 0);
-  return int(std::max_element(std::begin(a), std::end(a)) - std::begin(a));
-}
-
-template<typename Array> int mini(const Array &a) {
-  assert(a.size() > 0);
-  return int(std::min_element(std::begin(a), std::end(a)) - std::begin(a));
-}
-
 template<typename Array, typename Value> auto lb(const Array &a, Value v) {
   return std::lower_bound(std::begin(a), std::end(a), v);
 }
@@ -180,18 +170,6 @@ template<typename T> std::vector<int> argsort(const std::vector<T>& array) {
   std::stable_sort(res.begin(), res.end(),
                    [&array](int i, int j) { return array[i] < array[j]; });
   return res;
-}
-
-template<typename T> std::vector<int> order(const std::vector<T>& array) {
-  int n = (int) array.size();
-  std::vector<int> I(n);
-  std::iota(I.begin(), I.end(), 0);
-  std::sort(I.begin(), I.end(),
-            [&array](int i, int j) { return array[i] < array[j]; });
-  std::vector<int> order(n);
-  for (int i = 1; i < n; i++)
-    order[I[i]] = order[I[i - 1]] + (array[I[i - 1]] < array[I[i]]);
-  return order;
 }
 
 #if __cplusplus >= 201703L
@@ -297,6 +275,15 @@ Int binary_search(F check, Int ok, Int ng, bool check_ok = true) {
 
 template<typename T, typename Int> int bit(T a, Int i) {
   return a >> i & 1;
+}
+
+template <typename T, typename U>
+std::vector<T> cumsum(const std::vector<U> &A, int off = 1) {
+  int N = A.size();
+  std::vector<T> B(N + 1);
+  for (int i = 0; i < N; i++) { B[i + 1] = B[i] + A[i]; }
+  if (off == 0) B.erase(B.begin());
+  return B;
 }
 
 #define popcnt(x) __builtin_popcountll((x))
