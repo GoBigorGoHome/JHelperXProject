@@ -42,23 +42,6 @@ template<typename T> std::vector<T> divisors(T n) {
   return res;
 }
 
-// 把n分解为素数的乘积。
-std::vector<long long> factorize(long long n) {
-  assert(n > 0);
-  std::vector<long long> p;
-  unsigned long long N = n;
-  for (unsigned long long i = 2; i * i <= N; ++i) {
-    while (N % i == 0) {
-      p.push_back(i);
-      N /= i;
-    }
-  }
-  if (N > 1) {
-    p.push_back(N);
-  }
-  return p;
-}
-
 template<typename T> std::vector<std::pair<T, int>> factorize_p(T n) {
   assert(n > 0);
   std::vector<std::pair<T, int>> res;
@@ -79,9 +62,11 @@ template<typename T> std::vector<std::pair<T, int>> factorize_p(T n) {
   return res;
 }
 
+//把 n 分解为素数的幂
 template<typename T> std::vector<T> factorize(T n) {
+  assert(n > 0);
   std::vector<T> res;
-  for (T i = 2; (unsigned long long) i * i <= n; ++i) {
+  for (T i = 2; (unsigned long long) i * i <= (unsigned long long) n; ++i) {
     T t = 1;
     while (n % i == 0) {
       t *= i;
