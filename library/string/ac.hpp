@@ -31,12 +31,9 @@ struct AhoCorasick {
       }
       p = GO[p][c];
     }
-
-    int &id = word_id[p];
-    if (id == -1)
-      id = word_cnt;
-    word_cnt++;
-    return id;
+    if (word_id[p] == -1)
+      word_id[p] = word_cnt++;
+    return word_id[p];
   }
 
   int insert(std::string s) { return insert(s.c_str()); }
