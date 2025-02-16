@@ -112,11 +112,11 @@ template<typename Container> auto min(const Container &c) {
   return *std::min_element(std::begin(c), std::end(c));
 }
 
-template<typename Array, typename Value> auto lb(const Array &a, Value v) {
+template<typename Array, typename Value> auto lb(Array &a, Value v) {
   return std::lower_bound(std::begin(a), std::end(a), v);
 }
 
-template<typename Array, typename Value> auto ub(const Array &a, Value v) {
+template<typename Array, typename Value> auto ub(Array &a, Value v) {
   return std::upper_bound(std::begin(a), std::end(a), v);
 }
 
