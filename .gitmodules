@@ -4,3 +4,6 @@
 [submodule "maspy"]
 	path = maspy
 	url = https://github.com/maspypy/library.git
+[submodule "algo"]
+	path = algo
+	url = https://github.com/the-tourist/algo
