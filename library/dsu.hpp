@@ -32,22 +32,24 @@ class dsu {
         ? x
         : parent_or_size[x] = leader(parent_or_size[x]);
   }
-  //! @brief Merge tree y into tree x.
-  //! @param f Function for extra processing, called as f(x, y).
+  //! @brief Add an edge that connects vertex x and vertex y.
+  //! @param f Function for extra processing.
+  //! If x and y are not connected yet, f(root1, root2) will be invoked, where root2 becomes an child of root1.
   template<typename F = void (*)(int, int)>
-  bool merge(
-      int x, int y, const F &f = [](int, int) {}) {
+  bool merge(int x, int y, const F &f = [](int, int) {}) {
     int rx = leader(x), ry = leader(y);
-    if (rx != ry) {
-      parent_or_size[rx] += parent_or_size[ry];
-      parent_or_size[ry] = rx;
-      --nTree;
-      has_cycle_[rx] = has_cycle_[rx] or has_cycle_[ry];
-      f(rx, ry);
-      return true;
+    if (rx == ry) {
+      has_cycle_[rx] = true;
+      return false;
     }
-    has_cycle_[rx] = true;
-    return false;
+    if (-parent_or_size[rx] < -parent_or_size[ry])
+      std::swap(rx, ry);
+    parent_or_size[rx] += parent_or_size[ry];
+    parent_or_size[ry] = rx;
+    --nTree;
+    has_cycle_[rx] = has_cycle_[rx] or has_cycle_[ry];
+    f(rx, ry);
+    return true;
   }
 
   bool is_leader(int x) const { return parent_or_size[x] < 0; }
