@@ -121,12 +121,12 @@ template<typename Array, typename Value> auto ub(Array &a, Value v) {
 }
 
 template<typename Array, typename Value, typename Compare>
-auto lb(const Array &a, Value v, Compare compare) {
+auto lb(Array &a, Value v, Compare compare) {
   return std::lower_bound(std::begin(a), std::end(a), v, compare);
 }
 
 template<typename Array, typename Value, typename Compare>
-auto ub(const Array &a, Value v, Compare compare) {
+auto ub(Array &a, Value v, Compare compare) {
   return std::upper_bound(std::begin(a), std::end(a), v, compare);
 }
 
@@ -262,12 +262,13 @@ template<typename T> std::vector<int> normalize(const std::vector<T> &a) {
   return b;
 }
 
-template<typename F, typename Int>
-Int binary_search(F check, Int ok, Int ng, bool check_ok = true) {
+template<typename F>
+long long binary_search(F check, long long ok, long long ng,
+                        bool check_ok = true) {
   if (check_ok)
     assert(check(ok));
   while (std::abs(ok - ng) > 1) {
-    Int x = ng + (ok - ng) / 2;
+    long long x = ng + (ok - ng) / 2;
     (check(x) ? ok : ng) = x;
   }
   return ok;
