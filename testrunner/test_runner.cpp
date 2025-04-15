@@ -106,6 +106,12 @@ int run_single_test(int testID, const jhelper::Test &test) {
     return -1;
   }
 
+  if (exit_code != 0) {
+    std::cerr << get_file_contents("solution/debug.txt");
+    std::cerr << "Process finished with exit code " << exit_code << '\n';
+    return -1;
+  }
+
   if (test.has_output) {
     std::string s = check(test.output, solution_output);
     if (s.size()) {
@@ -186,7 +192,9 @@ int run_multi_subtests(int testID, const Test &test, TestType type) {
 }
 
 void run_all_tests(TestType test_type) {
-  std::system("> solution/time.txt");// clear time.txt
+  std::system("rm solution/time.txt");
+  std::system("rm solution/output.txt");
+  std::system("rm solution/debug.txt");
   int n_active_tests = 0;
   int n_failed_tests = 0;
 
