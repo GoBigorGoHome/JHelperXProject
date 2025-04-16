@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(jhelper-example-project)
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -21,7 +21,7 @@ add_executable(testrunner
         testrunner/print_test.cpp
         testrunner/color.cpp)
 
-target_link_libraries(testrunner task)
+target_link_libraries(testrunner task) # 有这一行是因为 testrunner 需要 task 里的 show_all_failed_tests 和 compare_real_numbers
 
 add_dependencies(testrunner solution)
 target_compile_definitions(testrunner PRIVATE LOCAL)
@@ -49,11 +49,11 @@ else ()
     else ()
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld")
     endif ()
-    # Set stack size to 256 MiB
+    # Set stack size to 1GB
     if (WIN32)
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,268435456")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,1000000000")
     else ()
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,stack-size=268435456")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,stack-size=1000000000") #单位是byte
     endif ()
     #    target_compile_options(testrunner PRIVATE -Werror)
     target_compile_options(testrunner PRIVATE -Werror=conversion)
@@ -85,14 +85,13 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
 endif ()
 
 include_directories(library)
-
 add_executable(exp exp.cpp)
 target_compile_definitions(exp PRIVATE LOCAL)
 
 add_executable(chk chk.cpp)
 
 add_executable(my checker/my.cpp)
-target_compile_definitions(my PRIVATE LOCAL)
+#target_compile_definitions(my PRIVATE LOCAL)
 add_executable(ac checker/ac.cpp)
 include_directories(ac-library)
 include_directories(tourist-library)
