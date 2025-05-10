@@ -100,23 +100,23 @@ std::vector<int> get_primes(int n) {
   return primes;
 }
 
-std::vector<int> get_mpf(int n) {
-  std::vector<int> mpf(n + 1);
+// least prime factor
+std::vector<int> get_lpf(int n) {
+  std::vector<int> lpf(n + 1);
   std::vector<int> primes;
   for (int i = 2; i <= n; i++) {
-    if (mpf[i] == 0) {
-      mpf[i] = i;
+    if (lpf[i] == 0) {
+      lpf[i] = i;
       primes.push_back(i);
     }
-    const int max_p = std::min(mpf[i], n / i);
+    const int max_p = std::min(lpf[i], n / i);
     for (int p : primes) {
-      if (p <= max_p)
-        mpf[p * i] = p;
-      else
+      if (p > max_p)
         break;
+      lpf[p * i] = p;
     }
   }
-  return mpf;
+  return lpf;
 }
 
 long long exgcd(long long a, long long b, long long &x, long long &y) {
@@ -155,6 +155,31 @@ template<typename T> T phi(T n) {
   if (n > 1)
     result *= n - 1;
   return result;
+}
+
+vector<int> phi_table(int n) {
+  vector<int> phi(n + 1);
+  vector<int> lpf(n + 1);
+  phi[1] = 1;
+  vector<int> primes;
+  for (int i = 2; i <= n; i++) {
+    if (lpf[i] == 0) {
+      primes.push_back(i);
+      lpf[i] = i;
+      phi[i] = i - 1;
+    }
+    for (int p : primes) {
+      if (p >= lpf[i] || (long long) p * i > n)
+        break;
+      lpf[p * i] = p;
+      phi[p * i] = phi[i] * (p - 1);
+    }
+    if ((long long) lpf[i] * i <= n) {
+      lpf[lpf[i] * i] = lpf[i];
+      phi[lpf[i] * i] = phi[i] * lpf[i];
+    }
+  }
+  return phi;
 }
 
 /// @brief Compute Mobius function for positive integers not greater than n.
@@ -203,14 +228,12 @@ std::vector<mpf_info> get_mpf_info(int n) {
       res[i] = {i, 1, 1};
       primes.push_back(i);
     }
-    int lim = n / i;
-    int max_prime = std::min(lim, res[i].mpf - 1);
     for (int p : primes) {
-      if (p > max_prime)
+      if (p >= res[i].mpf || (long long) p * i > n)
         break;
       res[p * i] = {p, 1, i};
     }
-    if (res[i].mpf <= lim)
+    if ((long long) res[i].mpf * i <= n)
       res[res[i].mpf * i] = {res[i].mpf, res[i].mpf_cnt + 1, res[i].next};
   }
   return res;
