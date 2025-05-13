@@ -157,11 +157,11 @@ template<typename T> T phi(T n) {
   return result;
 }
 
-vector<int> phi_table(int n) {
-  vector<int> phi(n + 1);
-  vector<int> lpf(n + 1);
+std::vector<int> phi_table(int n) {
+  std::vector<int> phi(n + 1);
+  std::vector<int> lpf(n + 1);
   phi[1] = 1;
-  vector<int> primes;
+  std::vector<int> primes;
   for (int i = 2; i <= n; i++) {
     if (lpf[i] == 0) {
       primes.push_back(i);
