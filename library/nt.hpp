@@ -323,4 +323,36 @@ int discrete_log_mod_p(int a, int b, int p) {
   return -1;
 }
 
+int coprime_cnt(int n, int k) { // 1到n之中和k互质的数的个数
+  std::vector<int> p = prime_divisors(k);
+  int ans = 0;
+  for (int s = 0; s < 1 << p.size(); s++) {
+    int prod = 1;
+    for (int i = 0; i < (int) p.size(); i++)
+      if (s >> i & 1)
+        prod *= p[i];
+    if (__builtin_popcount(s) & 1)
+      ans -= n / prod;
+    else
+      ans += n / prod;
+  }
+  return ans;
+}
+
+long long coprime_sum(int n, int k) { // 1到n之中和k互质的数之和
+  std::vector<int> p = prime_divisors(k);
+  long long ans = 0;
+  for (int s = 0; s < 1 << p.size(); s++) {
+    int prod = 1;
+    for (int i = 0; i < (int) p.size(); i++)
+      if (s >> i & 1)
+        prod *= p[i];
+    long long t = prod * (1LL + n / prod) * (n / prod) / 2;
+    if (__builtin_popcount(s) & 1)
+      ans -= t;
+    else
+      ans += t;
+  }
+  return ans;
+}
 #endif// NT_HPP_
