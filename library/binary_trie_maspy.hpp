@@ -2,8 +2,8 @@
 // Created by zjs on 6/26/23.
 //
 
-#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_HPP_
-#define JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_HPP_
+#ifndef JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_MASPY_HPP_
+#define JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_MASPY_HPP_
 #include <bit.hpp>
 template<int LOG, bool PERSISTENT, int NODES,
          typename UINT = unsigned long long, typename SIZE_TYPE = int>
@@ -211,4 +211,4 @@ struct binary_trie {
     return res;
   }
 };
-#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_HPP_
+#endif// JHELPER_EXAMPLE_PROJECT_LIBRARY_BINARY_TRIE_MASPY_HPP_
