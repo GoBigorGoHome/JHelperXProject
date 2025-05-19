@@ -8,24 +8,22 @@
 #include <cassert>
 #include <bit>
 
-template <class S, S (*op)(S, S), S (*e)()>
+template<class S, S (*op)(S, S), S (*e)()>
 class binary_trie {
   struct node {
-    node* ch[2];
+    node *ch[2];
     S data;
   };
   int w_;
-  int sz; // number of nodes;
+  int sz;// number of nodes;
   std::vector<node> pool;
-  node* new_node() {
+  node *new_node() {
     pool[sz] = {{nullptr, nullptr}, e()};
     return pool.data() + (sz++);
   }
 
-
-
  public:
-  binary_trie(int n, int w) :  w_(w), sz(0) {
+  binary_trie(int n, int w) : w_(w), sz(0) {
     assert(w > 0);
     assert(n > 0);
     int len = std::bit_width((unsigned int) n) - 1;
@@ -33,13 +31,13 @@ class binary_trie {
     if (w < len)
       max_sz = 1 << (w + 1);
     else
-      max_sz =  (1 << (len + 1)) + (w - len) * n;
+      max_sz = (1 << (len + 1)) + (w - len) * n;
     pool.assign(max_sz, node{});
-    new_node(); // create root
+    new_node();// create root
   }
 
-  const node* insert(int key, S val) {
-    node* ptr = pool.data();
+  const node *insert(int key, S val) {
+    node *ptr = pool.data();
     ptr->data = op(ptr->data, val);
     for (int i = w_ - 1; i >= 0; i--) {
       int b = key >> i & 1;
@@ -52,9 +50,7 @@ class binary_trie {
     return ptr;
   }
 
-  const node* root() const {
-    return pool.data();
-  }
+  const node *root() const { return pool.data(); }
 
   void clear() {
     sz = 0;
